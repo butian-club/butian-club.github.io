@@ -1,0 +1,176 @@
+/**
+ * 步天工程社 — 全局设计系统
+ * 设计语言：Unity · Simplicity · Modernity
+ * 主色：深蓝 / 黑 / 白 / 灰，少量青蓝点缀
+ * 同时认真适配深色与浅色模式。
+ */
+
+/* ===== Infima 主题变量（浅色模式）===== */
+:root {
+  --ifm-color-primary: #1f5fdb;
+  --ifm-color-primary-dark: #1c56c5;
+  --ifm-color-primary-darker: #1a51ba;
+  --ifm-color-primary-darkest: #154399;
+  --ifm-color-primary-light: #3670e0;
+  --ifm-color-primary-lighter: #4279e2;
+  --ifm-color-primary-lightest: #6493e9;
+
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
+    Helvetica, Arial, sans-serif;
+  --ifm-code-font-size: 95%;
+  --ifm-heading-font-weight: 650;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.82);
+
+  --docusaurus-highlighted-code-line-bg: rgba(31, 95, 219, 0.1);
+
+  /* ===== 站点自定义设计令牌 ===== */
+  --bt-accent: #06b6d4; /* 青蓝点缀 */
+  --bt-bg: #ffffff;
+  --bt-bg-subtle: #f6f8fb;
+  --bt-surface: #ffffff;
+  --bt-surface-2: #f3f6fa;
+  --bt-border: #e3e8ef;
+  --bt-border-strong: #cbd5e1;
+  --bt-text: #0f172a;
+  --bt-text-muted: #51607a;
+  --bt-text-faint: #8593aa;
+  --bt-hero-from: #0a1124;
+  --bt-hero-to: #111d3a;
+  --bt-grid-line: rgba(31, 95, 219, 0.07);
+  --bt-radius: 14px;
+  --bt-radius-sm: 10px;
+  --bt-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 8px 24px rgba(15, 23, 42, 0.06);
+  --bt-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.06),
+    0 18px 40px rgba(15, 23, 42, 0.12);
+  --bt-section-y: 6rem;
+}
+
+/* ===== 深色模式 ===== */
+[data-theme='dark'] {
+  --ifm-color-primary: #6aa0ff;
+  --ifm-color-primary-dark: #4d8bff;
+  --ifm-color-primary-darker: #3f81ff;
+  --ifm-color-primary-darkest: #1865f5;
+  --ifm-color-primary-light: #87b5ff;
+  --ifm-color-primary-lighter: #95bdff;
+  --ifm-color-primary-lightest: #c0d7ff;
+
+  --ifm-background-color: #070b16;
+  --ifm-background-surface-color: #0d1426;
+  --ifm-navbar-background-color: rgba(7, 11, 22, 0.8);
+  --docusaurus-highlighted-code-line-bg: rgba(106, 160, 255, 0.16);
+
+  --bt-accent: #22d3ee;
+  --bt-bg: #070b16;
+  --bt-bg-subtle: #0a1020;
+  --bt-surface: #0d1426;
+  --bt-surface-2: #111a30;
+  --bt-border: #1d2842;
+  --bt-border-strong: #2b3a5c;
+  --bt-text: #eef2fb;
+  --bt-text-muted: #a0adc7;
+  --bt-text-faint: #6b7894;
+  --bt-hero-from: #05080f;
+  --bt-hero-to: #0a1022;
+  --bt-grid-line: rgba(106, 160, 255, 0.08);
+  --bt-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.35);
+  --bt-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.5),
+    0 22px 48px rgba(0, 0, 0, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bt-bg);
+}
+
+/* 导航栏始终保持深空工程风（即使内容页处于浅色模式），
+   避免白色导航栏压在深色 Hero 上的违和感。 */
+.navbar {
+  --ifm-navbar-background-color: rgba(8, 13, 26, 0.85);
+  --ifm-navbar-link-color: #cdd9ef;
+  --ifm-navbar-link-hover-color: #6aa0ff;
+  --ifm-navbar-search-input-background-color: rgba(255, 255, 255, 0.06);
+  --ifm-menu-color: #cdd9ef;
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid rgba(94, 234, 212, 0.16);
+  color: #cdd9ef;
+}
+
+.navbar__title,
+.navbar__brand:hover .navbar__title {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.navbar__link--active {
+  color: #ffffff;
+}
+
+/* 导航栏内的图标按钮（主题切换 / 语言）在深色底上保持可见 */
+.navbar .clean-btn,
+.navbar__items--right svg {
+  color: #cdd9ef;
+}
+
+/* 下拉菜单（语言切换）面板保持深色 */
+.navbar .dropdown__menu {
+  background-color: #0b1224;
+  border: 1px solid rgba(94, 234, 212, 0.18);
+}
+.navbar .dropdown__link {
+  color: #cdd9ef;
+}
+.navbar .dropdown__link:hover {
+  background-color: rgba(106, 160, 255, 0.14);
+  color: #ffffff;
+}
+
+/* 统一的主按钮观感 */
+.button--primary {
+  --ifm-button-border-color: transparent;
+  font-weight: 600;
+}
+
+/* 链接焦点态的无障碍可见性 */
+a:focus-visible,
+button:focus-visible,
+.button:focus-visible {
+  outline: 2px solid var(--bt-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 让正文段落更易读 */
+.markdown p {
+  line-height: 1.75;
+}
+
+/* 仅对辅助技术可见（视觉隐藏） */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 尊重用户的减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,285 @@
+/* ============================================================
+   内容页通用样式（about / projects / join 共用）
+   方案 D 深空工程风：始终深色，与首页一致，不随主题切换。
+   ============================================================ */
+
+.page {
+  --mc-bg: #040711;
+  --mc-line: rgba(94, 234, 212, 0.13);
+  --mc-line-strong: rgba(94, 234, 212, 0.3);
+  --mc-cyan: #5eead4;
+  --mc-cyan-dim: #2dd4bf;
+  --mc-ink: #e8f0ff;
+  --mc-muted: #93a6c6;
+  --mc-faint: #5d6f90;
+  --mc-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Roboto Mono', Menlo,
+    monospace;
+
+  position: relative;
+  background-color: var(--mc-bg);
+  color: var(--mc-ink);
+  padding-bottom: 5rem;
+  overflow: hidden;
+}
+
+/* 全页淡蓝图网格 */
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--mc-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mc-line) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px;
+  opacity: 0.45;
+  mask-image: linear-gradient(to bottom, #000 40%, transparent 95%);
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(1.2rem, 4vw, 1.5rem);
+}
+
+.narrow {
+  max-width: 860px;
+}
+
+.block {
+  padding-top: 3.6rem;
+}
+
+.blockTitle {
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.7rem;
+  color: #fff;
+}
+
+.blockEyebrow {
+  font-family: var(--mc-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mc-cyan);
+  margin: 0 0 0.7rem;
+}
+
+.lead {
+  font-size: clamp(1.12rem, 2.4vw, 1.4rem);
+  line-height: 1.65;
+  color: #d2deef;
+  margin: 0 0 1.2rem;
+  font-weight: 350;
+}
+
+.prose p {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: var(--mc-muted);
+  margin: 0 0 1rem;
+}
+
+.prose strong {
+  color: var(--mc-ink);
+}
+
+/* 双列 / 多列卡片 */
+.cardRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  margin-top: 1.6rem;
+  background: var(--mc-line);
+  border: 1px solid var(--mc-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.infoCard {
+  padding: 1.6rem;
+  background: rgba(8, 14, 28, 0.6);
+  transition: background 0.18s ease;
+}
+
+.infoCard:hover {
+  background: rgba(13, 22, 42, 0.9);
+}
+
+.infoCardTitle {
+  font-size: 1.12rem;
+  margin: 0 0 0.5rem;
+  color: #fff;
+}
+
+.infoCardText {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--mc-muted);
+  margin: 0;
+}
+
+/* 带编号的步骤 / 时间线 */
+.steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 1.8rem 0 0;
+  padding: 0;
+}
+
+.steps li {
+  position: relative;
+  counter-increment: step;
+  padding: 0 0 1.6rem 3.2rem;
+  border-left: 1px solid var(--mc-line-strong);
+  margin-left: 1.1rem;
+}
+
+.steps li:last-child {
+  border-left-color: transparent;
+  padding-bottom: 0;
+}
+
+.steps li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: -1.1rem;
+  top: -0.2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mc-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--mc-cyan);
+  background: var(--mc-bg);
+  border: 1px solid var(--mc-line-strong);
+  border-radius: 50%;
+}
+
+.stepTitle {
+  font-size: 1.06rem;
+  font-weight: 650;
+  color: #fff;
+  margin: 0 0 0.3rem;
+}
+
+.stepText {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--mc-muted);
+  margin: 0;
+}
+
+/* 要点清单 */
+.checkList {
+  list-style: none;
+  margin: 1.4rem 0 0;
+  padding: 0;
+}
+
+.checkList li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.8rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #d2deef;
+  border-top: 1px solid var(--mc-line);
+}
+
+.checkList li:first-child {
+  border-top: none;
+}
+
+.checkList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.1rem;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--mc-cyan);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+/* 提示框 / 占位信息 */
+.note {
+  margin-top: 1.8rem;
+  padding: 1.1rem 1.3rem;
+  border: 1px dashed var(--mc-line-strong);
+  border-radius: 8px;
+  background: rgba(94, 234, 212, 0.04);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--mc-muted);
+}
+
+.note strong {
+  color: var(--mc-cyan);
+}
+
+.note :global(a) {
+  color: var(--mc-cyan);
+}
+
+/* 项目筛选条 */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  align-items: baseline;
+  margin: 2.4rem 0 0.6rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--mc-line);
+  font-family: var(--mc-mono);
+}
+
+.filterStat {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--mc-muted);
+}
+
+.filterStat strong {
+  color: var(--mc-cyan);
+  font-size: 1.05rem;
+}
+
+/* 联系信息 */
+.contactList {
+  list-style: none;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--mc-line);
+  border: 1px solid var(--mc-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.contactList li {
+  padding: 1.2rem 1.4rem;
+  background: rgba(8, 14, 28, 0.6);
+}
+
+.contactLabel {
+  display: block;
+  font-family: var(--mc-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mc-faint);
+  margin-bottom: 0.4rem;
+}
+
+.contactValue {
+  font-size: 1rem;
+  color: var(--mc-ink);
+}

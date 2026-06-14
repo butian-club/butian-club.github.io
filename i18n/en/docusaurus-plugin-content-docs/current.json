@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.knowledgeSidebar.category.入门指南": {
+    "message": "Getting Started",
+    "description": "The label for category '入门指南' in sidebar 'knowledgeSidebar'"
+  },
+  "sidebar.knowledgeSidebar.category.规范": {
+    "message": "Standards",
+    "description": "The label for category '规范' in sidebar 'knowledgeSidebar'"
+  }
+}

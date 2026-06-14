@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "butian-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start", "--", "--no-open", "--port", "8964"],
+      "port": 8964
+    },
+    {
+      "name": "butian-en",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start", "--", "--no-open", "--locale", "en", "--port", "8965"],
+      "port": 8965
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+# 活动记录标签
+retro:
+  label: 活动复盘
+  permalink: /retro
+  description: 活动与测试结束后的回顾。
+
+project-log:
+  label: 项目日志
+  permalink: /project-log
+  description: 项目推进过程中的记录。
+
+competition:
+  label: 比赛记录
+  permalink: /competition
+  description: 参赛过程与结果。
+
+news:
+  label: 社团新闻
+  permalink: /news
+  description: 社团动态与公告。
+
+aerospace:
+  label: 航天
+  permalink: /aerospace
+  description: 与航天方向相关的内容。
+
+outreach:
+  label: 科普公益
+  permalink: /outreach
+  description: 航天科普与公益服务活动。
+
+history:
+  label: 社史
+  permalink: /history
+  description: 社团沿革与可追溯的前史。

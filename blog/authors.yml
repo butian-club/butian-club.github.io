@@ -1,0 +1,7 @@
+# 作者信息。TODO：替换为真实成员信息后再启用头像等字段。
+club:
+  name: 步天工程社
+  title: Butian Engineering Club
+  url: https://butian.club
+  # image_url: /img/logo.svg
+  page: false

@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "Activity Log",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "Retrospectives, competition records, project logs and technical notes from Butian Engineering Club.",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "Recent Activities",
+    "description": "The label for the left sidebar"
+  }
+}

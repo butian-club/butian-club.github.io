@@ -1,0 +1,46 @@
+{
+  "link.title.社团": {
+    "message": "Club",
+    "description": "The title of the footer links column with title=社团 in the footer"
+  },
+  "link.title.内容": {
+    "message": "Content",
+    "description": "The title of the footer links column with title=内容 in the footer"
+  },
+  "link.title.更多": {
+    "message": "More",
+    "description": "The title of the footer links column with title=更多 in the footer"
+  },
+  "link.item.label.关于我们": {
+    "message": "About",
+    "description": "The label of footer link with label=关于我们 linking to /about"
+  },
+  "link.item.label.加入我们": {
+    "message": "Join Us",
+    "description": "The label of footer link with label=加入我们 linking to /join"
+  },
+  "link.item.label.项目": {
+    "message": "Projects",
+    "description": "The label of footer link with label=项目 linking to /projects"
+  },
+  "link.item.label.活动记录": {
+    "message": "Activity Log",
+    "description": "The label of footer link with label=活动记录 linking to /blog"
+  },
+  "link.item.label.知识库": {
+    "message": "Knowledge Base",
+    "description": "The label of footer link with label=知识库 linking to /docs/intro"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/butian-club"
+  },
+  "link.item.label.杭州第二中学": {
+    "message": "Hangzhou No.2 High School",
+    "description": "The label of footer link with label=杭州第二中学 linking to http://www.hz2hs.cn/"
+  },
+  "copyright": {
+    "message": "<div style=\"margin-top:0.5rem;opacity:0.85;\">Butian Engineering Club · Hangzhou No.2 High School</div>Copyright © 2026 Hangzhou No.2 High School Butian Engineering Club.",
+    "description": "The footer copyright"
+  }
+}

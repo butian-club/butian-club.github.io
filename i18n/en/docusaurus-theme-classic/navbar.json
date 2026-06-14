@@ -1,0 +1,38 @@
+{
+  "title": {
+    "message": "Butian Engineering Club",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Butian Engineering Club logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.首页": {
+    "message": "Home",
+    "description": "Navbar item with label 首页"
+  },
+  "item.label.关于": {
+    "message": "About",
+    "description": "Navbar item with label 关于"
+  },
+  "item.label.项目": {
+    "message": "Projects",
+    "description": "Navbar item with label 项目"
+  },
+  "item.label.博客": {
+    "message": "Blog",
+    "description": "Navbar item with label 博客"
+  },
+  "item.label.文档": {
+    "message": "Docs",
+    "description": "Navbar item with label 文档"
+  },
+  "item.label.加入我们": {
+    "message": "Join Us",
+    "description": "Navbar item with label 加入我们"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}
