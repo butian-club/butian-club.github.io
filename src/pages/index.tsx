@@ -110,12 +110,12 @@ export default function Home(): ReactNode {
                   <div className={styles.hudValue}>05</div>
                 </div>
                 <div className={styles.hudCell}>
-                  <div className={styles.hudLabel}>PROJECTS</div>
-                  <div className={styles.hudValue}>04</div>
+                  <div className={styles.hudLabel}>{t('五星级社团', '5-STAR CLUB')}</div>
+                  <div className={styles.hudValue} style={{color: '#fbbf24', letterSpacing: '0.06em'}}>★★★★★</div>
                 </div>
                 <div className={styles.hudCell}>
-                  <div className={styles.hudLabel}>GFSSM 2024</div>
-                  <div className={styles.hudValue}>{t('亚军', '2ND')}</div>
+                  <div className={styles.hudLabel}>GFSSM 2023</div>
+                  <div className={styles.hudValue} style={{color: '#fbbf24'}}>{t('全国冠军', 'CHAMPION')}</div>
                 </div>
                 <div className={styles.hudCell}>
                   <div className={styles.hudLabel}>STATUS</div>

@@ -44,12 +44,20 @@ const lineage = [
     en: ['2017 · Qiushi Innovation Academy', 'The school established the Qiushi Innovation Academy, bringing the Innovation Lab and top-tier competitions into a systematic platform — fertile ground for innovation clubs.'],
   },
   {
-    zh: ['2023 · 走向科普与公益', '步天工程社联合 IF 商社、校志愿者队前往磐安结对交流，把航天科普带给乡镇小学的孩子。'],
-    en: ['2023 · Toward outreach', 'Butian joined the IF Business Club and the school volunteer team in a paired exchange in Pan’an, bringing space science to children at a rural primary school.'],
+    zh: ['2020 · 初登未来太空学者大会', '据公开报道，杭州第二中学学子在 2020 年未来太空学者大会（FSSM）中获佳绩——这是目前可追溯的最早一届参赛记录；其后天玑队等持续征战。'],
+    en: ['2020 · First Space Scholars Meet', 'Per public reporting, Hangzhou No.2 High School students did well at the 2020 Future Space Scholars Meet — the earliest appearance we can trace; Team Tianji and others competed in the years after.'],
+  },
+  {
+    zh: ['2023 · GFSSM 全国冠军，并走向科普', '8 月，天权、天璇两队设计月球基地，天权队所在公司夺得全国冠军、天璇队所在公司获亚军，并分获最佳结构设计、最佳人居设计；6 月，社团还联合 IF 商社、校志愿者队前往磐安开展航天科普公益。'],
+    en: ['2023 · GFSSM champion, and outreach', 'In August, Teams Tianquan and Tianxuan designed a lunar base — Tianquan’s company won the national championship and Tianxuan’s took 2nd, also earning Best Structural and Best Habitat Design; in June, the club ran a space-science outreach program in Pan’an.'],
   },
   {
     zh: ['2024 · GFSSM 中国站全国亚军', '玉衡、天权两支代表队围绕金星轨道太空城设计，晋级全国决赛，两队所在公司均获全国亚军，并收获多项团队与个人荣誉。'],
     en: ['2024 · GFSSM China runner-up', 'Teams Yuheng and Tianquan designed a Venus-orbit space city, advanced to the national final, took national runner-up with their companies, and earned several team and individual honors.'],
+  },
+  {
+    zh: ['2025 · 火星基地双双登台', '天枢、天权两队晋级全国决赛；天枢队所在公司「轨道工业」获亚军、天权队所在公司「金乌能源」获季军，天枢队另获资格轮全国最佳提案。'],
+    en: ['2025 · Two podiums for a Mars base', 'Teams Tianshu and Tianquan reached the national final; Tianshu’s company “Orbital Industries” took 2nd and Tianquan’s “Jinwu Energy” took 3rd, with Tianshu also winning Best Qualifying Proposal.'],
   },
 ];
 
@@ -91,8 +99,8 @@ export default function About(): ReactNode {
             <div className={styles.prose}>
               <p>
                 {t(
-                  '我们关注航天，但更在意「怎么做出来」。一个想法要经过结构、人居、运营与商业的反复推敲，经得起 24 小时极限设计和全英文答辩的检验，才算真正被理解。步天工程社存在的意义，是为同学提供一个可以认真做工程的环境：有真实的赛题，有可以请教的人，也有把经验沉淀下来的地方。',
-                  'We care about space, but more about how it gets built. An idea must be reworked through structure, habitat, operations and business, and survive a 24-hour sprint and an all-English defense, before it is truly understood. Butian exists to give students a place to do engineering for real: real briefs, people to ask, and somewhere to let experience accumulate.',
+                  '我们关注航天，但更在意「怎么做出来」。一个想法要经过结构、人居、运营与商业的反复推敲，经得起 24 小时极限设计和全英文答辩的检验，才算真正被理解。步天工程社存在的意义，是为同学提供一个可以认真做工程的环境：有真实的赛题，有可以请教的人，也有把经验沉淀下来的地方。步天工程社也是杭州第二中学五星级社团。',
+                  'We care about space, but more about how it gets built. An idea must be reworked through structure, habitat, operations and business, and survive a 24-hour sprint and an all-English defense, before it is truly understood. Butian exists to give students a place to do engineering for real: real briefs, people to ask, and somewhere to let experience accumulate. Butian is also a five-star club at Hangzhou No.2 High School.',
                 )}
               </p>
             </div>
@@ -152,8 +160,8 @@ export default function About(): ReactNode {
             <p className={styles.note}>
               <strong>TODO：</strong>
               {t(
-                '社团正式成立时间、首任与历任社长、现任指导教师完整名单等待社团确认后补充。2024 年 GFSSM 代表队指导老师为朱毛奇、邵温馨。',
-                'The club’s founding date, founding and past presidents, and the full roster of current advisors await confirmation. The 2024 GFSSM teams were advised by Zhu Maoqi and Shao Wenxin.',
+                '社团正式成立时间、首任社长与完整历任名单仍待社团确认；已知前社长钱焜（2024 GFSSM 天权队队长）。指导老师朱毛奇（2024、2025 GFSSM）、邵温馨（2024 GFSSM）。',
+                'The club’s founding date, founding president and full list of past presidents still await confirmation; one known former president is Qian Kun (captain of the 2024 GFSSM Team Tianquan). Advisors include Zhu Maoqi (2024 & 2025 GFSSM) and Shao Wenxin (2024 GFSSM).',
               )}
             </p>
           </section>

@@ -35,6 +35,20 @@ export const STATUS_META: Record<
 
 export const projects: Project[] = [
   {
+    id: 'gfssm-2025-mars',
+    titleZh: '火星熔岩管基地 · GFSSM 2025',
+    titleEn: 'Mars Lava-Tube Base · GFSSM 2025',
+    summaryZh:
+      '天枢、天权两队在 2025 全球未来太空学者大会中国站围绕 2075 年火星基地展开设计；天枢队所在公司「轨道工业」获亚军、天权队所在公司「金乌能源」获季军，天枢队另获资格轮全国最佳提案。',
+    summaryEn:
+      'Teams Tianshu and Tianquan designed a 2075 Mars base at the 2025 GFSSM China round; Tianshu’s company “Orbital Industries” took 2nd and Tianquan’s “Jinwu Energy” took 3rd, with Tianshu also winning Best Qualifying Proposal.',
+    tagsZh: ['太空城市设计', '人居与生保', '运营与商业'],
+    tagsEn: ['Settlement Design', 'Habitat & Life Support', 'Operations'],
+    status: 'completed',
+    featured: true,
+    detailUrl: '/blog/gfssm-2025-mars-base',
+  },
+  {
     id: 'gfssm-2024-venus',
     titleZh: '金星轨道太空城 · GFSSM 2024',
     titleEn: 'Venus-Orbit Space City · GFSSM 2024',
@@ -45,7 +59,7 @@ export const projects: Project[] = [
     tagsZh: ['太空城市设计', '人居与生保', '运营与商业'],
     tagsEn: ['Settlement Design', 'Habitat & Life Support', 'Operations'],
     status: 'completed',
-    featured: true,
+    featured: false,
     detailUrl: '/blog/gfssm-2024-china-runner-up',
   },
   {
@@ -59,21 +73,22 @@ export const projects: Project[] = [
     tagsZh: ['科普传播', '公益'],
     tagsEn: ['Outreach', 'Community'],
     status: 'completed',
-    featured: true,
+    featured: false,
     detailUrl: '/blog/panan-outreach-2023',
   },
   {
     id: 'gfssm-2023',
-    titleZh: '全球未来太空学者大会 · 2023',
-    titleEn: 'Global Future Space Scholars Meet · 2023',
+    titleZh: '月球基地 Idun · GFSSM 2023',
+    titleEn: 'Lunar Base “Idun” · GFSSM 2023',
     summaryZh:
-      '2023 年杭州第二中学参加全球未来太空学者大会（GFSSM）中国站，校长开学致辞提及暑期于该赛事「夺得桂冠」。具体参赛队名与奖项待社团档案补证。',
+      '天权、天璇两队在 2023 全球未来太空学者大会设计月球熔岩管基地「Idun」；天权队所在公司「金乌能源」夺得全国冠军、天璇队所在公司「星云科技」获亚军，并分获最佳结构设计、最佳人居设计奖。',
     summaryEn:
-      'In 2023 Hangzhou No.2 High School took part in the GFSSM China round; the principal’s opening address noted a championship that summer. Specific team names and awards await confirmation from club records.',
-    tagsZh: ['太空城市设计', '赛事'],
-    tagsEn: ['Settlement Design', 'Competition'],
+      'Teams Tianquan and Tianxuan designed the lunar lava-tube base “Idun” at the 2023 GFSSM; Tianquan’s company “Helio Energy” won the national championship and Tianxuan’s “Nebula Tech” took 2nd, also earning Best Structural Design and Best Habitat Design.',
+    tagsZh: ['太空城市设计', '结构与基础设施', '人居与生保'],
+    tagsEn: ['Settlement Design', 'Structure & Infrastructure', 'Habitat & Life Support'],
     status: 'completed',
-    featured: false,
+    featured: true,
+    detailUrl: '/blog/gfssm-2023-moon-base',
   },
   {
     id: 'issdc-2016-origin',

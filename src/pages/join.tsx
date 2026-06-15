@@ -67,12 +67,18 @@ export default function Join(): ReactNode {
                   'Once in, you’ll form a team with students from different directions, work on real space-settlement design briefs, and go through requirement breakdown, department roles, mock defenses and 24-hour design sprints — learning systems thinking across structure, habitat, operations and business, and joining the club’s outreach, retrospectives and knowledge base.',
                 )}
               </p>
+              <p>
+                {t(
+                  '步天工程社是杭州第二中学历史悠久的元老级社团、常驻五星级社团，人气很旺。除了 GFSSM，我们也办天文周、科技周、纸飞机比赛、社团文化节等活动；常规例会通常两周到一月一次。',
+                  'Butian is one of Hangzhou No.2 High School’s long-standing, five-star clubs, and a popular one. Beyond GFSSM, we run an astronomy week, a science week, paper-plane contests and club festivals; regular meetings are usually held every two to four weeks.',
+                )}
+              </p>
             </div>
             <p className={styles.note}>
               <strong>TODO：</strong>
               {t(
-                '具体招新时间、报名表单与名额等信息，将在每届招新季公布。',
-                'Exact recruitment dates, the application form and quotas will be announced each recruitment season.',
+                '招新通常在每年 8 月（暑期）进行；具体报名表单与名额以当届招新公告为准。',
+                'Recruitment is usually held each August; the exact form and quota follow each season’s announcement.',
               )}
             </p>
           </section>
@@ -83,6 +89,12 @@ export default function Join(): ReactNode {
               {t('适合人群与我们希望的成员特质', 'Who Fits & the Traits We Value')}
             </h2>
             <div className={styles.prose}>
+              <p>
+                {t(
+                  '如果你会建模、绘画，或了解航空航天知识，都是加分项；但零基础同样欢迎——我们最看重的，是一颗向往未来、饱含热忱的心。',
+                  'Modeling, drawing or some aerospace knowledge are all a plus; complete beginners are just as welcome — what we value most is a heart full of enthusiasm for the future.',
+                )}
+              </p>
               <p>
                 {t(
                   '无论你来自哪个方向，只要认同下面这些，我们都欢迎你：',
