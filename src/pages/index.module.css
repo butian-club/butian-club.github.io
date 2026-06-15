@@ -1,25 +1,10 @@
 /* ============================================================
    方案 D · 融合 / FUSION
-   C 的深空封面背景(星场 + 冷蓝辉光,无轨道弧线)
-   + A 的工程文本与装饰(HUD · 等宽字 · 配准角标 · 蓝图网格)
+   主题感知：深色＝深空任务控制台；浅色＝蓝图 / 制图桌。
+   设计令牌在 custom.css 中按主题定义（--mc-*）。
    ============================================================ */
 
 .root {
-  --mc-bg: #040711;
-  --mc-panel: #0a1326;
-  --mc-line: rgba(94, 234, 212, 0.13);
-  --mc-line-strong: rgba(94, 234, 212, 0.3);
-  --mc-cyan: #5eead4;
-  --mc-cyan-dim: #2dd4bf;
-  --mc-blue: #6aa0ff;
-  --mc-glow: #9fd9ff;
-  --mc-amber: #fbbf24;
-  --mc-ink: #e8f0ff;
-  --mc-muted: #7e93b8;
-  --mc-faint: #4a5d80;
-  --mc-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Roboto Mono', Menlo,
-    monospace;
-
   position: relative;
   background-color: var(--mc-bg);
   color: var(--mc-ink);
@@ -36,7 +21,7 @@
     linear-gradient(90deg, var(--mc-line) 1px, transparent 1px);
   background-size: 96px 96px, 96px 96px;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.6;
   mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
   z-index: 0;
 }
@@ -76,7 +61,7 @@
 .topbar b { color: var(--mc-cyan); font-weight: 600; }
 .topbarRight { display: flex; gap: 1.4rem; }
 
-/* ===== HERO(深空封面)===== */
+/* ===== HERO ===== */
 .hero {
   position: relative;
   min-height: min(86vh, 800px);
@@ -84,7 +69,7 @@
   align-items: center;
   overflow: hidden;
 }
-/* 深空星场背景层 */
+/* 深空星场背景层（仅深色模式可见） */
 .heroSky {
   position: absolute;
   inset: 0;
@@ -92,7 +77,10 @@
   pointer-events: none;
 }
 .heroSky svg { width: 100%; height: 100%; display: block; }
-/* 冷蓝辉光 */
+/* 浅色模式隐藏深空星场，露出蓝图底 */
+:global([data-theme='light']) .heroSky { display: none; }
+
+/* 冷蓝 / 蓝图辉光 */
 .heroGlow {
   position: absolute;
   z-index: 0;
@@ -104,8 +92,8 @@
   max-height: 880px;
   background: radial-gradient(
     circle at 60% 40%,
-    rgba(159, 217, 255, 0.16) 0%,
-    rgba(106, 160, 255, 0.06) 38%,
+    var(--mc-glow-1) 0%,
+    var(--mc-glow-2) 38%,
     transparent 66%
   );
   pointer-events: none;
@@ -133,13 +121,13 @@
   border-radius: 4px;
   padding: 0.35rem 0.7rem;
   margin-bottom: 1.8rem;
-  background: rgba(8, 14, 28, 0.4);
+  background: var(--mc-surface-soft);
   backdrop-filter: blur(4px);
 }
 .led {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--mc-cyan);
-  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.18);
+  box-shadow: 0 0 0 3px var(--mc-accent-soft);
   animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
@@ -149,7 +137,7 @@
   line-height: 0.98;
   letter-spacing: -0.03em;
   margin: 0;
-  color: #fff;
+  color: var(--mc-title);
   font-weight: 700;
 }
 .heroEn {
@@ -165,7 +153,7 @@
 .heroSlogan {
   font-size: clamp(1.05rem, 2vw, 1.28rem);
   line-height: 1.7;
-  color: #c2d2ee;
+  color: var(--mc-body);
   max-width: 30em;
   margin: 0 0 2.2rem;
 }
@@ -180,9 +168,9 @@
   transition: all 0.18s ease;
   border: 1px solid transparent;
 }
-.btnPrimary { background: var(--mc-cyan); color: #042018; font-weight: 600; }
-.btnPrimary:hover { background: #7df3df; text-decoration: none; color: #042018; box-shadow: 0 0 28px rgba(94, 234, 212, 0.45); }
-.btnGhost { border-color: var(--mc-line-strong); color: var(--mc-ink); background: rgba(8, 14, 28, 0.3); }
+.btnPrimary { background: var(--mc-cyan); color: var(--mc-btn-fg); font-weight: 600; }
+.btnPrimary:hover { background: var(--mc-accent-strong); text-decoration: none; color: var(--mc-btn-fg); box-shadow: 0 0 28px var(--mc-btn-glow); }
+.btnGhost { border-color: var(--mc-line-strong); color: var(--mc-ink); background: var(--mc-surface-soft); }
 .btnGhost:hover { border-color: var(--mc-cyan); color: var(--mc-cyan); text-decoration: none; }
 
 /* HUD 遥测条 */
@@ -194,13 +182,14 @@
   border: 1px solid var(--mc-line);
   border-radius: 6px;
   overflow: hidden;
-  background: rgba(7, 12, 24, 0.5);
+  background: var(--mc-surface-soft);
   backdrop-filter: blur(6px);
 }
 .hudCell { padding: 0.9rem 1rem; border-right: 1px solid var(--mc-line); }
 .hudCell:last-child { border-right: none; }
 .hudLabel { font-family: var(--mc-mono); font-size: 0.62rem; letter-spacing: 0.16em; color: var(--mc-faint); text-transform: uppercase; }
 .hudValue { font-family: var(--mc-mono); font-size: 1.05rem; color: var(--mc-cyan); margin-top: 0.25rem; }
+.starGold { color: var(--mc-amber); letter-spacing: 0.06em; }
 
 /* hero 四角配准角标 */
 .corner {
@@ -215,64 +204,54 @@
 .corner[data-c='tr'] { top: 18px; right: 18px; border-width: 1px 1px 0 0; }
 .corner[data-c='bl'] { bottom: 18px; left: 18px; border-width: 0 0 1px 1px; }
 .corner[data-c='br'] { bottom: 18px; right: 18px; border-width: 0 1px 1px 0; }
-/* hero 底边坐标刻度 */
-.ruler {
-  position: absolute;
-  z-index: 2;
-  left: 0; right: 0; bottom: 0;
-  height: 16px;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 clamp(1.2rem, 4vw, 3rem);
-  gap: 0;
-  pointer-events: none;
-}
+/* hero 底边坐标读出 */
 .rulerCoord {
   position: absolute;
   bottom: 22px;
   right: clamp(1.2rem, 4vw, 3rem);
+  z-index: 2;
   font-family: var(--mc-mono);
   font-size: 0.64rem;
   letter-spacing: 0.12em;
   color: var(--mc-faint);
 }
 
-/* ===== 区块通用(沿用 A 工程风格)===== */
+/* ===== 区块通用 ===== */
 .section { position: relative; z-index: 1; padding: clamp(3rem, 6vw, 5rem) 0; border-top: 1px solid var(--mc-line); }
 .sectionHead { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.2rem; }
 .sectionNo { font-family: var(--mc-mono); font-size: 0.78rem; color: var(--mc-faint); }
-.sectionTitle { font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: -0.01em; margin: 0; color: #fff; }
+.sectionTitle { font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: -0.01em; margin: 0; color: var(--mc-title); }
 .sectionLine { flex: 1; height: 1px; background: var(--mc-line); }
 
-.subsysList { border: 1px solid var(--mc-line); border-radius: 6px; overflow: hidden; background: rgba(8, 14, 28, 0.3); }
+.subsysList { border: 1px solid var(--mc-line); border-radius: 6px; overflow: hidden; background: var(--mc-surface-soft); box-shadow: var(--mc-shadow-sm); }
 .subsysRow { display: grid; grid-template-columns: 3rem 1.3fr 2fr 9rem; gap: 1rem; align-items: center; padding: 1.1rem 1.3rem; border-top: 1px solid var(--mc-line); transition: background 0.16s ease; }
 .subsysRow:first-child { border-top: none; }
-.subsysRow:hover { background: rgba(94, 234, 212, 0.04); }
+.subsysRow:hover { background: var(--mc-accent-soft); }
 .subsysIdx { font-family: var(--mc-mono); color: var(--mc-cyan); font-size: 0.82rem; }
-.subsysName { font-size: 1.05rem; color: #fff; font-weight: 600; }
+.subsysName { font-size: 1.05rem; color: var(--mc-title); font-weight: 600; }
 .subsysEn { font-family: var(--mc-mono); font-size: 0.66rem; letter-spacing: 0.12em; color: var(--mc-faint); text-transform: uppercase; margin-top: 0.15rem; }
 .subsysDesc { font-size: 0.9rem; line-height: 1.55; color: var(--mc-muted); }
-.subsysBar { height: 4px; border-radius: 2px; background: rgba(94, 234, 212, 0.12); overflow: hidden; }
+.subsysBar { height: 4px; border-radius: 2px; background: var(--mc-accent-soft); overflow: hidden; }
 .subsysBar span { display: block; height: 100%; background: linear-gradient(90deg, var(--mc-cyan-dim), var(--mc-cyan)); }
 .subsysStat { font-family: var(--mc-mono); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--mc-faint); margin-top: 0.4rem; }
 @media (max-width: 820px) { .subsysRow { grid-template-columns: 2.2rem 1fr; } .subsysDesc, .subsysMeter { display: none; } }
 
-.projGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--mc-line); border: 1px solid var(--mc-line); border-radius: 6px; overflow: hidden; }
-.projCard { display: flex; flex-direction: column; padding: 1.5rem; background: var(--mc-bg); transition: background 0.18s ease; }
-.projCard:hover { background: var(--mc-panel); }
+.projGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--mc-line); border: 1px solid var(--mc-line); border-radius: 6px; overflow: hidden; box-shadow: var(--mc-shadow-sm); }
+.projCard { display: flex; flex-direction: column; padding: 1.5rem; background: var(--mc-surface); transition: background 0.18s ease; text-decoration: none; }
+.projCard:hover { background: var(--mc-surface-2); text-decoration: none; }
 .projTop { display: flex; justify-content: space-between; align-items: center; font-family: var(--mc-mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--mc-faint); margin-bottom: 1rem; }
 .projStatus { display: inline-flex; align-items: center; gap: 0.4rem; }
 .dot { width: 7px; height: 7px; border-radius: 50%; }
 .dotActive { background: var(--mc-cyan); box-shadow: 0 0 8px var(--mc-cyan); }
 .dotCompleted { background: var(--mc-blue); }
 .dotArchived { background: var(--mc-faint); }
-.projName { font-size: 1.18rem; color: #fff; margin: 0 0 0.5rem; }
+.projName { font-size: 1.18rem; color: var(--mc-title); margin: 0 0 0.5rem; }
 .projSummary { font-size: 0.9rem; line-height: 1.6; color: var(--mc-muted); margin: 0 0 1.2rem; flex: 1; }
 .projTags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .projTag { font-family: var(--mc-mono); font-size: 0.68rem; color: var(--mc-cyan-dim); }
 .projTag::before { content: '// '; color: var(--mc-faint); }
 
-.console { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--mc-line-strong); border-radius: 6px; overflow: hidden; background: rgba(8, 14, 28, 0.3); }
+.console { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--mc-line-strong); border-radius: 6px; overflow: hidden; background: var(--mc-surface-soft); box-shadow: var(--mc-shadow); }
 .consoleCell { padding: 2rem 1.4rem; border-right: 1px solid var(--mc-line); position: relative; }
 .consoleCell:last-child { border-right: none; }
 .consoleVal { font-family: var(--mc-mono); font-size: clamp(2rem, 5vw, 3rem); color: var(--mc-cyan); line-height: 1; }
@@ -280,16 +259,16 @@
 .consoleLabel { font-family: var(--mc-mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mc-muted); margin-top: 0.8rem; }
 .consoleCap { font-size: 0.82rem; color: var(--mc-faint); margin-top: 0.2rem; }
 
-.join { position: relative; z-index: 1; margin: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 8vw, 6rem); padding: clamp(2.4rem, 5vw, 3.6rem); border: 1px solid var(--mc-line-strong); border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, rgba(94, 234, 212, 0.06), rgba(10, 19, 38, 0.4)); }
-.joinGlow { position: absolute; right: -10%; top: -40%; width: 460px; height: 460px; background: radial-gradient(circle, rgba(159,217,255,0.12), transparent 65%); pointer-events: none; }
-.joinTitle { position: relative; z-index: 1; font-size: clamp(1.6rem, 4vw, 2.4rem); color: #fff; margin: 0.6rem 0 1rem; letter-spacing: -0.01em; }
-.joinText { position: relative; z-index: 1; font-size: 1.02rem; line-height: 1.7; color: #c2d2ee; max-width: 36em; margin: 0 0 1.8rem; }
+.join { position: relative; z-index: 1; margin: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 8vw, 6rem); padding: clamp(2.4rem, 5vw, 3.6rem); border: 1px solid var(--mc-line-strong); border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, var(--mc-accent-soft), var(--mc-surface)); box-shadow: var(--mc-shadow-lg); }
+.joinGlow { position: absolute; right: -10%; top: -40%; width: 460px; height: 460px; background: radial-gradient(circle, var(--mc-glow-1), transparent 65%); pointer-events: none; }
+.joinTitle { position: relative; z-index: 1; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--mc-title); margin: 0.6rem 0 1rem; letter-spacing: -0.01em; }
+.joinText { position: relative; z-index: 1; font-size: 1.02rem; line-height: 1.7; color: var(--mc-body); max-width: 36em; margin: 0 0 1.8rem; }
 
 /* 首页简介引言 */
 .aboutLead {
   font-size: clamp(1.1rem, 2.2vw, 1.45rem);
   line-height: 1.75;
-  color: #cdd9ef;
+  color: var(--mc-body);
   max-width: 46em;
   margin: 0;
   font-weight: 350;

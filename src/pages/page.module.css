@@ -1,20 +1,9 @@
 /* ============================================================
    内容页通用样式（about / projects / join 共用）
-   方案 D 深空工程风：始终深色，与首页一致，不随主题切换。
+   方案 D 工程风 · 主题感知（令牌见 custom.css 的 --mc-*）。
    ============================================================ */
 
 .page {
-  --mc-bg: #040711;
-  --mc-line: rgba(94, 234, 212, 0.13);
-  --mc-line-strong: rgba(94, 234, 212, 0.3);
-  --mc-cyan: #5eead4;
-  --mc-cyan-dim: #2dd4bf;
-  --mc-ink: #e8f0ff;
-  --mc-muted: #93a6c6;
-  --mc-faint: #5d6f90;
-  --mc-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Roboto Mono', Menlo,
-    monospace;
-
   position: relative;
   background-color: var(--mc-bg);
   color: var(--mc-ink);
@@ -30,7 +19,7 @@
   background-image: linear-gradient(var(--mc-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--mc-line) 1px, transparent 1px);
   background-size: 96px 96px, 96px 96px;
-  opacity: 0.45;
+  opacity: 0.5;
   mask-image: linear-gradient(to bottom, #000 40%, transparent 95%);
   pointer-events: none;
 }
@@ -55,7 +44,7 @@
   font-size: clamp(1.45rem, 3vw, 1.9rem);
   letter-spacing: -0.02em;
   margin: 0 0 0.7rem;
-  color: #fff;
+  color: var(--mc-title);
 }
 
 .blockEyebrow {
@@ -70,7 +59,7 @@
 .lead {
   font-size: clamp(1.12rem, 2.4vw, 1.4rem);
   line-height: 1.65;
-  color: #d2deef;
+  color: var(--mc-body);
   margin: 0 0 1.2rem;
   font-weight: 350;
 }
@@ -96,22 +85,23 @@
   border: 1px solid var(--mc-line);
   border-radius: 8px;
   overflow: hidden;
+  box-shadow: var(--mc-shadow-sm);
 }
 
 .infoCard {
   padding: 1.6rem;
-  background: rgba(8, 14, 28, 0.6);
+  background: var(--mc-surface);
   transition: background 0.18s ease;
 }
 
 .infoCard:hover {
-  background: rgba(13, 22, 42, 0.9);
+  background: var(--mc-surface-2);
 }
 
 .infoCardTitle {
   font-size: 1.12rem;
   margin: 0 0 0.5rem;
-  color: #fff;
+  color: var(--mc-title);
 }
 
 .infoCardText {
@@ -164,7 +154,7 @@
 .stepTitle {
   font-size: 1.06rem;
   font-weight: 650;
-  color: #fff;
+  color: var(--mc-title);
   margin: 0 0 0.3rem;
 }
 
@@ -187,7 +177,7 @@
   padding: 0.6rem 0 0.6rem 1.8rem;
   font-size: 1rem;
   line-height: 1.6;
-  color: #d2deef;
+  color: var(--mc-body);
   border-top: 1px solid var(--mc-line);
 }
 
@@ -213,7 +203,7 @@
   padding: 1.1rem 1.3rem;
   border: 1px dashed var(--mc-line-strong);
   border-radius: 8px;
-  background: rgba(94, 234, 212, 0.04);
+  background: var(--mc-accent-soft);
   font-size: 0.95rem;
   line-height: 1.7;
   color: var(--mc-muted);
@@ -262,11 +252,12 @@
   border: 1px solid var(--mc-line);
   border-radius: 8px;
   overflow: hidden;
+  box-shadow: var(--mc-shadow-sm);
 }
 
 .contactList li {
   padding: 1.2rem 1.4rem;
-  background: rgba(8, 14, 28, 0.6);
+  background: var(--mc-surface);
 }
 
 .contactLabel {

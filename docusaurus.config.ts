@@ -9,9 +9,10 @@ const config: Config = {
   tagline: 'Butian Engineering Club · 把想法变成结构、代码、电路与可验证的结果',
   favicon: 'img/favicon.ico',
 
-  // 提升与即将到来的 Docusaurus v4 的兼容性
+  // 提升与即将到来的 Docusaurus v4 的兼容性，并启用 faster（Rspack/SWC）构建管线
   future: {
     v4: true,
+    faster: true,
   },
 
   // 生产环境地址（自定义域名，CNAME 见 static/CNAME）
@@ -81,7 +82,17 @@ const config: Config = {
     ],
   ],
 
+  // 文档 / 博客正文图片点击放大查看
+  plugins: ['docusaurus-plugin-image-zoom'],
+
   themeConfig: {
+    zoom: {
+      selector: '.markdown img, img[data-zoomable]',
+      background: {
+        light: 'rgba(238, 242, 248, 0.92)',
+        dark: 'rgba(4, 7, 17, 0.92)',
+      },
+    },
     // TODO: 替换为社团自己的社交分享卡片
     image: 'img/butian-social-card.svg',
     metadata: [
@@ -106,7 +117,7 @@ const config: Config = {
         alt: '步天工程社标志',
         src: 'img/logo.svg',
       },
-      hideOnScroll: false,
+      hideOnScroll: true,
       items: [
         {to: '/', label: '首页', position: 'left', activeBaseRegex: '^/$'},
         {to: '/about', label: '关于', position: 'left'},
@@ -122,8 +133,9 @@ const config: Config = {
         {type: 'localeDropdown', position: 'right'},
         {
           href: 'https://github.com/butian-club',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub',
         },
       ],
     },
