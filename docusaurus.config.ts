@@ -83,7 +83,21 @@ const config: Config = {
   ],
 
   // 文档 / 博客正文图片点击放大查看
-  plugins: ['docusaurus-plugin-image-zoom'],
+  plugins: [
+    'docusaurus-plugin-image-zoom',
+    // 「协作平台文档」独立文档实例：与社团知识库分开，挂在 /platform 下。
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'platform',
+        path: 'platform-docs',
+        routeBasePath: 'platform',
+        sidebarPath: './sidebarsPlatform.ts',
+        editUrl:
+          'https://github.com/butian-club/butian-club.github.io/tree/main/',
+      },
+    ],
+  ],
 
   themeConfig: {
     zoom: {
@@ -128,7 +142,19 @@ const config: Config = {
           position: 'left',
           label: '文档',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'platformSidebar',
+          docsPluginId: 'platform',
+          position: 'left',
+          label: '协作平台文档',
+        },
         {to: '/blog', label: '博客', position: 'left'},
+        {
+          href: 'https://gfssm.butian.club',
+          label: '进入协作平台 ↗',
+          position: 'right',
+        },
         {to: '/join', label: '加入我们', position: 'right'},
         {type: 'localeDropdown', position: 'right'},
         {
@@ -155,6 +181,15 @@ const config: Config = {
           items: [
             {label: '活动记录', to: '/blog'},
             {label: '知识库', to: '/docs/intro'},
+            {label: '协作平台文档', to: '/platform/intro'},
+          ],
+        },
+        {
+          title: '协作平台',
+          items: [
+            {label: '进入协作平台', href: 'https://gfssm.butian.club'},
+            {label: '平台使用文档', to: '/platform/intro'},
+            {label: '预览体验（免注册）', href: 'https://gfssm.butian.club/login'},
           ],
         },
         {
