@@ -152,7 +152,7 @@ const config: Config = {
         {to: '/blog', label: '博客', position: 'left'},
         {
           href: 'https://gfssm.butian.club',
-          label: '进入协作平台 ↗',
+          label: '进入协作平台',
           position: 'right',
         },
         {to: '/join', label: '加入我们', position: 'right'},
