@@ -1,41 +1,84 @@
-/* 内容页统一页眉 —— 克制的苹果风，主题感知 */
+/* 内容页统一页眉 —— 克制而精致的苹果风，主题感知 */
 .pageHero {
   position: relative;
+  overflow: hidden;
   background: var(--ap-bg);
   color: var(--ap-ink);
-  padding: clamp(3.4rem, 8vw, 5.5rem) 0 clamp(2.2rem, 5vw, 3.4rem);
+  padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(2.6rem, 6vw, 4rem);
   border-bottom: 1px solid var(--ap-line);
+}
+
+/* 顶角一抹极淡的品牌光晕，增加层次而不喧宾夺主 */
+.pageHero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 60%;
+  height: 140%;
+  background: radial-gradient(
+    circle at 70% 30%,
+    var(--ap-brand-soft),
+    transparent 60%
+  );
+  pointer-events: none;
 }
 
 .inner {
   position: relative;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 clamp(1.2rem, 4vw, 1.5rem);
+  padding: 0 clamp(1.25rem, 4vw, 2rem);
 }
 
 .eyebrow {
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ap-brand);
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.9rem;
+  opacity: 0;
+  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.02s forwards;
 }
 
 .title {
-  font-size: clamp(2rem, 4.6vw, 2.9rem);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  font-weight: 650;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 660;
   margin: 0;
   color: var(--ap-title);
+  opacity: 0;
+  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
 }
 
 .subtitle {
-  max-width: 680px;
+  max-width: 700px;
   margin: 1.1rem 0 0;
-  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-size: clamp(1.02rem, 2vw, 1.2rem);
   line-height: 1.6;
   color: var(--ap-muted);
+  opacity: 0;
+  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
+}
+
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow,
+  .title,
+  .subtitle {
+    opacity: 1;
+    animation: none;
+  }
 }
