@@ -137,22 +137,27 @@ const config: Config = {
         {to: '/about', label: '关于', position: 'left'},
         {to: '/projects', label: '项目', position: 'left'},
         {
-          type: 'docSidebar',
-          sidebarId: 'knowledgeSidebar',
-          position: 'left',
+          type: 'dropdown',
           label: '文档',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'platformSidebar',
-          docsPluginId: 'platform',
           position: 'left',
-          label: '协作平台文档',
+          items: [
+            {
+              type: 'docSidebar',
+              sidebarId: 'knowledgeSidebar',
+              label: '知识库',
+            },
+            {
+              type: 'docSidebar',
+              sidebarId: 'platformSidebar',
+              docsPluginId: 'platform',
+              label: '协作平台文档',
+            },
+          ],
         },
         {to: '/blog', label: '博客', position: 'left'},
         {
           href: 'https://gfssm.butian.club',
-          label: '进入协作平台',
+          label: '协作平台',
           position: 'right',
         },
         {to: '/join', label: '加入我们', position: 'right'},
@@ -187,7 +192,7 @@ const config: Config = {
         {
           title: '协作平台',
           items: [
-            {label: '进入协作平台', href: 'https://gfssm.butian.club'},
+            {label: '协作平台', href: 'https://gfssm.butian.club'},
             {label: '平台使用文档', to: '/platform/intro'},
             {label: '预览体验（免注册）', href: 'https://gfssm.butian.club/login'},
           ],
