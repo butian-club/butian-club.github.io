@@ -36,10 +36,6 @@ const structure = [
 
 const lineage = [
   {
-    zh: ['2016 · 航天工程传统起点', '杭州第二中学代表队首次出征国际太空城市设计大赛（ISSDC），25 小时内完成水星熔岩管 250 人采矿基地设计，获中国区决赛冠军。'],
-    en: ['2016 · Where the tradition begins', 'The Hangzhou No.2 High School team made its ISSDC debut, designing a 250-person mining base inside a Mercury lava tube in 25 hours and winning the China finals.'],
-  },
-  {
     zh: ['2017 · 求是创新学院挂牌', '学校正式成立求是创新学院，把创新实验室与高端创新赛事纳入系统平台，为创新社团提供制度土壤。'],
     en: ['2017 · Qiushi Innovation Academy', 'The school established the Qiushi Innovation Academy, bringing the Innovation Lab and top-tier competitions into a systematic platform — fertile ground for innovation clubs.'],
   },
@@ -172,8 +168,8 @@ export default function About(): ReactNode {
             <div className={styles.prose}>
               <p>
                 {t(
-                  '公开资料勾勒出一条较清晰的脉络。其中 2016–2017 年的太空城市设计成绩，是步天工程社可追溯的航天工程传统；社团以「步天工程社」名义见于公开报道，则从 2023 年起逐渐清晰。',
-                  'Public records sketch a fairly clear thread. The 2016–2017 space settlement results form Butian’s traceable aerospace tradition; the club appearing by the name “Butian” in public reporting becomes clear from 2023 onward.',
+                  '公开资料勾勒出一条较清晰的脉络：从求是创新学院的制度土壤，到社团以「步天工程社」名义见于公开报道并在 2023 年后逐渐清晰。',
+                  'Public records sketch a fairly clear thread — from the founding of the Qiushi Innovation Academy to the club appearing by the name “Butian” in public reporting, clear from 2023 onward.',
                 )}
               </p>
             </div>

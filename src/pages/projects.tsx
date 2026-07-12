@@ -7,7 +7,7 @@ import {projects, STATUS_META, type ProjectStatus} from '@site/src/data/projects
 import {useT} from '@site/src/lib/i18n';
 import styles from './page.module.css';
 
-const ORDER: ProjectStatus[] = ['active', 'completed', 'archived'];
+const ORDER: ProjectStatus[] = ['active', 'completed'];
 
 export default function Projects(): ReactNode {
   const t = useT();
@@ -20,15 +20,15 @@ export default function Projects(): ReactNode {
     <Layout
       title={t('项目', 'Projects')}
       description={t(
-        '步天工程社的在研、已完成与历史项目列表。',
-        'Butian Engineering Club: ongoing, completed and historical projects.',
+        '步天工程社的在研与已完成项目列表。',
+        'Butian Engineering Club: ongoing and completed projects.',
       )}>
       <PageHero
         eyebrow="Projects"
         title={t('项目', 'Projects')}
         subtitle={t(
-          '我们用项目组织学习。下面是社团目前在研、已完成与归档的工作，内容会持续更新。',
-          'We learn through projects. Below is what the club is building, has completed, and has archived — updated over time.',
+          '我们用项目组织学习。下面是社团目前在研与已完成的工作，内容会持续更新。',
+          'We learn through projects. Below is what the club is building and has completed — updated over time.',
         )}
       />
       <main className={styles.page}>

@@ -1,7 +1,7 @@
 /**
  * 站点级别的展示数据：核心方向、数据统计（双语）。
  *
- * 资料依据：公开报道（2016 ISSDC、2017 求是创新学院、2023 磐安公益、
+ * 资料依据：公开报道（2017 求是创新学院、2023 磐安公益、
  * 2024 GFSSM 中国站）。存疑或待校内补证的信息保留 TODO，不做编造。
  *
  * 每条文案内联中英文，组件按当前 locale 用 useT() 选择。
@@ -100,13 +100,5 @@ export const stats: Stat[] = [
     labelEn: 'At the Space Scholars Meet Since',
     captionZh: '未来太空学者大会 FSSM',
     captionEn: 'Future Space Scholars Meet',
-  },
-  {
-    id: 'since',
-    value: '2016',
-    labelZh: '航天工程传统可追溯至',
-    labelEn: 'Aerospace Tradition Since',
-    captionZh: '国际太空城市设计大赛 ISSDC',
-    captionEn: 'Intl. Space Settlement Design Competition',
   },
 ];

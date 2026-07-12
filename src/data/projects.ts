@@ -6,7 +6,7 @@
  * 新增项目：往数组追加一项即可；详情可指向 blog 活动文章或 docs 文档。
  */
 
-export type ProjectStatus = 'active' | 'completed' | 'archived';
+export type ProjectStatus = 'active' | 'completed';
 
 export interface Project {
   /** 唯一标识，可用于锚点 / 详情路由 */
@@ -26,11 +26,10 @@ export interface Project {
 
 export const STATUS_META: Record<
   ProjectStatus,
-  {labelZh: string; labelEn: string; tone: 'active' | 'completed' | 'archived'}
+  {labelZh: string; labelEn: string; tone: 'active' | 'completed'}
 > = {
   active: {labelZh: '进行中', labelEn: 'In Progress', tone: 'active'},
   completed: {labelZh: '已完成', labelEn: 'Completed', tone: 'completed'},
-  archived: {labelZh: '历史 / 前史', labelEn: 'History', tone: 'archived'},
 };
 
 export const projects: Project[] = [
@@ -89,20 +88,6 @@ export const projects: Project[] = [
     status: 'completed',
     featured: true,
     detailUrl: '/blog/gfssm-2023-moon-base',
-  },
-  {
-    id: 'issdc-2016-origin',
-    titleZh: '水星熔岩管采矿基地 · ISSDC 2016（前史）',
-    titleEn: 'Mercury Lava-Tube Mining Base · ISSDC 2016 (Prehistory)',
-    summaryZh:
-      '杭州第二中学代表队在 2016 国际太空城市设计大赛中国区决赛中，25 小时内完成水星熔岩管内 250 人采矿基地设计，获中国区冠军——步天工程社可追溯的航天工程传统起点。',
-    summaryEn:
-      'At the 2016 ISSDC China finals, the Hangzhou No.2 High School team designed a 250-person mining base inside a Mercury lava tube in 25 hours and won the China round — the traceable origin of Butian’s aerospace-engineering tradition.',
-    tagsZh: ['太空城市设计', '前史'],
-    tagsEn: ['Settlement Design', 'Prehistory'],
-    status: 'archived',
-    featured: true,
-    detailUrl: '/blog/issdc-2016-origin',
   },
 ];
 
