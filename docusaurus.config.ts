@@ -122,7 +122,7 @@ const config: Config = {
       },
     ],
     colorMode: {
-      defaultMode: 'dark',
+      defaultMode: 'light',
       respectPrefersColorScheme: true,
     },
     navbar: {
@@ -166,7 +166,7 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       links: [
         {
           title: '社团',

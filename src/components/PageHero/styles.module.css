@@ -1,69 +1,41 @@
-/* 内容页统一页眉横幅 —— 方案 D 工程风 · 主题感知 */
+/* 内容页统一页眉 —— 克制的苹果风，主题感知 */
 .pageHero {
   position: relative;
-  background: radial-gradient(
-      120% 140% at 80% -10%,
-      var(--mc-glow-1),
-      transparent 55%
-    ),
-    var(--mc-bg);
-  color: var(--mc-ink);
-  padding: clamp(3.6rem, 9vw, 6rem) 0 clamp(2.6rem, 6vw, 4rem);
-  border-bottom: 1px solid var(--mc-line-strong);
-  overflow: hidden;
-}
-
-/* 蓝图网格 */
-.pageHero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(var(--mc-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--mc-line) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 90% at 80% 0%, #000 0%, transparent 72%);
-  pointer-events: none;
+  background: var(--ap-bg);
+  color: var(--ap-ink);
+  padding: clamp(3.4rem, 8vw, 5.5rem) 0 clamp(2.2rem, 5vw, 3.4rem);
+  border-bottom: 1px solid var(--ap-line);
 }
 
 .inner {
   position: relative;
-  z-index: 1;
-  max-width: 1180px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 0 clamp(1.2rem, 4vw, 1.5rem);
 }
 
 .eyebrow {
-  font-family: var(--mc-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--mc-cyan);
-  margin: 0 0 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-
-.eyebrow::before {
-  content: '';
-  width: 22px;
-  height: 1px;
-  background: var(--mc-cyan);
+  color: var(--ap-brand);
+  margin: 0 0 0.85rem;
 }
 
 .title {
-  font-size: clamp(2.1rem, 5vw, 3.1rem);
-  line-height: 1.1;
+  font-size: clamp(2rem, 4.6vw, 2.9rem);
+  line-height: 1.08;
   letter-spacing: -0.025em;
+  font-weight: 650;
   margin: 0;
-  color: var(--mc-title);
+  color: var(--ap-title);
 }
 
 .subtitle {
   max-width: 680px;
-  margin: 1.2rem 0 0;
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  line-height: 1.7;
-  color: var(--mc-body);
+  margin: 1.1rem 0 0;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--ap-muted);
 }

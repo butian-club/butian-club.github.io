@@ -1,180 +1,254 @@
 /**
  * 步天工程社 — 全局设计系统
- * 设计语言：Unity · Simplicity · Modernity
- * 主色：深蓝 / 黑 / 白 / 灰，少量青蓝点缀
- * 同时认真适配深色与浅色模式。
+ * 与协作平台（gfssm.butian.club）统一的 Apple 风格：SF/苹方字体、
+ * 苹果灰画布、单一蓝色强调、柔和层叠阴影、半透明导航。
+ * 认真适配浅色与深色两种模式。
+ *
+ * 说明：站点各页面沿用了历史的 --mc-* / --bt-* 令牌名，这里把它们的“值”
+ * 统一重指到这套克制的苹果调色板，于是全站无需逐页改写即可保持一致。
  */
 
-/* ===== 自托管 Inter 字体（拉丁字形，避免 CDN 抖动）===== */
+/* ===== 自托管 Inter（拉丁字形回退，避免 CDN 抖动）===== */
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
 @import '@fontsource/inter/700.css';
-@import '@fontsource/inter/800.css';
 
-/* ===== Infima 主题变量（浅色模式）===== */
+/* ===== 浅色模式 ===== */
 :root {
-  --ifm-color-primary: #1f5fdb;
-  --ifm-color-primary-dark: #1c56c5;
-  --ifm-color-primary-darker: #1a51ba;
-  --ifm-color-primary-darkest: #154399;
-  --ifm-color-primary-light: #3670e0;
-  --ifm-color-primary-lighter: #4279e2;
-  --ifm-color-primary-lightest: #6493e9;
+  /* 主色：Apple 蓝 */
+  --ifm-color-primary: #0071e3;
+  --ifm-color-primary-dark: #0066cc;
+  --ifm-color-primary-darker: #005bb8;
+  --ifm-color-primary-darkest: #004a99;
+  --ifm-color-primary-light: #1a83e8;
+  --ifm-color-primary-lighter: #3d97ec;
+  --ifm-color-primary-lightest: #6fb3f2;
 
-  /* 拉丁字形优先 SF Pro / Inter，中文回退到苹方等系统字体 */
-  --ifm-font-family-base: 'SF Pro Text', -apple-system, BlinkMacSystemFont,
-    'Inter', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ifm-code-font-size: 95%;
-  --ifm-heading-font-weight: 650;
+  /* 与协作平台一致的字体栈：SF / 苹方 / Inter 回退 */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei',
+    system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  --ifm-font-family-base: var(--font-sans);
+  --ifm-font-family-monospace: var(--font-mono);
+  --ifm-heading-font-weight: 600;
+  --ifm-font-weight-semibold: 600;
+  --ifm-code-font-size: 92%;
+  --ifm-line-height-base: 1.6;
+
+  /* 苹果灰画布 + 白色卡面 */
+  --ifm-background-color: #f5f5f7;
+  --ifm-background-surface-color: #ffffff;
+
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.72);
   --ifm-navbar-shadow: none;
-  --ifm-navbar-background-color: rgba(255, 255, 255, 0.82);
+  --ifm-navbar-link-color: #1d1d1f;
+  --ifm-navbar-link-hover-color: #0071e3;
+  --ifm-navbar-height: 3.5rem;
 
-  --docusaurus-highlighted-code-line-bg: rgba(31, 95, 219, 0.1);
+  --ifm-footer-background-color: #ececee;
+  --ifm-footer-color: #48484a;
+  --ifm-footer-link-color: #48484a;
+  --ifm-footer-title-color: #1d1d1f;
 
-  /* ===== 站点自定义设计令牌 ===== */
-  --bt-accent: #06b6d4; /* 青蓝点缀 */
-  --bt-bg: #ffffff;
-  --bt-bg-subtle: #f6f8fb;
-  --bt-surface: #ffffff;
-  --bt-surface-2: #f3f6fa;
-  --bt-border: #e3e8ef;
-  --bt-border-strong: #cbd5e1;
-  --bt-text: #0f172a;
-  --bt-text-muted: #51607a;
-  --bt-text-faint: #8593aa;
-  --bt-hero-from: #0a1124;
-  --bt-hero-to: #111d3a;
-  --bt-grid-line: rgba(31, 95, 219, 0.07);
+  --ifm-toc-border-color: #e4e4e7;
+  --ifm-hr-border-color: #e4e4e7;
+  --ifm-menu-color: #48484a;
+  --ifm-link-color: #0071e3;
+
+  --ifm-global-radius: 12px;
+  --ifm-button-border-radius: 980px;
+  --ifm-alert-border-radius: 12px;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 113, 227, 0.1);
+
+  /* ===== 苹果调色板（浅色）— 供 --bt-* / --mc-* 统一取用 ===== */
+  --ap-bg: #f5f5f7;
+  --ap-bg-subtle: #ececee;
+  --ap-surface: #ffffff;
+  --ap-surface-2: #f5f5f7;
+  --ap-surface-soft: #fbfbfd;
+  --ap-line: #e4e4e7;
+  --ap-line-strong: #d3d3d8;
+  --ap-brand: #0071e3;
+  --ap-brand-strong: #005bb8;
+  --ap-brand-soft: rgba(0, 113, 227, 0.1);
+  --ap-brand-line: rgba(0, 113, 227, 0.22);
+  --ap-title: #1d1d1f;
+  --ap-ink: #1d1d1f;
+  --ap-body: #48484a;
+  --ap-muted: #6e6e73;
+  --ap-faint: #86868b;
+  --ap-warning: #b25000;
+
+  --ap-shadow-xs: 0 0.5px 1px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --ap-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --ap-shadow: 0 2px 6px rgba(0, 0, 0, 0.05), 0 8px 20px -6px rgba(0, 0, 0, 0.08);
+  --ap-shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.05), 0 18px 40px -12px rgba(0, 0, 0, 0.14);
+
+  /* —— 站点自定义令牌（重指到苹果调色板）—— */
+  --bt-accent: var(--ap-brand);
+  --bt-bg: var(--ap-bg);
+  --bt-bg-subtle: var(--ap-bg-subtle);
+  --bt-surface: var(--ap-surface);
+  --bt-surface-2: var(--ap-surface-2);
+  --bt-border: var(--ap-line);
+  --bt-border-strong: var(--ap-line-strong);
+  --bt-text: var(--ap-ink);
+  --bt-text-muted: var(--ap-muted);
+  --bt-text-faint: var(--ap-faint);
+  --bt-hero-from: var(--ap-bg);
+  --bt-hero-to: var(--ap-bg-subtle);
+  --bt-grid-line: transparent;
   --bt-radius: 14px;
   --bt-radius-sm: 10px;
-  --bt-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
-    0 8px 24px rgba(15, 23, 42, 0.06);
-  --bt-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.06),
-    0 18px 40px rgba(15, 23, 42, 0.12);
+  --bt-shadow: var(--ap-shadow-sm);
+  --bt-shadow-hover: var(--ap-shadow-lg);
   --bt-section-y: 6rem;
 
-  /* ===== 方案 D 工程令牌 · 浅色（蓝图 / 制图桌）===== */
-  --mc-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Roboto Mono', Menlo,
-    monospace;
-  --mc-bg: #eef2f8;
-  --mc-surface: #ffffff;
-  --mc-surface-2: #eef3fa;
-  --mc-surface-soft: #f6f9fe;
-  --mc-panel: #ffffff;
-  --mc-line: rgba(20, 78, 150, 0.14);
-  --mc-line-strong: rgba(20, 78, 150, 0.32);
-  --mc-cyan: #0e7490;
-  --mc-cyan-dim: #0891b2;
-  --mc-accent-strong: #0b5e75;
-  --mc-accent-soft: rgba(8, 145, 178, 0.09);
-  --mc-blue: #1f5fdb;
-  --mc-blue-soft: rgba(31, 95, 219, 0.08);
-  --mc-blue-line: rgba(31, 95, 219, 0.26);
-  --mc-title: #0c1626;
-  --mc-ink: #17263e;
-  --mc-body: #33415a;
-  --mc-muted: #51607a;
-  --mc-faint: #8493ad;
-  --mc-amber: #b45309;
+  /* —— 历史 “方案 D 工程令牌”，全部重指为克制的苹果值 —— */
+  --mc-mono: var(--font-sans); /* 关键：把工程味的等宽标签统一成正文无衬线 */
+  --mc-bg: var(--ap-bg);
+  --mc-surface: var(--ap-surface);
+  --mc-surface-2: var(--ap-surface-2);
+  --mc-surface-soft: var(--ap-surface-soft);
+  --mc-panel: var(--ap-surface);
+  --mc-line: var(--ap-line);
+  --mc-line-strong: var(--ap-line-strong);
+  --mc-cyan: var(--ap-brand);
+  --mc-cyan-dim: var(--ap-brand);
+  --mc-accent-strong: var(--ap-brand-strong);
+  --mc-accent-soft: var(--ap-brand-soft);
+  --mc-blue: var(--ap-brand);
+  --mc-blue-soft: var(--ap-brand-soft);
+  --mc-blue-line: var(--ap-brand-line);
+  --mc-title: var(--ap-title);
+  --mc-ink: var(--ap-ink);
+  --mc-body: var(--ap-body);
+  --mc-muted: var(--ap-muted);
+  --mc-faint: var(--ap-faint);
+  --mc-amber: var(--ap-warning);
   --mc-btn-fg: #ffffff;
-  --mc-btn-glow: rgba(8, 145, 178, 0.28);
-  --mc-glow-1: rgba(31, 95, 219, 0.1);
-  --mc-glow-2: rgba(31, 95, 219, 0.035);
-
-  /* 多层立体阴影（浅色：克制、通透）*/
-  --mc-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --mc-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
-    0 6px 16px rgba(15, 23, 42, 0.07);
-  --mc-shadow-lg: 0 2px 4px rgba(15, 23, 42, 0.05),
-    0 18px 40px rgba(15, 23, 42, 0.12);
+  --mc-btn-glow: transparent;
+  --mc-glow-1: transparent;
+  --mc-glow-2: transparent;
+  --mc-shadow-sm: var(--ap-shadow-xs);
+  --mc-shadow: var(--ap-shadow);
+  --mc-shadow-lg: var(--ap-shadow-lg);
 }
 
 /* ===== 深色模式 ===== */
 [data-theme='dark'] {
-  --ifm-color-primary: #6aa0ff;
-  --ifm-color-primary-dark: #4d8bff;
-  --ifm-color-primary-darker: #3f81ff;
-  --ifm-color-primary-darkest: #1865f5;
-  --ifm-color-primary-light: #87b5ff;
-  --ifm-color-primary-lighter: #95bdff;
-  --ifm-color-primary-lightest: #c0d7ff;
+  --ifm-color-primary: #0a84ff;
+  --ifm-color-primary-dark: #0a78e6;
+  --ifm-color-primary-darker: #0a70d8;
+  --ifm-color-primary-darkest: #095bb0;
+  --ifm-color-primary-light: #2f97ff;
+  --ifm-color-primary-lighter: #4da5ff;
+  --ifm-color-primary-lightest: #80bfff;
 
-  --ifm-background-color: #070b16;
-  --ifm-background-surface-color: #0d1426;
-  --ifm-navbar-background-color: rgba(7, 11, 22, 0.8);
-  --docusaurus-highlighted-code-line-bg: rgba(106, 160, 255, 0.16);
+  --ifm-background-color: #0a0a0b;
+  --ifm-background-surface-color: #1c1c1e;
+  --ifm-navbar-background-color: rgba(28, 28, 30, 0.68);
+  --ifm-navbar-link-color: #f5f5f7;
+  --ifm-navbar-link-hover-color: #0a84ff;
 
-  --bt-accent: #22d3ee;
-  --bt-bg: #070b16;
-  --bt-bg-subtle: #0a1020;
-  --bt-surface: #0d1426;
-  --bt-surface-2: #111a30;
-  --bt-border: #1d2842;
-  --bt-border-strong: #2b3a5c;
-  --bt-text: #eef2fb;
-  --bt-text-muted: #a0adc7;
-  --bt-text-faint: #6b7894;
-  --bt-hero-from: #05080f;
-  --bt-hero-to: #0a1022;
-  --bt-grid-line: rgba(106, 160, 255, 0.08);
-  --bt-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.35);
-  --bt-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.5),
-    0 22px 48px rgba(0, 0, 0, 0.5);
+  --ifm-footer-background-color: #151517;
+  --ifm-footer-color: #c7c7cc;
+  --ifm-footer-link-color: #c7c7cc;
+  --ifm-footer-title-color: #f5f5f7;
 
-  /* ===== 方案 D 工程令牌 · 深色（深空任务控制台）===== */
-  --mc-bg: #040711;
-  --mc-surface: #0c1426;
-  --mc-surface-2: #111a30;
-  --mc-surface-soft: rgba(10, 16, 30, 0.55);
-  --mc-panel: #0a1326;
-  --mc-line: rgba(94, 234, 212, 0.13);
-  --mc-line-strong: rgba(94, 234, 212, 0.3);
-  --mc-cyan: #5eead4;
-  --mc-cyan-dim: #2dd4bf;
-  --mc-accent-strong: #7df3df;
-  --mc-accent-soft: rgba(94, 234, 212, 0.06);
-  --mc-blue: #87b5ff;
-  --mc-blue-soft: rgba(106, 160, 255, 0.12);
-  --mc-blue-line: rgba(106, 160, 255, 0.28);
-  --mc-title: #ffffff;
-  --mc-ink: #e8f0ff;
-  --mc-body: #c2d2ee;
-  --mc-muted: #93a6c6;
-  --mc-faint: #5d6f90;
-  --mc-amber: #fbbf24;
-  --mc-btn-fg: #042018;
-  --mc-btn-glow: rgba(94, 234, 212, 0.45);
-  --mc-glow-1: rgba(159, 217, 255, 0.16);
-  --mc-glow-2: rgba(106, 160, 255, 0.06);
+  --ifm-toc-border-color: #2a2a2d;
+  --ifm-hr-border-color: #2a2a2d;
+  --ifm-menu-color: #c7c7cc;
+  --ifm-link-color: #0a84ff;
 
-  /* 多层立体阴影（深色：更深，制造近黑背景上的层次）*/
-  --mc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
-  --mc-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.36);
-  --mc-shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.5), 0 22px 48px rgba(0, 0, 0, 0.5);
+  --docusaurus-highlighted-code-line-bg: rgba(10, 132, 255, 0.16);
+
+  --ap-bg: #0a0a0b;
+  --ap-bg-subtle: #151517;
+  --ap-surface: #1c1c1e;
+  --ap-surface-2: #242427;
+  --ap-surface-soft: #151517;
+  --ap-line: #2a2a2d;
+  --ap-line-strong: #3a3a3e;
+  --ap-brand: #0a84ff;
+  --ap-brand-strong: #4da5ff;
+  --ap-brand-soft: rgba(10, 132, 255, 0.18);
+  --ap-brand-line: rgba(10, 132, 255, 0.32);
+  --ap-title: #f5f5f7;
+  --ap-ink: #f5f5f7;
+  --ap-body: #c7c7cc;
+  --ap-muted: #98989d;
+  --ap-faint: #6b6b70;
+  --ap-warning: #ff9f0a;
+
+  --ap-shadow-xs: 0 0.5px 1px rgba(0, 0, 0, 0.5);
+  --ap-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --ap-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 8px 22px -6px rgba(0, 0, 0, 0.6);
+  --ap-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.55), 0 20px 44px -12px rgba(0, 0, 0, 0.7);
+
+  --bt-hero-from: var(--ap-bg);
+  --bt-hero-to: var(--ap-bg-subtle);
+  --mc-btn-fg: #ffffff;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bt-bg);
+  background-color: var(--ap-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  letter-spacing: -0.006em;
 }
 
-/* 导航栏：跟随主题（浅 / 深），毛玻璃 + 细描边 */
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.021em;
+}
+
+/* 导航栏：半透明材质 + 细描边（与平台顶栏一致的观感）*/
 .navbar {
-  backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--bt-border);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--ap-line);
 }
 
 .navbar__title {
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-/* 导航栏 GitHub 图标（以遮罩绘制，跟随链接色与悬停色）*/
+.navbar__link {
+  font-weight: 500;
+}
+
+/* 页脚：跟随主题的浅色材质，取代原先突兀的纯黑页脚 */
+.footer {
+  background-color: var(--ifm-footer-background-color);
+  border-top: 1px solid var(--ap-line);
+}
+
+.footer__title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.footer__link-item {
+  transition: color 0.15s ease;
+}
+
+.footer__link-item:hover {
+  color: var(--ap-brand);
+  text-decoration: none;
+}
+
+/* 导航栏 GitHub 图标（遮罩绘制，跟随链接色）*/
 .header-github-link {
   display: flex;
   align-items: center;
@@ -182,11 +256,10 @@ html {
 
 .header-github-link::before {
   content: '';
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   background-color: var(--ifm-navbar-link-color);
-  transition: background-color var(--ifm-transition-fast)
-    var(--ifm-transition-timing-default);
+  transition: background-color 0.15s ease;
   -webkit-mask: center / contain no-repeat
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
   mask: center / contain no-repeat
@@ -197,15 +270,15 @@ html {
   background-color: var(--ifm-navbar-link-hover-color);
 }
 
-/* 细滚动条（跟随主题）*/
+/* 细滚动条 */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--mc-line-strong) transparent;
+  scrollbar-color: color-mix(in srgb, var(--ap-ink) 22%, transparent) transparent;
 }
 
 ::-webkit-scrollbar {
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -213,53 +286,64 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--mc-line-strong);
+  background: color-mix(in srgb, var(--ap-ink) 20%, transparent);
   border: 3px solid transparent;
   border-radius: 999px;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--mc-muted);
+  background: color-mix(in srgb, var(--ap-ink) 34%, transparent);
   background-clip: padding-box;
 }
 
-/* 文本选区：青蓝高光 */
 ::selection {
-  background: color-mix(in srgb, var(--mc-cyan) 26%, transparent);
-  color: var(--mc-title);
+  background: var(--ap-brand-soft);
+  color: var(--ap-ink);
 }
 
-/* 内联代码：细描边 + 等宽，呼应工程风 */
+/* 内联代码：真正的等宽 + 细描边 */
 :not(pre) > code {
-  font-family: var(--mc-mono);
-  border: 1px solid var(--mc-line);
-  border-radius: 5px;
+  font-family: var(--font-mono);
+  border: 1px solid var(--ap-line);
+  border-radius: 6px;
   padding: 0.1em 0.4em;
-  background: var(--mc-accent-soft);
+  background: var(--ap-surface-2);
 }
 
-/* 统一的主按钮观感 */
+/* 主按钮：胶囊形、单一蓝色 */
+.button {
+  font-weight: 600;
+  transition: transform 0.12s ease, filter 0.15s ease, background 0.15s ease;
+}
+
 .button--primary {
   --ifm-button-border-color: transparent;
-  font-weight: 600;
+  background: var(--ap-brand);
 }
 
-/* 链接焦点态的无障碍可见性 */
+.button--primary:hover {
+  background: var(--ap-brand);
+  filter: brightness(1.06);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+/* 焦点可见性 */
 a:focus-visible,
 button:focus-visible,
 .button:focus-visible {
-  outline: 2px solid var(--bt-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ap-brand-soft);
+  border-radius: 8px;
 }
 
-/* 让正文段落更易读 */
 .markdown p {
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
-/* 仅对辅助技术可见（视觉隐藏） */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -272,7 +356,6 @@ button:focus-visible,
   border: 0;
 }
 
-/* 尊重用户的减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
