@@ -83,21 +83,7 @@ const config: Config = {
   ],
 
   // 文档 / 博客正文图片点击放大查看
-  plugins: [
-    'docusaurus-plugin-image-zoom',
-    // 「协作平台文档」独立文档实例：与社团知识库分开，挂在 /platform 下。
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'platform',
-        path: 'platform-docs',
-        routeBasePath: 'platform',
-        sidebarPath: './sidebarsPlatform.ts',
-        editUrl:
-          'https://github.com/butian-club/butian-club.github.io/tree/main/',
-      },
-    ],
-  ],
+  plugins: ['docusaurus-plugin-image-zoom'],
 
   themeConfig: {
     zoom: {
@@ -137,22 +123,10 @@ const config: Config = {
         {to: '/about', label: '关于', position: 'left'},
         {to: '/projects', label: '项目', position: 'left'},
         {
-          type: 'dropdown',
+          type: 'docSidebar',
+          sidebarId: 'docsSidebar',
           label: '文档',
           position: 'left',
-          items: [
-            {
-              type: 'docSidebar',
-              sidebarId: 'knowledgeSidebar',
-              label: '知识库',
-            },
-            {
-              type: 'docSidebar',
-              sidebarId: 'platformSidebar',
-              docsPluginId: 'platform',
-              label: '协作平台文档',
-            },
-          ],
         },
         {to: '/blog', label: '博客', position: 'left'},
         {
@@ -185,15 +159,14 @@ const config: Config = {
           title: '内容',
           items: [
             {label: '活动记录', to: '/blog'},
-            {label: '知识库', to: '/docs/intro'},
-            {label: '协作平台文档', to: '/platform/intro'},
+            {label: '文档', to: '/docs/intro'},
           ],
         },
         {
           title: '协作平台',
           items: [
             {label: '协作平台', href: 'https://gfssm.butian.club'},
-            {label: '平台使用文档', to: '/platform/intro'},
+            {label: '平台使用文档', to: '/docs/intro'},
             {label: '预览体验（免注册）', href: 'https://gfssm.butian.club/login'},
           ],
         },
