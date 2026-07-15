@@ -7,7 +7,7 @@ description: 文档模块使用指南——按分类浏览文档、阅读 Markdo
 
 **文档（Document）**模块是社团的知识库：规范、手册、教程、资料整理都沉淀在这里。
 它按分类组织，正文用 Markdown 编写，配有分栏实时预览的编辑器，让整理和查阅知识
-都更顺手。
+都更高效。
 
 - 📚 文档列表：[https://gfssm.butian.club/docs](https://gfssm.butian.club/docs)
 - 文档详情：`/docs/[slug]`
