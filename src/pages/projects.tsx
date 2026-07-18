@@ -25,10 +25,10 @@ export default function Projects(): ReactNode {
       )}>
       <PageHero
         eyebrow="Projects"
-        title={t('项目', 'Projects')}
+        title={t('项目档案', 'Project Archive')}
         subtitle={t(
-          '我们用项目组织学习。下面是社团目前在研与已完成的工作，内容会持续更新。',
-          'We learn through projects. Below is what the club is building and has completed — updated over time.',
+          '收录社团已公开的太空城市与基地设计、工程实践及科普项目。',
+          'A public record of the club’s space-settlement design, engineering and outreach projects.',
         )}
       />
       <main className={styles.page}>
@@ -37,12 +37,10 @@ export default function Projects(): ReactNode {
             <span className={styles.filterStat}>
               <strong>{projects.length}</strong> {t('个项目', 'projects')}
             </span>
-            {ORDER.map((status) => (
+            {counts.filter(({items}) => items.length > 0).map(({status, items}) => (
               <span key={status} className={styles.filterStat}>
                 {t(STATUS_META[status].labelZh, STATUS_META[status].labelEn)}{' '}
-                <strong>
-                  {projects.filter((p) => p.status === status).length}
-                </strong>
+                <strong>{items.length}</strong>
               </span>
             ))}
           </div>
@@ -54,10 +52,11 @@ export default function Projects(): ReactNode {
                   key={status}
                   className={styles.block}
                   aria-labelledby={`group-${status}`}>
+                  <p className={styles.blockEyebrow}>Archive</p>
                   <h2 id={`group-${status}`} className={styles.blockTitle}>
                     {t(STATUS_META[status].labelZh, STATUS_META[status].labelEn)}
                   </h2>
-                  <div className={styles.cardRow}>
+                  <div className={styles.projectList}>
                     {items.map((project) => (
                       <ProjectCard
                         key={project.id}
@@ -71,17 +70,12 @@ export default function Projects(): ReactNode {
           )}
 
           <p className={styles.note}>
-            <strong>{t('想了解某个项目的细节？', 'Want the detail on a project?')}</strong>
-            {t('我们会陆续在', 'We’ll keep adding project docs and progress logs in the ')}
-            <Link to="/docs/intro">{t('知识库', 'knowledge base')}</Link>
-            {t('与', ' and ')}
+            <strong>{t('项目资料：', 'Project material:')}</strong>
+            {t('详细报道与复盘见', 'Reports and retrospectives are published in the ')}
             <Link to="/blog">{t('活动记录', 'activity log')}</Link>
-            {t(
-              '中补充项目文档与进展日志。数据结构见 ',
-              '. The data lives in ',
-            )}
-            <code>src/data/projects.ts</code>
-            {t('，新增项目只需追加一条记录。', ' — adding a project is just one more entry.')}
+            {t('；方法与协作规范见', '; methods and working conventions are kept in the ')}
+            <Link to="/docs/intro">{t('知识库', 'knowledge base')}</Link>
+            {t('。档案会随资料整理进度更新。', '. The archive is updated as material is reviewed.')}
           </p>
         </div>
       </main>

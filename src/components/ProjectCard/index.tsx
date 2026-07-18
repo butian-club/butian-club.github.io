@@ -31,26 +31,26 @@ export default function ProjectCard({
   const isEn = useIsEn();
   const hasDetail = Boolean(project.detailUrl);
   const title = t(project.titleZh, project.titleEn);
+  const year = project.titleZh.match(/20\d{2}/)?.[0] ?? '—';
 
   return (
     <article className={styles.card}>
       <div className={styles.cardHeader}>
-        <span className={styles.cardId} aria-hidden="true">
-          {project.id.toUpperCase()}
-        </span>
+        <span className={styles.cardYear}>{year}</span>
         <StatusBadge status={project.status} />
       </div>
 
-      <Heading className={styles.cardTitle}>{title}</Heading>
-      <p className={styles.cardSummary}>{t(project.summaryZh, project.summaryEn)}</p>
-
-      <ul className={styles.tagList} aria-label={t('技术方向', 'Focus areas')}>
-        {(isEn ? project.tagsEn : project.tagsZh).map((tag) => (
-          <li key={tag} className={styles.tag}>
-            {tag}
-          </li>
-        ))}
-      </ul>
+      <div className={styles.cardContent}>
+        <Heading className={styles.cardTitle}>{title}</Heading>
+        <p className={styles.cardSummary}>{t(project.summaryZh, project.summaryEn)}</p>
+        <ul className={styles.tagList} aria-label={t('技术方向', 'Focus areas')}>
+          {(isEn ? project.tagsEn : project.tagsZh).map((tag) => (
+            <li key={tag} className={styles.tag}>
+              {tag}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className={styles.cardFooter}>
         {hasDetail ? (
@@ -58,8 +58,8 @@ export default function ProjectCard({
             className={styles.detailLink}
             to={project.detailUrl}
             aria-label={t(`查看项目「${title}」详情`, `View project "${title}"`)}>
-            {t('查看详情', 'View details')}
-            <span aria-hidden="true"> →</span>
+            {t('项目记录', 'Project record')}
+            <span aria-hidden="true">→</span>
           </Link>
         ) : (
           <span className={styles.detailPending}>

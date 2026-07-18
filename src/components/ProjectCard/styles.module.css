@@ -1,130 +1,170 @@
-/* 项目卡片 —— 方案 D 工程风 · 主题感知（令牌见 custom.css） */
 .card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1.6rem;
-  background: var(--mc-surface);
-  border: 1px solid var(--mc-line);
-  border-radius: 10px;
-  box-shadow: var(--mc-shadow-sm);
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  background: var(--mc-surface-2);
-  border-color: var(--mc-line-strong);
-  box-shadow: var(--mc-shadow-lg);
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) minmax(8rem, auto);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: start;
+  padding: 1.9rem 0;
+  border-top: 1px solid var(--ap-line);
 }
 
 .cardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
 }
 
-.cardId {
-  font-family: var(--mc-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--mc-faint);
+.cardYear {
+  color: var(--bt-school-green);
+  font-size: 0.76rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.2rem 0.6rem;
-  font-family: var(--mc-mono);
+  color: var(--ap-muted);
   font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  font-weight: 600;
-  border-radius: 999px;
-  border: 1px solid transparent;
   white-space: nowrap;
 }
 
 .badgeDot {
-  width: 6px;
-  height: 6px;
+  width: 0.38rem;
+  height: 0.38rem;
   border-radius: 50%;
   background: currentColor;
 }
 
 .badge_active {
-  color: var(--mc-cyan);
-  background: var(--mc-accent-soft);
-  border-color: var(--mc-line-strong);
+  color: var(--bt-school-green);
 }
 
-.badge_completed {
-  color: var(--mc-blue);
-  background: var(--mc-blue-soft);
-  border-color: var(--mc-blue-line);
-}
-
+.badge_completed,
 .badge_archived {
-  color: var(--mc-faint);
-  background: var(--mc-surface-2);
-  border-color: var(--mc-line);
+  color: var(--ap-faint);
+}
+
+.cardContent {
+  min-width: 0;
 }
 
 .cardTitle {
-  font-size: 1.18rem;
-  margin: 0 0 0.6rem;
-  color: var(--mc-title);
-  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ap-title);
+  font-size: clamp(1.12rem, 2vw, 1.4rem);
+  font-weight: 620;
+  line-height: 1.4;
+  transition: color 160ms ease;
 }
 
 .cardSummary {
-  flex: 1;
-  margin: 0 0 1.1rem;
-  font-size: 0.94rem;
-  line-height: 1.7;
-  color: var(--mc-muted);
+  max-width: 48rem;
+  margin: 0.7rem 0 0;
+  color: var(--ap-muted);
+  font-size: 0.86rem;
+  line-height: 1.75;
 }
 
 .tagList {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0 0 1.1rem;
+  gap: 0.3rem 0;
+  margin: 1rem 0 0;
   padding: 0;
   list-style: none;
 }
 
 .tag {
-  font-family: var(--mc-mono);
-  font-size: 0.72rem;
-  padding: 0.22rem 0.55rem;
-  border-radius: 6px;
-  color: var(--mc-cyan-dim);
-  background: var(--mc-accent-soft);
-  border: 1px solid var(--mc-line);
+  color: var(--ap-faint);
+  font-size: 0.69rem;
+}
+
+.tag + .tag::before {
+  content: '·';
+  padding-inline: 0.55rem;
+  color: var(--ap-line-strong);
 }
 
 .cardFooter {
-  margin-top: auto;
-  padding-top: 0.7rem;
-  border-top: 1px solid var(--mc-line);
+  display: flex;
+  justify-content: flex-end;
 }
 
-.detailLink {
-  font-family: var(--mc-mono);
-  font-size: 0.84rem;
+.detailLink,
+.detailPending {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--ap-ink);
+  font-size: 0.78rem;
   font-weight: 600;
-  color: var(--mc-cyan);
+}
+
+.detailLink span {
+  transition: transform 180ms ease;
 }
 
 .detailLink:hover {
-  color: var(--mc-accent-strong);
+  color: var(--bt-school-green);
+  text-decoration: none;
+}
+
+.detailLink:hover span {
+  transform: translateX(0.22rem);
+}
+
+.card:has(.detailLink:hover) .cardTitle {
+  color: var(--bt-school-green);
 }
 
 .detailPending {
-  font-family: var(--mc-mono);
-  font-size: 0.8rem;
-  color: var(--mc-faint);
+  color: var(--ap-faint);
+}
+
+@media (max-width: 760px) {
+  .card {
+    grid-template-columns: 4rem minmax(0, 1fr) 1.2rem;
+    gap: 0.85rem;
+  }
+
+  .cardHeader {
+    gap: 0.5rem;
+  }
+
+  .badge {
+    align-items: start;
+    white-space: normal;
+  }
+
+  .cardSummary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  .detailLink {
+    width: 1.2rem;
+    overflow: hidden;
+    gap: 0;
+    color: var(--ap-muted);
+    font-size: 0;
+  }
+
+  .detailLink span {
+    font-size: 1rem;
+  }
+
+  .detailPending {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardTitle,
+  .detailLink span {
+    transition: none;
+  }
 }

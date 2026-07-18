@@ -77,9 +77,14 @@ export default function About(): ReactNode {
         eyebrow="About"
         title={t('关于步天工程社', 'About Butian')}
         subtitle={t(
-          '我们是浙江省杭州第二中学求是创新学院下的学生社团，以太空城市与基地设计为主线，关注的是「怎么把它做出来」。',
-          'A student club under the Qiushi Innovation Academy at Hangzhou No.2 High School of Zhejiang Province — centered on space settlement design, focused on how it actually gets built.',
+          '步天工程社是杭州第二中学求是创新学院的学生社团，主要开展太空城市与基地设计、工程实践及航天科普。',
+          'Butian is a student club at the Qiushi Innovation Academy of Hangzhou No.2 High School, focused on space-settlement design, engineering practice and space-science outreach.',
         )}
+        image={{
+          src: '/img/projects/2024-gfssm/work-02.jpg',
+          alt: t('步天工程社成员在 2024 GFSSM 中国站现场讨论方案', 'Butian members discussing their proposal at the 2024 GFSSM China round'),
+          caption: t('2024 GFSSM 中国站 · 现场协作', '2024 GFSSM China · Team workshop'),
+        }}
       />
       <main className={styles.page}>
         <div className={`${styles.container} ${styles.narrow}`}>
@@ -88,34 +93,34 @@ export default function About(): ReactNode {
             <h2 id="mission" className={styles.blockTitle}>{t('社团使命', 'Mission')}</h2>
             <p className={styles.lead}>
               {t(
-                '让对工程与航天感兴趣的同学，把一座太空城、一个系统方案，从想法一直做到可被验证、可被答辩的结果。',
-                'To let students who love engineering and space take a space city — a whole systems proposal — from an idea to a result that can be verified and defended.',
+                '社团以太空城市与基地设计项目组织成员学习。',
+                'The club organizes learning around space-settlement design projects.',
               )}
             </p>
             <div className={styles.prose}>
               <p>
                 {t(
-                  '我们关注航天，但更在意「怎么做出来」。一个想法要经过结构、人居、运营与商业的反复推敲，经得起 24 小时极限设计和全英文答辩的检验，才算真正被理解。步天工程社存在的意义，是为同学提供一个可以认真做工程的环境：有真实的赛题，有可以请教的人，也有把经验沉淀下来的地方。步天工程社也是杭州第二中学五星级社团。',
-                  'We care about space, but more about how it gets built. An idea must be reworked through structure, habitat, operations and business, and survive a 24-hour sprint and an all-English defense, before it is truly understood. Butian exists to give students a place to do engineering for real: real briefs, people to ask, and somewhere to let experience accumulate. Butian is also a five-star club at Hangzhou No.2 High School.',
+                  '成员从赛事任务书出发，分工研究结构、人居、运营与基础设施，最后完成提案和英文答辩。社团提供资料检索、方案讨论、模拟答辩和项目复盘的场合，并将成熟的方法整理进知识库。',
+                  'Members begin with competition briefs, research structure, habitat, operations and infrastructure in teams, then produce a proposal and defend it in English. The club provides a setting for research, design reviews, mock defenses and retrospectives, with established methods documented in the knowledge base.',
                 )}
               </p>
             </div>
           </section>
 
           <section className={styles.block} aria-labelledby="vision">
-            <p className={styles.blockEyebrow}>Vision</p>
-            <h2 id="vision" className={styles.blockTitle}>{t('社团愿景', 'Vision')}</h2>
+            <p className={styles.blockEyebrow}>Documentation</p>
+            <h2 id="vision" className={styles.blockTitle}>{t('资料与传承', 'Documentation')}</h2>
             <div className={styles.prose}>
               <p>
                 {t(
-                  '我们希望步天工程社能成为一个可以长期积累的地方——项目和经验可以一届一届接着做，文档、复盘与方案能传给后来的人，每个认真参与过的成员，都能带走一段真实的工程经历。',
-                  'We want Butian to be a place that accumulates over time — where projects and experience pass from one cohort to the next, where documents, retrospectives and proposals reach those who come after, and where everyone who took part seriously leaves with a real engineering experience.',
+                  '项目结束后，成员会整理提案、分工记录和复盘。可公开的内容进入项目档案与知识库，供下一届成员继续查阅和修订。',
+                  'After each project, members organize proposals, working notes and retrospectives. Material suitable for publication enters the project archive and knowledge base for future members to consult and revise.',
                 )}
               </p>
               <p>
                 {t(
-                  '我们不追求一时的声势，而是看重能被复现的方法和能被延续的记录。',
-                  'We don’t chase momentary noise; we value methods that can be reproduced and records that can be continued.',
+                  '网站只收录已经核实并适合公开的资料；不完整的历史信息会注明来源与范围。',
+                  'The website only publishes material that has been checked and is suitable for public access; incomplete historical information is labeled with its source and scope.',
                 )}
               </p>
             </div>
@@ -154,10 +159,10 @@ export default function About(): ReactNode {
               ))}
             </div>
             <p className={styles.note}>
-              <strong>TODO：</strong>
+              <strong>{t('档案说明：', 'Archive note:')}</strong>
               {t(
-                '社团正式成立时间、首任社长与完整历任名单仍待社团确认；已知前社长钱焜（2024 GFSSM 天权队队长）。指导老师朱毛奇（2024、2025 GFSSM）、邵温馨（2024 GFSSM）。',
-                'The club’s founding date, founding president and full list of past presidents still await confirmation; one known former president is Qian Kun (captain of the 2024 GFSSM Team Tianquan). Advisors include Zhu Maoqi (2024 & 2025 GFSSM) and Shao Wenxin (2024 GFSSM).',
+                '社团正式成立时间、首任社长与完整历任名单尚未获得可公开核对的资料。现有记录确认前社长钱焜曾任 2024 GFSSM 天权队队长；朱毛奇、邵温馨老师曾参与相关赛事指导。',
+                'A publicly verifiable record of the club’s founding date, founding president and full list of past presidents is not yet available. Existing records confirm that former president Qian Kun captained Team Tianquan at the 2024 GFSSM, and that teachers Zhu Maoqi and Shao Wenxin advised related competition work.',
               )}
             </p>
           </section>

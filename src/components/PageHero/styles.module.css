@@ -1,84 +1,142 @@
-/* 内容页统一页眉 —— 克制而精致的苹果风，主题感知 */
 .pageHero {
-  position: relative;
-  overflow: hidden;
-  background: var(--ap-bg);
+  background: var(--ap-surface);
   color: var(--ap-ink);
-  padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(2.6rem, 6vw, 4rem);
   border-bottom: 1px solid var(--ap-line);
 }
 
-/* 顶角一抹极淡的品牌光晕，增加层次而不喧宾夺主 */
-.pageHero::before {
-  content: '';
-  position: absolute;
-  top: -40%;
-  right: -10%;
-  width: 60%;
-  height: 140%;
-  background: radial-gradient(
-    circle at 70% 30%,
-    var(--ap-brand-soft),
-    transparent 60%
-  );
-  pointer-events: none;
+.inner {
+  width: min(100% - 2.5rem, 1180px);
+  margin-inline: auto;
 }
 
-.inner {
-  position: relative;
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 clamp(1.25rem, 4vw, 2rem);
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--ap-line);
+  color: var(--ap-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.content {
+  padding: clamp(3.8rem, 8vw, 6.5rem) 0;
+}
+
+.copy {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.72fr) minmax(0, 1.28fr);
+  gap: 1rem clamp(3rem, 8vw, 8rem);
+  align-items: end;
 }
 
 .eyebrow {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--bt-school-green);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ap-brand);
-  margin: 0 0 0.9rem;
-  opacity: 0;
-  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.02s forwards;
 }
 
 .title {
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  font-weight: 660;
   margin: 0;
   color: var(--ap-title);
-  opacity: 0;
-  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+  font-size: clamp(2.65rem, 5vw, 4rem);
+  font-weight: 650;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
 }
 
 .subtitle {
-  max-width: 700px;
-  margin: 1.1rem 0 0;
-  font-size: clamp(1.02rem, 2vw, 1.2rem);
-  line-height: 1.6;
+  max-width: 42rem;
+  margin: 0;
+  color: var(--ap-body);
+  font-size: clamp(0.98rem, 1.5vw, 1.08rem);
+  line-height: 1.8;
+}
+
+.withImage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(28rem, 1.18fr);
+  gap: clamp(3rem, 7vw, 6.5rem);
+  align-items: center;
+}
+
+.withImage .copy {
+  display: block;
+}
+
+.withImage .title {
+  margin-top: 0.9rem;
+}
+
+.withImage .subtitle {
+  margin-top: 1.5rem;
+}
+
+.figure {
+  margin: 0;
+  border-bottom: 1px solid var(--ap-line-strong);
+}
+
+.figure img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  display: block;
+  object-fit: cover;
+  background: var(--ap-surface-2);
+  box-shadow: inset 0 0 0 1px var(--ap-line);
+}
+
+.figure figcaption {
+  padding: 0.8rem 0;
   color: var(--ap-muted);
-  opacity: 0;
-  animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
+  font-size: 0.72rem;
+  line-height: 1.5;
 }
 
-@keyframes heroIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
+@media (max-width: 820px) {
+  .copy,
+  .withImage {
+    grid-template-columns: 1fr;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .eyebrow,
-  .title,
+  .withImage {
+    gap: 2.75rem;
+  }
+
+  .copy {
+    align-items: start;
+  }
+
   .subtitle {
-    opacity: 1;
-    animation: none;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .inner {
+    width: min(100% - 2rem, 1180px);
+  }
+
+  .masthead {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .masthead span:first-child {
+    color: var(--ap-faint);
+  }
+
+  .content {
+    padding: 3rem 0 3.5rem;
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 12vw, 3.25rem);
   }
 }

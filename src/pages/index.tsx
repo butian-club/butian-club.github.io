@@ -1,187 +1,357 @@
-import React, {type ReactNode} from 'react';
+import React, {type ReactNode, useEffect, useRef, useState} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import clsx from 'clsx';
-import Reveal from '@site/src/components/Reveal';
 import {useT} from '@site/src/lib/i18n';
 import {directions, stats} from '@site/src/data/site';
-import {featuredProjects} from '@site/src/data/projects';
-import ProjectCard from '@site/src/components/ProjectCard';
+import {projects} from '@site/src/data/projects';
 import styles from './index.module.css';
+
+type GalleryItem = {
+  src: string;
+  altZh: string;
+  altEn: string;
+  captionZh: string;
+  captionEn: string;
+  fit?: 'contain';
+};
+
+const galleryItems: GalleryItem[] = [
+  {
+    src: '/img/projects/2024-gfssm/work-01.jpg',
+    altZh: '参赛成员在电脑前整理方案',
+    altEn: 'A team member editing the proposal on a laptop',
+    captionZh: '方案整理',
+    captionEn: 'Proposal editing',
+  },
+  {
+    src: '/img/projects/2024-gfssm/work-02.jpg',
+    altZh: '两位参赛成员在现场协作',
+    altEn: 'Two team members collaborating on site',
+    captionZh: '现场协作',
+    captionEn: 'On-site collaboration',
+  },
+  {
+    src: '/img/projects/2024-gfssm/work-03.jpg',
+    altZh: '参赛成员共同查看电脑中的设计内容',
+    altEn: 'Team members reviewing design work on a laptop',
+    captionZh: '设计复核',
+    captionEn: 'Design review',
+  },
+  {
+    src: '/img/projects/2024-gfssm/work-04.jpg',
+    altZh: '参赛成员在现场推进小组任务',
+    altEn: 'Team members working through a group task',
+    captionZh: '小组工作',
+    captionEn: 'Group work',
+  },
+  {
+    src: '/img/projects/2024-gfssm/presentation-01.jpg',
+    altZh: '参赛成员在台上进行英文汇报',
+    altEn: 'A team member presenting on stage in English',
+    captionZh: '英文答辩',
+    captionEn: 'English defense',
+  },
+  {
+    src: '/img/projects/2024-gfssm/presentation-02.jpg',
+    altZh: '参赛成员在话筒前介绍团队方案',
+    altEn: 'A team member presenting the team proposal',
+    captionZh: '方案汇报',
+    captionEn: 'Proposal presentation',
+  },
+  {
+    src: '/img/projects/2024-gfssm/management.jpg',
+    altZh: '参赛团队进行管理层竞选陈述',
+    altEn: 'Participants delivering a management election presentation',
+    captionZh: '管理层竞选',
+    captionEn: 'Management election',
+  },
+  {
+    src: '/img/projects/2024-gfssm/proposal-structure.jpg',
+    altZh: '太空城材料与结构设计提案页面',
+    altEn: 'Materials and structures page from the space settlement proposal',
+    captionZh: '材料与结构',
+    captionEn: 'Materials & structures',
+    fit: 'contain',
+  },
+  {
+    src: '/img/projects/2024-gfssm/proposal-life-support.jpg',
+    altZh: '太空城生命保障系统提案页面',
+    altEn: 'Life-support systems page from the space settlement proposal',
+    captionZh: '生命保障系统',
+    captionEn: 'Life-support systems',
+    fit: 'contain',
+  },
+  {
+    src: '/img/projects/2024-gfssm/proposal-atmosphere.jpg',
+    altZh: '太空城大气管理系统提案页面',
+    altEn: 'Atmosphere-management page from the space settlement proposal',
+    captionZh: '大气管理',
+    captionEn: 'Atmosphere management',
+    fit: 'contain',
+  },
+  {
+    src: '/img/projects/2024-gfssm/proposal-construction.jpg',
+    altZh: '太空城结构与建造方案页面',
+    altEn: 'Structure and construction page from the space settlement proposal',
+    captionZh: '结构与建造',
+    captionEn: 'Structure & construction',
+    fit: 'contain',
+  },
+];
+
+const recentEntries = [
+  {
+    date: '2025.08.30',
+    titleZh: '2025 GFSSM 中国站：火星熔岩管基地',
+    titleEn: 'GFSSM China 2025: Mars Lava-Tube Base',
+    href: '/blog/gfssm-2025-mars-base',
+  },
+  {
+    date: '2024.08.17',
+    titleZh: '2024 GFSSM 中国站：金星轨道太空城',
+    titleEn: 'GFSSM China 2024: Venus-Orbit Space City',
+    href: '/blog/gfssm-2024-china-runner-up',
+  },
+  {
+    date: '2023.06.10',
+    titleZh: '磐安航天科普公益活动',
+    titleEn: 'Pan’an Space-Science Outreach',
+    href: '/blog/panan-outreach-2023',
+  },
+];
+
+function Arrow(): ReactNode {
+  return <span aria-hidden="true">→</span>;
+}
+
+function GalleryImages({duplicate = false}: {duplicate?: boolean}): ReactNode {
+  const t = useT();
+
+  return (
+    <>
+      {galleryItems.map((item, index) => (
+        <div className={styles.galleryCell} key={`${duplicate ? 'duplicate' : 'original'}-${item.src}`}>
+          <figure className={styles.galleryItem}>
+            <img
+              className={item.fit === 'contain' ? styles.galleryImageContain : undefined}
+              src={item.src}
+              alt={duplicate ? '' : t(item.altZh, item.altEn)}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption className={styles.srOnly}>
+              {t(item.captionZh, item.captionEn)}，{index + 1} / {galleryItems.length}
+            </figcaption>
+          </figure>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function LoopingGallery(): ReactNode {
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const [shouldPlay, setShouldPlay] = useState(false);
+
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setShouldPlay(entry.isIntersecting),
+      {rootMargin: `${window.innerHeight}px 0px`},
+    );
+
+    observer.observe(gallery);
+    return () => observer.disconnect();
+  }, []);
+
+  const animationStyle = {
+    animationPlayState: shouldPlay ? 'running' : 'paused',
+  } as const;
+
+  return (
+    <div className={styles.galleryViewport} ref={galleryRef}>
+      <div className={`${styles.galleryTrack} ${styles.galleryTrackPrimary}`} style={animationStyle}>
+        <GalleryImages />
+      </div>
+      <div
+        className={`${styles.galleryTrack} ${styles.galleryTrackSecondary}`}
+        style={animationStyle}
+        aria-hidden="true">
+        <GalleryImages duplicate />
+      </div>
+    </div>
+  );
+}
 
 export default function Home(): ReactNode {
   const t = useT();
+
   return (
     <Layout
       title={t('首页', 'Home')}
       description={t(
-        '杭州第二中学步天工程社（Butian Engineering Club）官方网站：以太空城市与基地设计为主线的学生工程与航天科技社团。',
-        'Butian Engineering Club at Hangzhou No.2 High School: a student aerospace & engineering club centered on space settlement design.',
+        '杭州第二中学求是创新学院步天工程社官方网站，记录太空城市与基地设计、工程实践及航天科普活动。',
+        'The official website of Butian Engineering Club at Hangzhou No.2 High School.',
       )}>
-      {/* ===== HERO ===== */}
-      <header className={styles.hero}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <span className={styles.stars} />
-          <span className={clsx(styles.aurora, styles.aurora1)} />
-          <span className={clsx(styles.aurora, styles.aurora2)} />
-          <span className={styles.orbit} />
-        </div>
-        <div className={styles.heroInner}>
-          <p className={styles.eyebrow}>
-            {t('杭州第二中学 · 求是创新学院', 'Hangzhou No.2 High School · Qiushi Innovation Academy')}
-          </p>
-          <h1 className={styles.heroTitle}>{t('步天工程社', 'Butian')}</h1>
-          <p className={styles.heroTagline}>
-            {t(
-              '把一座太空城，从需求一直做到可验证、可答辩的方案。',
-              'Taking a space city from requirements to a proposal that can be verified and defended.',
-            )}
-          </p>
-          <div className={styles.actions}>
-            <Link className={clsx(styles.btn, styles.btnPrimary)} to="/about">
-              {t('了解我们', 'About Us')}
-            </Link>
-            <Link className={clsx(styles.btn, styles.btnGhost)} to="/join">
-              {t('加入我们', 'Join Us')}
-            </Link>
+      <main className={styles.home}>
+        <header className={styles.hero}>
+          <div className={styles.masthead}>
+            <span>{t('杭州第二中学 · 求是创新学院', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</span>
+            <span>{t('官方网站', 'OFFICIAL WEBSITE')}</span>
           </div>
-          <ul className={styles.highlights}>
-            <li>{t('杭州二中五星级社团', 'Five-star club')}</li>
-            <li>{t('GFSSM 2023 全国冠军', 'GFSSM 2023 National Champion')}</li>
-            <li>{t('连续三届晋级全国决赛', 'Three straight national finals')}</li>
-          </ul>
-        </div>
-        <span className={styles.scrollCue} aria-hidden="true" />
-      </header>
 
-      <main>
-        {/* Intro */}
-        <section className={clsx(styles.section, styles.intro)}>
-          <div className={styles.wrap}>
-            <Reveal as="p" className={styles.kicker}>{t('社团简介', 'About')}</Reveal>
-            <Reveal as="p" className={styles.introLead} delay={60}>
-              {t('我们关注航天，更在意 ', 'We care about space — but more about ')}
-              <b>{t('怎么把它做出来', 'how it gets built')}</b>
-              {t('。', '.')}
-            </Reveal>
-            <Reveal as="p" className={styles.introBody} delay={120}>
-              {t(
-                '步天工程社是浙江省杭州第二中学求是创新学院的学生工程与航天科技社团。一座太空城要经过结构、人居、运营与商业的反复推敲，经得起 24 小时极限设计和全英文答辩的检验，才算真正被理解。',
-                'Butian Engineering Club belongs to the Qiushi Innovation Academy at Hangzhou No.2 High School. A space city is only truly understood once it survives structure, habitat, operations and business, a 24-hour design sprint, and an all-English defense.',
-              )}
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Directions */}
-        <section className={styles.section}>
-          <div className={styles.wrap}>
-            <div className={styles.sectionHead}>
-              <Reveal>
-                <p className={styles.kicker}>{t('核心方向', 'What We Do')}</p>
-                <h2 className={styles.sectionTitle}>{t('五个协作方向', 'Five directions')}</h2>
-              </Reveal>
-            </div>
-            <div className={styles.dirGrid}>
-              {directions.map((d, i) => (
-                <Reveal key={d.id} className={styles.dirCard} delay={i * 70}>
-                  <div className={styles.dirNum}>{String(i + 1).padStart(2, '0')}</div>
-                  <h3 className={styles.dirName}>{t(d.nameZh, d.nameEn)}</h3>
-                  <p className={styles.dirEn}>{t(d.nameEn, d.nameZh)}</p>
-                  <p className={styles.dirDesc}>{t(d.descZh, d.descEn)}</p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Statement band */}
-        <section className={styles.statement}>
-          <div className={styles.heroBg} aria-hidden="true">
-            <span className={clsx(styles.aurora, styles.aurora2)} />
-          </div>
-          <div className={styles.wrap}>
-            <Reveal as="p" className={styles.statementQuote}>
-              {t(
-                '不追求一时的声势，只做能被复现的方法、能被延续的记录。',
-                'No momentary noise — only methods that reproduce and records that endure.',
-              )}
-            </Reveal>
-            <Reveal as="p" className={styles.statementSub} delay={80}>
-              {t('一届接一届，把经验真正沉淀下来。', 'Passed down, cohort after cohort.')}
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Projects */}
-        <section className={styles.section}>
-          <div className={styles.wrap}>
-            <div className={styles.sectionHead}>
-              <Reveal>
-                <p className={styles.kicker}>{t('精选项目', 'Selected Work')}</p>
-                <h2 className={styles.sectionTitle}>{t('我们做过什么', 'What we’ve built')}</h2>
-              </Reveal>
-              <Reveal delay={60}>
-                <Link className={styles.moreLink} to="/projects">
-                  {t('查看全部项目', 'All projects')}
-                  <span aria-hidden="true"> →</span>
-                </Link>
-              </Reveal>
-            </div>
-            <div className={styles.projGrid}>
-              {featuredProjects.map((p, i) => (
-                <Reveal key={p.id} delay={i * 70}>
-                  <ProjectCard project={p} />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Stats */}
-        <section className={clsx(styles.section, styles.stats)}>
-          <div className={styles.wrap}>
-            <div className={styles.sectionHead}>
-              <Reveal>
-                <p className={styles.kicker}>{t('成绩', 'Track Record')}</p>
-                <h2 className={styles.sectionTitle}>{t('可核验的战绩', 'By the numbers')}</h2>
-              </Reveal>
-            </div>
-            <div className={styles.statGrid}>
-              {stats.map((s, i) => (
-                <Reveal key={s.id} className={styles.statCard} delay={i * 70}>
-                  <div className={styles.statValue}>{s.value}</div>
-                  <div className={styles.statLabel}>{t(s.labelZh, s.labelEn)}</div>
-                  <div className={styles.statCaption}>{t(s.captionZh, s.captionEn)}</div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className={styles.ctaSection}>
-          <div className={styles.wrap}>
-            <Reveal className={styles.cta}>
-              <h2 className={styles.ctaTitle}>
-                {t('如果你也想把想法做出来', 'If you also want to build your ideas')}
-              </h2>
-              <p className={styles.ctaText}>
+          <div className={styles.heroGrid}>
+            <div className={styles.heroCopy}>
+              <p className={styles.kicker}>{t('学生工程与航天科技社团', 'STUDENT ENGINEERING & AEROSPACE CLUB')}</p>
+              <h1>{t('步天工程社', 'Butian Engineering Club')}</h1>
+              <p className={styles.heroIntro}>
                 {t(
-                  '不要求你已经会很多，只希望你愿意动手、愿意把问题查清楚、也愿意把过程写下来。',
-                  'You don’t need to know a lot already — only to get hands-on, dig into problems, and write the process down.',
+                  '主要开展太空城市与基地设计、工程实践与航天科普。社团成员以真实任务书为起点，在有限时间内完成系统设计、提案写作与英文答辩。',
+                  'We work on space-settlement design, engineering practice and aerospace outreach, developing complete systems proposals from real briefs and defending them in English.',
                 )}
               </p>
-              <div className={styles.ctaActions}>
-                <Link className={clsx(styles.btn, styles.ctaPrimary)} to="/join">
-                  {t('了解招新', 'About Recruitment')}
+              <div className={styles.heroLinks}>
+                <Link className={styles.textLink} to="/projects">
+                  {t('项目档案', 'Project archive')} <Arrow />
                 </Link>
-                <Link className={clsx(styles.btn, styles.ctaGhost)} to="/docs/intro">
-                  {t('查看知识库', 'Knowledge Base')}
+                <Link className={styles.textLink} to="/about">
+                  {t('社团介绍', 'About the club')} <Arrow />
                 </Link>
               </div>
-            </Reveal>
+            </div>
+
+            <figure className={styles.heroFigure}>
+              <img
+                src="/img/projects/2024-gfssm/team.jpg"
+                alt={t('步天工程社成员参加 2024 全球未来太空学者大会中国站', 'Butian members at the 2024 GFSSM China round')}
+                fetchPriority="high"
+              />
+              <figcaption>
+                <span>{t('2024 GFSSM 中国站', 'GFSSM China 2024')}</span>
+                <span>{t('团队合影', 'Team photograph')}</span>
+              </figcaption>
+            </figure>
           </div>
+        </header>
+
+        <section className={styles.archiveSection} aria-labelledby="archive-title">
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.sectionLabel}>{t('项目档案', 'PROJECT ARCHIVE')}</p>
+              <h2 id="archive-title">{t('近期项目', 'Recent projects')}</h2>
+            </div>
+            <Link className={styles.textLink} to="/projects">
+              {t('查看全部', 'View all')} <Arrow />
+            </Link>
+          </div>
+
+          <div className={styles.projectList}>
+            {projects.slice(0, 3).map((project) => (
+              <Link className={styles.projectRow} key={project.id} to={project.detailUrl ?? '/projects'}>
+                <span className={styles.projectYear}>{project.titleZh.match(/20\d{2}/)?.[0]}</span>
+                <div>
+                  <h3>{t(project.titleZh, project.titleEn)}</h3>
+                  <p>{t(project.summaryZh, project.summaryEn)}</p>
+                </div>
+                <span className={styles.rowArrow}><Arrow /></span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.gallerySection} aria-labelledby="gallery-title">
+          <div className={styles.galleryHeading}>
+            <div>
+              <p className={styles.sectionLabel}>{t('现场记录', 'FIELD NOTES')}</p>
+              <h2 id="gallery-title">{t('2024 GFSSM 中国站', 'GFSSM China 2024')}</h2>
+            </div>
+            <p>
+              {t(
+                '从 24 小时现场设计到提案答辩，记录团队真实的工作过程。',
+                'A record of the team’s 24-hour design sprint and final defense.',
+              )}
+            </p>
+          </div>
+
+          <LoopingGallery />
+
+          <p className={styles.sourceNote}>
+            {t('图片见', 'Images documented in')}{' '}
+            <a href="https://news.qq.com/rain/a/20240817A030S200" target="_blank" rel="noreferrer">
+              {t('2024 GFSSM 中国站公开报道', 'the public report on GFSSM China 2024')}
+              <span className={styles.srOnly}>{t('（在新标签页中打开）', ' (opens in a new tab)')}</span>
+            </a>
+            {t('，活动照片由求是创新学院提供。', '; event photographs supplied by Qiushi Innovation Academy.')}
+          </p>
+        </section>
+
+        <section className={styles.workSection} aria-labelledby="work-title">
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.sectionLabel}>{t('工作方向', 'AREAS OF WORK')}</p>
+              <h2 id="work-title">{t('从设计到传播', 'From design to outreach')}</h2>
+            </div>
+          </div>
+
+          <div className={styles.directionList}>
+            {directions.map((direction, index) => (
+              <article className={styles.directionRow} key={direction.id}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{t(direction.nameZh, direction.nameEn)}</h3>
+                <p>{t(direction.descZh, direction.descEn)}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.recordSection} aria-labelledby="record-title">
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.sectionLabel}>{t('公开记录', 'PUBLIC RECORD')}</p>
+              <h2 id="record-title">{t('参赛与获奖', 'Competition record')}</h2>
+            </div>
+          </div>
+
+          <div className={styles.statsGrid}>
+            {stats.map((stat) => (
+              <article key={stat.id}>
+                <strong>{stat.value}</strong>
+                <h3>{t(stat.labelZh, stat.labelEn)}</h3>
+                <p>{t(stat.captionZh, stat.captionEn)}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.notesSection} aria-labelledby="notes-title">
+          <div className={styles.notesIntro}>
+            <p className={styles.sectionLabel}>{t('社团动态', 'CLUB NOTES')}</p>
+            <h2 id="notes-title">{t('近期记录', 'Recent notes')}</h2>
+            <p>{t('项目进展、比赛复盘与社团活动。', 'Project updates, competition reviews and club activities.')}</p>
+          </div>
+
+          <div className={styles.notesList}>
+            {recentEntries.map((entry) => (
+              <Link to={entry.href} key={entry.href}>
+                <time>{entry.date}</time>
+                <span>{t(entry.titleZh, entry.titleEn)}</span>
+                <Arrow />
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.joinSection}>
+          <div>
+            <p className={styles.sectionLabel}>{t('加入步天', 'JOIN BUTIAN')}</p>
+            <h2>{t('面向杭州第二中学在校生', 'Open to Hangzhou No.2 High School students')}</h2>
+            <p>{t('具体招新时间与方式以当年通知为准。', 'Recruitment dates and details are announced each year.')}</p>
+          </div>
+          <Link className={styles.joinLink} to="/join">
+            {t('查看招新说明', 'Recruitment information')} <Arrow />
+          </Link>
         </section>
       </main>
     </Layout>

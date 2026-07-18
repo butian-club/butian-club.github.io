@@ -1,7 +1,6 @@
 /**
  * 步天工程社 — 全局设计系统
- * 与协作平台（gfssm.butian.club）统一的 Apple 风格：SF/苹方字体、
- * 苹果灰画布、单一蓝色强调、柔和层叠阴影、半透明导航。
+ * 学校社团刊物 + 项目档案：系统字体、机构绿、纸面中性色与发丝线。
  * 认真适配浅色与深色两种模式。
  *
  * 说明：站点各页面沿用了历史的 --mc-* / --bt-* 令牌名，这里把它们的“值”
@@ -16,14 +15,14 @@
 
 /* ===== 浅色模式 ===== */
 :root {
-  /* 主色：Apple 蓝 */
-  --ifm-color-primary: #0071e3;
-  --ifm-color-primary-dark: #0066cc;
-  --ifm-color-primary-darker: #005bb8;
-  --ifm-color-primary-darkest: #004a99;
-  --ifm-color-primary-light: #1a83e8;
-  --ifm-color-primary-lighter: #3d97ec;
-  --ifm-color-primary-lightest: #6fb3f2;
+  /* 主色：取自杭州第二中学校徽 */
+  --ifm-color-primary: #00683d;
+  --ifm-color-primary-dark: #005d37;
+  --ifm-color-primary-darker: #005732;
+  --ifm-color-primary-darkest: #004429;
+  --ifm-color-primary-light: #15794d;
+  --ifm-color-primary-lighter: #2d895f;
+  --ifm-color-primary-lightest: #63a886;
 
   /* 与协作平台一致的字体栈：SF / 苹方 / Inter 回退 */
   --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
@@ -38,14 +37,14 @@
   --ifm-code-font-size: 92%;
   --ifm-line-height-base: 1.6;
 
-  /* 苹果灰画布 + 白色卡面 */
-  --ifm-background-color: #f5f5f7;
+  /* 纸面与辅助底色 */
+  --ifm-background-color: #ffffff;
   --ifm-background-surface-color: #ffffff;
 
-  --ifm-navbar-background-color: rgba(255, 255, 255, 0.72);
+  --ifm-navbar-background-color: #ffffff;
   --ifm-navbar-shadow: none;
   --ifm-navbar-link-color: #1d1d1f;
-  --ifm-navbar-link-hover-color: #0071e3;
+  --ifm-navbar-link-hover-color: #00683d;
   --ifm-navbar-height: 3.5rem;
 
   --ifm-footer-background-color: #ececee;
@@ -56,13 +55,13 @@
   --ifm-toc-border-color: #e4e4e7;
   --ifm-hr-border-color: #e4e4e7;
   --ifm-menu-color: #48484a;
-  --ifm-link-color: #0071e3;
+  --ifm-link-color: #00683d;
 
   --ifm-global-radius: 12px;
   --ifm-button-border-radius: 980px;
   --ifm-alert-border-radius: 12px;
 
-  --docusaurus-highlighted-code-line-bg: rgba(0, 113, 227, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 104, 61, 0.1);
 
   /* ===== 苹果调色板（浅色）— 供 --bt-* / --mc-* 统一取用 ===== */
   --ap-bg: #f5f5f7;
@@ -72,16 +71,21 @@
   --ap-surface-soft: #fbfbfd;
   --ap-line: #e4e4e7;
   --ap-line-strong: #d3d3d8;
-  --ap-brand: #0071e3;
-  --ap-brand-strong: #005bb8;
-  --ap-brand-soft: rgba(0, 113, 227, 0.1);
-  --ap-brand-line: rgba(0, 113, 227, 0.22);
+  --ap-brand: #00683d;
+  --ap-brand-strong: #005b35;
+  --ap-brand-soft: rgba(0, 104, 61, 0.1);
+  --ap-brand-line: rgba(0, 104, 61, 0.22);
   --ap-title: #1d1d1f;
   --ap-ink: #1d1d1f;
   --ap-body: #48484a;
   --ap-muted: #6e6e73;
   --ap-faint: #86868b;
   --ap-warning: #b25000;
+
+  /* 步天主页：取自校徽的机构绿色 */
+  --bt-school-green: #00683d;
+  --bt-school-green-strong: #005b35;
+  --bt-school-green-soft: #e8f2ec;
 
   --ap-shadow-xs: 0 0.5px 1px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   --ap-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.04);
@@ -141,19 +145,19 @@
 
 /* ===== 深色模式 ===== */
 [data-theme='dark'] {
-  --ifm-color-primary: #0a84ff;
-  --ifm-color-primary-dark: #0a78e6;
-  --ifm-color-primary-darker: #0a70d8;
-  --ifm-color-primary-darkest: #095bb0;
-  --ifm-color-primary-light: #2f97ff;
-  --ifm-color-primary-lighter: #4da5ff;
-  --ifm-color-primary-lightest: #80bfff;
+  --ifm-color-primary: #67c991;
+  --ifm-color-primary-dark: #57bd82;
+  --ifm-color-primary-darker: #49ad75;
+  --ifm-color-primary-darkest: #35875a;
+  --ifm-color-primary-light: #78d29f;
+  --ifm-color-primary-lighter: #8adbac;
+  --ifm-color-primary-lightest: #afe9c7;
 
   --ifm-background-color: #0a0a0b;
   --ifm-background-surface-color: #1c1c1e;
-  --ifm-navbar-background-color: rgba(28, 28, 30, 0.68);
+  --ifm-navbar-background-color: #1c1c1e;
   --ifm-navbar-link-color: #f5f5f7;
-  --ifm-navbar-link-hover-color: #0a84ff;
+  --ifm-navbar-link-hover-color: #67c991;
 
   --ifm-footer-background-color: #151517;
   --ifm-footer-color: #c7c7cc;
@@ -163,9 +167,9 @@
   --ifm-toc-border-color: #2a2a2d;
   --ifm-hr-border-color: #2a2a2d;
   --ifm-menu-color: #c7c7cc;
-  --ifm-link-color: #0a84ff;
+  --ifm-link-color: #67c991;
 
-  --docusaurus-highlighted-code-line-bg: rgba(10, 132, 255, 0.16);
+  --docusaurus-highlighted-code-line-bg: rgba(103, 201, 145, 0.16);
 
   --ap-bg: #0a0a0b;
   --ap-bg-subtle: #151517;
@@ -174,16 +178,20 @@
   --ap-surface-soft: #151517;
   --ap-line: #2a2a2d;
   --ap-line-strong: #3a3a3e;
-  --ap-brand: #0a84ff;
-  --ap-brand-strong: #4da5ff;
-  --ap-brand-soft: rgba(10, 132, 255, 0.18);
-  --ap-brand-line: rgba(10, 132, 255, 0.32);
+  --ap-brand: #67c991;
+  --ap-brand-strong: #82d7a5;
+  --ap-brand-soft: rgba(103, 201, 145, 0.16);
+  --ap-brand-line: rgba(103, 201, 145, 0.3);
   --ap-title: #f5f5f7;
   --ap-ink: #f5f5f7;
   --ap-body: #c7c7cc;
   --ap-muted: #98989d;
   --ap-faint: #6b6b70;
   --ap-warning: #ff9f0a;
+
+  --bt-school-green: #67c991;
+  --bt-school-green-strong: #82d7a5;
+  --bt-school-green-soft: #142b20;
 
   --ap-shadow-xs: 0 0.5px 1px rgba(0, 0, 0, 0.5);
   --ap-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
@@ -211,10 +219,9 @@ h4 {
   letter-spacing: -0.021em;
 }
 
-/* 导航栏：半透明材质 + 细描边（与平台顶栏一致的观感）*/
+/* 导航栏：实体纸面与发丝线。 */
 .navbar {
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
+  background: var(--ifm-navbar-background-color);
   border-bottom: 1px solid var(--ap-line);
 }
 
@@ -311,7 +318,7 @@ h4 {
   background: var(--ap-surface-2);
 }
 
-/* 主按钮：胶囊形、单一蓝色 */
+/* 主按钮：保留清晰的按压与键盘状态。 */
 .button {
   font-weight: 600;
   transition: transform 0.12s ease, filter 0.15s ease, background 0.15s ease;
@@ -335,9 +342,104 @@ h4 {
 a:focus-visible,
 button:focus-visible,
 .button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px var(--ap-brand-soft);
-  border-radius: 8px;
+  outline: 2px solid var(--bt-school-green);
+  outline-offset: 3px;
+  box-shadow: none;
+  border-radius: 4px;
+}
+
+.main-wrapper {
+  background: var(--ap-surface);
+}
+
+/* 博客：保留 Docusaurus 的阅读与归档能力，改为刊物式条目。 */
+.blog-wrapper {
+  background: var(--ap-surface);
+}
+
+.blog-wrapper main article {
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--ap-line);
+}
+
+.blog-wrapper article h2 a,
+.blog-wrapper article h1 {
+  color: var(--ap-ink);
+}
+
+.blog-wrapper article h2 a:hover {
+  color: var(--bt-school-green);
+  text-decoration: none;
+}
+
+.blog-wrapper .badge {
+  border: 0;
+  border-radius: 999px;
+  background: var(--bt-school-green-soft);
+  color: var(--bt-school-green);
+  font-weight: 600;
+}
+
+.pagination-nav__link {
+  border: 1px solid var(--ap-line);
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--bt-school-green);
+  background: var(--bt-school-green-soft);
+}
+
+/* 知识库：低对比侧栏、清楚的章节层级，不另造一套“后台”视觉。 */
+.theme-doc-sidebar-container {
+  border-right-color: var(--ap-line) !important;
+  background: var(--ap-surface-soft);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: var(--bt-school-green-soft);
+  color: var(--bt-school-green);
+}
+
+.table-of-contents__link--active {
+  color: var(--bt-school-green);
+  font-weight: 600;
+}
+
+.breadcrumbs__link,
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: transparent;
+}
+
+.theme-doc-markdown h1 {
+  max-width: 46rem;
+  font-size: clamp(2.25rem, 5vw, 3.4rem);
+  line-height: 1.12;
+}
+
+.theme-doc-markdown h2 {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ap-line);
+}
+
+.theme-doc-markdown table {
+  display: table;
+  width: 100%;
+}
+
+.alert {
+  border: 1px solid var(--ap-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 996px) {
+  .theme-doc-sidebar-container {
+    background: var(--ap-surface);
+  }
 }
 
 .markdown p {

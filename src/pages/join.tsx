@@ -43,11 +43,16 @@ export default function Join(): ReactNode {
       )}>
       <PageHero
         eyebrow="Join Us"
-        title={t('加入我们', 'Join Us')}
+        title={t('加入步天', 'Join Butian')}
         subtitle={t(
-          '不要求你已经会很多，只希望你愿意动手、愿意把问题查清楚、也愿意把过程写下来。',
-          'You don’t need to know a lot already — only to be willing to get hands-on, dig into problems, and write the process down.',
+          '招新面向杭州第二中学在校生。工程、航天、建模或写作经验都不是前置条件。',
+          'Recruitment is open to current Hangzhou No.2 High School students. Prior experience in engineering, space science, modeling or writing is not required.',
         )}
+        image={{
+          src: '/img/projects/2024-gfssm/team.jpg',
+          alt: t('步天工程社成员参加 2024 GFSSM 中国站后的团队合影', 'Butian members in a group photo after the 2024 GFSSM China round'),
+          caption: t('2024 GFSSM 中国站 · 参赛成员', '2024 GFSSM China · Club members'),
+        }}
       />
       <main className={styles.page}>
         <div className={`${styles.container} ${styles.narrow}`}>
@@ -57,28 +62,21 @@ export default function Join(): ReactNode {
             <div className={styles.prose}>
               <p>
                 {t(
-                  '步天工程社面向杭州第二中学对工程与航天有兴趣的同学招新。我们不挑「已经很厉害」的人，而是找愿意一起把事情做出来的人。',
-                  'Butian recruits students at Hangzhou No.2 High School who are interested in engineering and space. We don’t look for people who are “already impressive” — we look for people willing to build things together.',
+                  '步天工程社面向杭州第二中学在校生招新。报名时不设置专业能力门槛；我们更关心你愿不愿意查资料、参与讨论，并把分到的任务做完。',
+                  'Butian recruits current students at Hangzhou No.2 High School. There is no specialist skill requirement at application; we care more about whether you are willing to research, join discussions and finish the work you take on.',
                 )}
               </p>
               <p>
                 {t(
-                  '加入后，你会和不同方向的同学组成代表队，围绕太空城市与基地设计的真实赛题，经历需求拆解、部门分工、模拟答辩与 24 小时极限设计，学习结构、人居、运营与商业的系统思考，也会参与社团的科普、复盘和知识库建设。',
-                  'Once in, you’ll form a team with students from different directions, work on real space-settlement design briefs, and go through requirement breakdown, department roles, mock defenses and 24-hour design sprints — learning systems thinking across structure, habitat, operations and business, and joining the club’s outreach, retrospectives and knowledge base.',
-                )}
-              </p>
-              <p>
-                {t(
-                  '步天工程社是杭州第二中学历史悠久的元老级社团、常驻五星级社团，人气很旺。除了 GFSSM，我们也办天文周、科技周、纸飞机比赛、社团文化节等活动；常规例会通常两周到一月一次。',
-                  'Butian is one of Hangzhou No.2 High School’s long-standing, five-star clubs, and a popular one. Beyond GFSSM, we run an astronomy week, a science week, paper-plane contests and club festivals; regular meetings are usually held every two to four weeks.',
+                  '加入后，成员会按项目分工，参与任务书拆解、资料检索、方案评审、提案制作和模拟答辩。根据当年的安排，也可能参与科普活动、项目复盘与知识库整理。',
+                  'After joining, members work in project teams on brief analysis, research, design reviews, proposal production and mock defenses. Depending on the year’s program, members may also take part in outreach, project retrospectives and knowledge-base maintenance.',
                 )}
               </p>
             </div>
             <p className={styles.note}>
-              <strong>TODO：</strong>
               {t(
-                '招新通常在每年 8 月（暑期）进行；具体报名表单与名额以当届招新公告为准。',
-                'Recruitment is usually held each August; the exact form and quota follow each season’s announcement.',
+                '具体招新时间、名额与报名方式以当年校内通知为准。',
+                'Recruitment dates, places and application details follow the school notice issued for that year.',
               )}
             </p>
           </section>
@@ -91,8 +89,8 @@ export default function Join(): ReactNode {
             <div className={styles.prose}>
               <p>
                 {t(
-                  '如果你会建模、绘画，或了解航空航天知识，都是加分项；但零基础同样欢迎——我们最看重的，是一颗向往未来、饱含热忱的心。',
-                  'Modeling, drawing or some aerospace knowledge are all a plus; complete beginners are just as welcome — what we value most is a heart full of enthusiasm for the future.',
+                  '建模、绘画、编程、资料检索与中英文写作经验都会派上用场，但不是报名条件。项目开始后，成员会在具体任务中补齐需要的能力。',
+                  'Experience in modeling, drawing, programming, research, or Chinese and English writing is useful, but not required. Members build the skills they need through specific project work.',
                 )}
               </p>
               <p>
@@ -123,36 +121,36 @@ export default function Join(): ReactNode {
           </section>
 
           <section className={styles.block} aria-labelledby="contact">
-            <p className={styles.blockEyebrow}>Contact</p>
-            <h2 id="contact" className={styles.blockTitle}>{t('联系方式', 'Contact')}</h2>
+            <p className={styles.blockEyebrow}>Information</p>
+            <h2 id="contact" className={styles.blockTitle}>{t('报名信息', 'Application Information')}</h2>
             <div className={styles.prose}>
               <p>
                 {t(
-                  '有任何关于社团或招新的问题，欢迎通过以下方式联系我们：',
-                  'For any questions about the club or recruitment, reach us via:',
+                  '正式招新信息由校内渠道发布。本页不展示尚未确认的个人联系方式。',
+                  'Official recruitment information is published through school channels. Unconfirmed personal contact details are not listed here.',
                 )}
               </p>
             </div>
             <ul className={styles.contactList}>
               <li>
-                <span className={styles.contactLabel}>{t('邮箱 Email', 'Email')}</span>
-                <span className={styles.contactValue}>TODO@example.com</span>
+                <span className={styles.contactLabel}>{t('招新时间', 'Recruitment')}</span>
+                <span className={styles.contactValue}>{t('每学年招新季，以当年通知为准', 'Each school-year recruitment season; see the current notice')}</span>
               </li>
               <li>
-                <span className={styles.contactLabel}>{t('社团位置 Location', 'Location')}</span>
-                <span className={styles.contactValue}>
-                  {t('杭州第二中学 · TODO 活动室', 'Hangzhou No.2 High School · Room TODO')}
-                </span>
+                <span className={styles.contactLabel}>{t('报名渠道', 'Application')}</span>
+                <span className={styles.contactValue}>{t('校内社团招新通知与现场报名', 'School club notice and on-site application')}</span>
               </li>
               <li>
-                <span className={styles.contactLabel}>{t('负责人 Contact', 'Contact')}</span>
-                <span className={styles.contactValue}>{t('TODO 待补充', 'TODO')}</span>
+                <span className={styles.contactLabel}>{t('咨询方式', 'Questions')}</span>
+                <span className={styles.contactValue}>{t('社团开放日或招新现场', 'Club open day or recruitment desk')}</span>
               </li>
             </ul>
             <p className={styles.note}>
-              {t('准备好了吗？先去', 'Ready? Start by getting familiar with our tools and norms in the ')}
-              <Link to="/docs/intro"> {t('知识库', 'knowledge base')} </Link>
-              {t('熟悉一下我们的工具和规范，会是不错的开始。', ' — a good place to begin.')}
+              {t('报名之前，可以先读', 'Before applying, read ')}
+              <Link to="/about">{t('关于步天', 'About Butian')}</Link>
+              {t('并浏览', ' and browse the ')}
+              <Link to="/projects">{t('项目档案', 'project archive')}</Link>
+              {t('，了解社团的工作方式。', ' to understand how the club works.')}
             </p>
           </section>
         </div>
