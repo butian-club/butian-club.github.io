@@ -167,7 +167,6 @@ const config: Config = {
           items: [
             {label: '协作平台', href: 'https://gfssm.butian.club'},
             {label: '平台使用文档', to: '/docs/intro'},
-            {label: '预览体验（免注册）', href: 'https://gfssm.butian.club/login'},
           ],
         },
         {

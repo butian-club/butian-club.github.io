@@ -12,7 +12,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '快速开始',
       collapsed: false,
-      items: ['access', 'register', 'preview'],
+      items: ['access', 'register'],
     },
     {
       type: 'category',
