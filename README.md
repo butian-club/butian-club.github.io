@@ -10,11 +10,13 @@
   </p>
 </div>
 
+## Website Introduction
+
 The official website of the Butian Engineering Club at Hangzhou No. 2 High School.
 It presents the club, projects, activity records, and an operating guide for the club's
 collaboration platform at [butian-club.github.io](https://butian-club.github.io).
 
-## Features
+## Website Features
 
 🚀 **Project showcase** — project data in `src/data/projects.ts` drives both the home-page
 selection and the complete project index.
@@ -28,7 +30,7 @@ tickets, documents, notifications, and administration.
 🎨 **Shared visual system** — reusable page components and CSS tokens keep light and dark
 themes consistent across the site.
 
-## Quick start
+## Getting Started
 
 ```bash
 git clone https://github.com/butian-club/butian-club.github.io.git
@@ -45,7 +47,7 @@ npm run typecheck
 npm run build
 ```
 
-## Common changes
+## Common Changes
 
 - Add a project in `src/data/projects.ts`; set `featured: true` to show it on the home page.
 - Add an activity record under `blog/` and reuse entries from `blog/authors.yml` and
@@ -57,23 +59,32 @@ npm run build
 Do not invent missing club information. Teacher names, member lists, contact details,
 recruitment dates, and other factual fields remain TODOs until the club confirms them.
 
-## Structure
+## Project Structure
 
-```text
-blog/                               # activities, competitions, and project reviews
-docs/                               # collaboration-platform handbook
-src/
-├── components/                     # shared page and reveal components
-├── css/custom.css                  # visual tokens and global styles
-├── data/                           # project and organization data
-├── lib/i18n.ts                     # interface strings
-└── pages/                          # home, about, projects, and join routes
-static/                             # logos, icons, and social assets
-docusaurus.config.ts                # site, navigation, and deployment settings
-sidebars.ts                         # documentation navigation
+```bash
+butian-club.github.io/
+├── blog/                           # Activities, competitions, and project reviews
+│   ├── authors.yml                 # Author configuration
+│   └── tags.yml                    # Tag configuration
+├── docs/                           # Collaboration-platform handbook
+├── i18n/                           # Internationalization files
+├── src/                            # Source code
+│   ├── components/                 # shared page and reveal components
+│   ├── css/custom.css              # visual tokens and global styles
+│   ├── data/                       # project and organization data
+│   ├── lib/i18n.ts                 # interface strings
+│   └── pages/                      # home, about, projects, and join routes
+├── static/                         # Logos, icons, and social assets
+├── docusaurus.config.ts            # Docusaurus configuration
+├── LICENSE                         # Code license
+├── LICENSE-docs                    # Content license
+├── package-lock.json               # Dependency lock file
+├── package.json                    # Dependency configuration
+├── sidebars.ts                     # Documentation navigation
+└── tsconfig.json                   # TypeScript configuration
 ```
 
-## Deployment
+## Site Deployment
 
 Pushes to `main` are built and published to GitHub Pages by
 `.github/workflows/deploy.yml`. The production build output is generated; source changes
@@ -81,4 +92,4 @@ belong in `src/`, `docs/`, `blog/`, or `static/`.
 
 ## License
 
-Licensed under the [MIT License](LICENSE).
+This project's code is licensed under [MIT License](LICENSE), and this website's content is licensed under [CC BY 4.0](LICENSE-docs).

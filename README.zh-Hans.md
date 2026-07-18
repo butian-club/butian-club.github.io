@@ -10,11 +10,13 @@
   </p>
 </div>
 
+## 网站简介
+
 杭州第二中学步天工程社官方网站。站点位于
 [butian-club.github.io](https://butian-club.github.io)，用于介绍社团、展示项目、记录活动，
 并提供社团协作平台的操作手册。
 
-## 特性
+## 网站特性
 
 🚀 **项目展示** —— `src/data/projects.ts` 同时驱动首页精选项目与完整项目列表。
 
@@ -51,27 +53,36 @@ npm run build
 不要编造尚未确认的社团信息。指导老师、成员名单、联系方式、招新时间等事实字段，
 必须由社团确认后再填写。
 
-## 结构
+## 项目结构
 
-```text
-blog/                               # 活动、比赛与项目复盘
-docs/                               # 社团协作平台操作手册
-src/
-├── components/                     # 共享页面与动效组件
-├── css/custom.css                  # 视觉 token 与全局样式
-├── data/                           # 项目与社团数据
-├── lib/i18n.ts                     # 界面文案
-└── pages/                          # 首页、关于、项目与加入页面
-static/                             # Logo、图标与社交媒体素材
-docusaurus.config.ts                # 站点、导航与部署配置
-sidebars.ts                         # 文档导航
+```bash
+butian-club.github.io/
+├── blog/                           # 活动、比赛与项目复盘
+│   ├── authors.yml                 # 作者配置
+│   └── tags.yml                    # 标签配置
+├── docs/                           # 社团协作平台手册
+├── i18n/                           # 国际化文件
+├── src/                            # 源代码
+│   ├── components/                 # 共享页面与动效组件
+│   ├── css/custom.css              # 视觉 token 与全局样式
+│   ├── data/                       # 项目与社团数据
+│   ├── lib/i18n.ts                 # 界面文案
+│   └── pages/                      # 首页、关于、项目与加入页面
+├── static/                         # Logo、图标与社交媒体素材
+├── docusaurus.config.ts            # Docusaurus 配置
+├── LICENSE                         # 代码许可协议
+├── LICENSE-docs                    # 内容许可协议
+├── package-lock.json               # 依赖锁定文件
+├── package.json                    # 依赖配置
+├── sidebars.ts                     # 文档导航
+└── tsconfig.json                   # TypeScript 配置
 ```
 
-## 部署
+## 网站部署
 
 推送到 `main` 后，`.github/workflows/deploy.yml` 会构建并发布 GitHub Pages。生产构建产物
 由工作流生成，源文件应修改在 `src/`、`docs/`、`blog/` 或 `static/`。
 
-## 许可
+## 许可协议
 
-采用 [MIT License](LICENSE)。
+本项目代码采用 [MIT 许可协议](LICENSE)，本网站内容采用 [知识共享 署名 4.0 国际许可协议](LICENSE-docs)。
