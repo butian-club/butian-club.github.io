@@ -31,20 +31,8 @@
     "message": "Join Us",
     "description": "Navbar item with label 加入我们"
   },
-  "item.label.GitHub": {
-    "message": "GitHub",
-    "description": "Navbar item with label GitHub"
-  },
   "item.label.协作平台": {
     "message": "Platform",
     "description": "Navbar item with label 协作平台"
-  },
-  "item.label.知识库": {
-    "message": "Knowledge Base",
-    "description": "Navbar item with label 知识库"
-  },
-  "item.label.协作平台文档": {
-    "message": "Platform Docs",
-    "description": "Navbar item with label 协作平台文档"
   }
 }

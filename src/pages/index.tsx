@@ -140,7 +140,9 @@ function GalleryImages({duplicate = false}: {duplicate?: boolean}): ReactNode {
               decoding="async"
             />
             <figcaption className={styles.srOnly}>
-              {t(item.captionZh, item.captionEn)}，{index + 1} / {galleryItems.length}
+              {t(item.captionZh, item.captionEn)}
+              {t('，', ', ')}
+              {index + 1} / {galleryItems.length}
             </figcaption>
           </figure>
         </div>

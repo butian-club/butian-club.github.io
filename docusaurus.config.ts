@@ -4,9 +4,30 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 // 该文件运行在 Node.js 环境 —— 不要在此使用浏览器端代码（DOM、JSX 等）。
 
+const isEnglish = process.env.DOCUSAURUS_CURRENT_LOCALE === 'en';
+const siteCopy = isEnglish
+  ? {
+      title: 'Butian Engineering Club',
+      tagline:
+        'Turn ideas into structures, code, circuits and verifiable results',
+      keywords:
+        'Butian Engineering Club, Hangzhou No.2 High School, aerospace, engineering, student club',
+      description:
+        'The official website of Butian Engineering Club at Hangzhou No.2 High School: a project-driven student club for engineering and aerospace technology.',
+    }
+  : {
+      title: '杭州第二中学步天工程社',
+      tagline:
+        'Butian Engineering Club · 把想法变成结构、代码、电路与可验证的结果',
+      keywords:
+        '步天工程社, 杭州第二中学, Butian Engineering Club, 航天, 工程, 学生社团',
+      description:
+        '杭州第二中学步天工程社（Butian Engineering Club）官方网站：以项目驱动的高中工程与航天科技社团。',
+    };
+
 const config: Config = {
-  title: '杭州第二中学步天工程社',
-  tagline: 'Butian Engineering Club · 把想法变成结构、代码、电路与可验证的结果',
+  title: siteCopy.title,
+  tagline: siteCopy.tagline,
   favicon: 'img/favicon.ico',
 
   // 提升与即将到来的 Docusaurus v4 的兼容性，并启用 faster（Rspack/SWC）构建管线
@@ -110,13 +131,11 @@ const config: Config = {
     metadata: [
       {
         name: 'keywords',
-        content:
-          '步天工程社, 杭州第二中学, Butian Engineering Club, 航天, 工程, 学生社团',
+        content: siteCopy.keywords,
       },
       {
         name: 'description',
-        content:
-          '杭州第二中学步天工程社（Butian Engineering Club）官方网站：以项目驱动的高中工程与航天科技社团。',
+        content: siteCopy.description,
       },
     ],
     colorMode: {
