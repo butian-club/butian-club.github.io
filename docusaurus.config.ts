@@ -145,8 +145,8 @@ const config: Config = {
     navbar: {
       title: '步天工程社',
       logo: {
-        alt: '杭州第二中学 · 步天工程社',
-        src: 'img/school-logo.png',
+        alt: '步天工程社标志',
+        src: 'img/butian-logo.png',
       },
       hideOnScroll: true,
       items: [
