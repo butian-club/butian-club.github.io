@@ -85,6 +85,18 @@ const config: Config = {
   // 文档 / 博客正文图片点击放大查看
   plugins: ['docusaurus-plugin-image-zoom'],
 
+  // 构建时生成中文 / 英文本地搜索索引，不依赖第三方搜索服务
+  themes: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        language: ['en', 'zh'],
+        indexPages: true,
+      },
+    ],
+  ],
+
   themeConfig: {
     zoom: {
       selector: '.markdown img, img[data-zoomable]',
