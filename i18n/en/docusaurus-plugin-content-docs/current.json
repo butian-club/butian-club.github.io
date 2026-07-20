@@ -3,12 +3,20 @@
     "message": "Next",
     "description": "The label for version current"
   },
-  "sidebar.knowledgeSidebar.category.入门指南": {
+  "sidebar.docsSidebar.category.快速开始": {
     "message": "Getting Started",
-    "description": "The label for category '入门指南' in sidebar 'knowledgeSidebar'"
+    "description": "The label for category '快速开始' in sidebar 'docsSidebar'"
   },
-  "sidebar.knowledgeSidebar.category.规范": {
-    "message": "Standards",
-    "description": "The label for category '规范' in sidebar 'knowledgeSidebar'"
+  "sidebar.docsSidebar.category.功能指南": {
+    "message": "Feature Guide",
+    "description": "The label for category '功能指南' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.管理员指南": {
+    "message": "Administrator Guide",
+    "description": "The label for category '管理员指南' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.参考": {
+    "message": "Reference",
+    "description": "The label for category '参考' in sidebar 'docsSidebar'"
   }
 }
