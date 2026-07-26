@@ -72,3 +72,12 @@ test('public copy omits unverified placeholders and uses the canonical domain', 
   }
   assert.doesNotMatch(siteData, /TODO/);
 });
+
+test('maintenance commands and cited result years stay aligned with repository content', () => {
+  const english = source('README.md');
+  const chinese = source('README.zh-Hans.md');
+  const siteData = source('src/data/site.ts');
+
+  for (const readme of [english, chinese]) assert.match(readme, /npm test/);
+  assert.match(siteData, /2023-2025 GFSSM/);
+});

@@ -43,6 +43,7 @@ Open `http://localhost:3000`. Before a pull request, run:
 
 ```bash
 npm run format
+npm test
 npm run typecheck
 npm run build
 ```
