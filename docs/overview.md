@@ -1,6 +1,6 @@
 ---
 title: 管理后台总览
-description: 步天工程社协作平台管理后台（/admin）的定位与结构。后台现在只保留系统级设置（系统设置·倒计时·附件·操作日志），任务/工单/文档/部门/成员/公告的管理都已下放到各自的功能页面。
+description: 步天工程社协作平台管理后台（/admin）的定位与结构：控制台、系统设置、AI 配置、附件与操作日志，以及下放到功能页面的业务管理入口。
 ---
 
 # 管理后台总览
@@ -9,8 +9,8 @@ description: 步天工程社协作平台管理后台（/admin）的定位与结�
 现在都**下放到它们各自的功能页面**——管理员在自己每天都用的页面上，直接看到额外的操作
 入口。目标是：**管理员尽量少进后台**，在哪用就在哪管。
 
-**管理后台**（`/admin`）因此瘦身成只放**真正的系统级设置**：站点设置、比赛倒计时、
-附件、操作日志。
+**管理后台**（`/admin`）放置系统级能力：控制台、站点设置、AI 配置、附件与操作日志。
+比赛倒计时已改为管理员在首页内联配置。
 
 - 🔧 访问地址：[https://gfssm.butian.club/admin](https://gfssm.butian.club/admin)
 - 仅**管理员（ADMIN）**可进入；成员账号看不到入口，也进不来。
@@ -23,26 +23,29 @@ description: 步天工程社协作平台管理后台（/admin）的定位与结�
 
 ## 管理能力现在在哪
 
-| 你想管的东西 | 现在去哪管 | 文档 |
-| --- | --- | --- |
-| 任务：新建 / 指派 / 编辑 / 归档 | [任务](https://gfssm.butian.club/tasks) 页面 | [任务](./tasks.md) |
-| 工单：处理 / 指派 / 置顶 / 关闭 | [工单](https://gfssm.butian.club/tickets) 页面 | [工单](./tickets.md) |
-| 文档：新建 / 编辑 / 删除 / 草稿 | [文档](https://gfssm.butian.club/docs) 页面 | [文档](./documents.md) |
-| 公告：发布 / 编辑 / 置顶 | [首页](https://gfssm.butian.club/) | [公告](./announcements.md) |
-| 部门：新建 / 编辑 / 归档 | [部门](https://gfssm.butian.club/departments) 页面 | [部门](./departments.md) |
-| 成员：改角色 / 启停 / 分部门 / 邀请码 | [成员目录](https://gfssm.butian.club/members) 页面 | [成员目录](./members.md) |
-| 邀请码 | [成员目录](https://gfssm.butian.club/members) 页面 | [成员目录](./members.md) |
+| 你想管的东西                          | 现在去哪管                                         | 文档                       |
+| ------------------------------------- | -------------------------------------------------- | -------------------------- |
+| 任务：新建 / 指派 / 编辑 / 关闭       | [任务](https://gfssm.butian.club/tasks) 页面       | [任务](./tasks.md)         |
+| 工单：处理 / 指派 / 置顶 / 关闭       | [工单](https://gfssm.butian.club/tickets) 页面     | [工单](./tickets.md)       |
+| 文档：新建 / 编辑 / 删除 / 草稿       | [文档](https://gfssm.butian.club/docs) 页面        | [文档](./documents.md)     |
+| 公告：发布 / 编辑 / 置顶              | [首页](https://gfssm.butian.club/)                 | [公告](./announcements.md) |
+| 部门：新建 / 编辑 / 归档 / 删除       | [部门](https://gfssm.butian.club/departments) 页面 | [部门](./departments.md)   |
+| 成员：改角色 / 启停 / 分部门 / 邀请码 | [成员目录](https://gfssm.butian.club/members) 页面 | [成员目录](./members.md)   |
+| 邀请码                                | [成员目录](https://gfssm.butian.club/members) 页面 | [成员目录](./members.md)   |
 
 ## 后台现在保留什么
 
-后台只剩下这几项**系统级**功能：
+后台包含以下系统级功能：
 
-| 板块 | 路径 | 作用 | 详见 |
-| --- | --- | --- | --- |
+| 板块     | 路径              | 作用                                            | 详见                              |
+| -------- | ----------------- | ----------------------------------------------- | --------------------------------- |
+| 控制台   | `/admin`          | 系统健康、服务指标、业务概览与最近操作          | 本页                              |
 | 系统设置 | `/admin/settings` | 网站名称 / 注册开关 / 默认语言与主题 / 品牌主色 | [站点设置与倒计时](./settings.md) |
-| 倒计时设置 | `/admin/countdown` | 配置首页比赛倒计时 | [站点设置与倒计时](./settings.md) |
-| 附件管理 | `/admin/assets` | 汇总管理全站上传的附件与资源 | [附件管理](./content.md) |
-| 操作日志 | `/admin/audit` | 关键操作审计记录 | [操作日志](./audit.md) |
+| AI 配置  | `/admin/ai`       | 中转服务、模型、启用状态与用量限制              | [AI 助手](./ai.md)                |
+| 附件管理 | `/admin/assets`   | 查看与清理头像、任务附件和聊天附件              | [附件管理](./content.md)          |
+| 操作日志 | `/admin/audit`    | 关键操作审计记录                                | [操作日志](./audit.md)            |
+
+倒计时配置入口位于[首页](https://gfssm.butian.club/)的倒计时条，不是后台子路由。
 
 ## 权限没有变松
 
@@ -53,7 +56,7 @@ description: 步天工程社协作平台管理后台（/admin）的定位与结�
   不是「打开了页面就能为所欲为」。
 - 关键操作照样写入 [操作日志](./audit.md)，便于事后追溯。
 
-各能力对应的权限码见 [角色与权限](./roles-permissions.md)。
+当前角色、对象级规则与种子权限元数据的区别见[角色与权限](./roles-permissions.md)。
 
 :::caution[管理动作会即时生效]
 无论在后台还是在功能页面，管理操作都会即时改变全站数据（谁能登录、任务归谁、
@@ -65,4 +68,6 @@ description: 步天工程社协作平台管理后台（/admin）的定位与结�
 1. 到 [成员目录](./members.md) 生成**邀请码**发给新成员，并给已加入的成员**分配部门**。
 2. 在 [部门](./departments.md) 建好比赛需要的部门。
 3. 用 [任务](./tasks.md)、[文档](./documents.md) 铺好内容，用 [首页公告](./announcements.md) 发通知。
-4. 到 [站点设置与倒计时](./settings.md) 配好站点名称、注册开关与比赛倒计时。
+4. 到[站点设置](./settings.md)配好名称和注册策略，并在首页配置比赛倒计时。
+5. 如需使用 AI，在 [`/admin/ai`](https://gfssm.butian.club/admin/ai) 配置服务与限额，
+   再按 [AI 助手](./ai.md)核对权限边界。

@@ -2,7 +2,7 @@
  * 站点级别的展示数据：核心方向、数据统计（双语）。
  *
  * 资料依据：公开报道（2017 求是创新学院、2023 磐安公益、
- * 2024 GFSSM 中国站）。存疑或待校内补证的信息保留 TODO，不做编造。
+ * 2024 GFSSM 中国站）。存疑或待校内补证的信息不进入展示数据，不做编造。
  *
  * 每条文案内联中英文，组件按当前 locale 用 useT() 选择。
  */
@@ -58,8 +58,7 @@ export const directions: Direction[] = [
     id: 'outreach',
     nameZh: '科普与公益传播',
     nameEn: 'Outreach',
-    descZh:
-      '把项目讲清楚、传出去——文档复盘、航天科普与结对公益，让积累在社团内外延续。',
+    descZh: '把项目讲清楚、传出去——文档复盘、航天科普与结对公益，让积累在社团内外延续。',
     descEn:
       'Explain the work and pass it on — documentation, space-science outreach and community programs that let what we learn live on inside and beyond the club.',
   },
@@ -67,7 +66,7 @@ export const directions: Direction[] = [
 
 export interface Stat {
   id: string;
-  /** 数值；TODO 表示尚未统计真实数据 */
+  /** 经过核实、可直接展示的数值 */
   value: string;
   labelZh: string;
   labelEn: string;
@@ -75,7 +74,7 @@ export interface Stat {
   captionEn: string;
 }
 
-// 以公开可核验的成绩为主；社团规模等内部数据待补证。
+// 以公开可核验的成绩为主；未经核实的社团内部数据不展示。
 export const stats: Stat[] = [
   {
     id: 'champion',

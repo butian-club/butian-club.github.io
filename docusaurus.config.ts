@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // 该文件运行在 Node.js 环境 —— 不要在此使用浏览器端代码（DOM、JSX 等）。
@@ -8,8 +8,7 @@ const isEnglish = process.env.DOCUSAURUS_CURRENT_LOCALE === 'en';
 const siteCopy = isEnglish
   ? {
       title: 'Butian Engineering Club',
-      tagline:
-        'Turn ideas into structures, code, circuits and verifiable results',
+      tagline: 'Turn ideas into structures, code, circuits and verifiable results',
       keywords:
         'Butian Engineering Club, Hangzhou No.2 High School, aerospace, engineering, student club',
       description:
@@ -17,10 +16,8 @@ const siteCopy = isEnglish
     }
   : {
       title: '杭州第二中学步天工程社',
-      tagline:
-        'Butian Engineering Club · 把想法变成结构、代码、电路与可验证的结果',
-      keywords:
-        '步天工程社, 杭州第二中学, Butian Engineering Club, 航天, 工程, 学生社团',
+      tagline: 'Butian Engineering Club · 把想法变成结构、代码、电路与可验证的结果',
+      keywords: '步天工程社, 杭州第二中学, Butian Engineering Club, 航天, 工程, 学生社团',
       description:
         '杭州第二中学步天工程社（Butian Engineering Club）官方网站：以项目驱动的高中工程与航天科技社团。',
     };
@@ -59,8 +56,8 @@ const config: Config = {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans', 'en'],
     localeConfigs: {
-      'zh-Hans': {label: '简体中文', htmlLang: 'zh-Hans'},
-      en: {label: 'English', htmlLang: 'en'},
+      'zh-Hans': { label: '简体中文', htmlLang: 'zh-Hans' },
+      en: { label: 'English', htmlLang: 'en' },
     },
   },
 
@@ -70,15 +67,12 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // TODO: 启用「编辑此页」时，请替换为社团仓库地址
-          editUrl:
-            'https://github.com/butian-club/butian-club.github.io/tree/main/',
+          editUrl: 'https://github.com/butian-club/butian-club.github.io/tree/main/',
         },
         blog: {
           routeBasePath: 'blog',
           blogTitle: '活动记录',
-          blogDescription:
-            '步天工程社的活动复盘、比赛记录、项目日志与技术文章。',
+          blogDescription: '步天工程社的活动复盘、比赛记录、项目日志与技术文章。',
           showReadingTime: true,
           blogSidebarTitle: '最近活动',
           blogSidebarCount: 'ALL',
@@ -86,8 +80,7 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          editUrl:
-            'https://github.com/butian-club/butian-club.github.io/tree/main/',
+          editUrl: 'https://github.com/butian-club/butian-club.github.io/tree/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -126,7 +119,6 @@ const config: Config = {
         dark: 'rgba(4, 7, 17, 0.92)',
       },
     },
-    // TODO: 替换为社团自己的社交分享卡片
     image: 'img/butian-social-card.svg',
     metadata: [
       {
@@ -150,23 +142,23 @@ const config: Config = {
       },
       hideOnScroll: true,
       items: [
-        {to: '/', label: '首页', position: 'left', activeBaseRegex: '^/$'},
-        {to: '/about', label: '关于', position: 'left'},
-        {to: '/projects', label: '项目', position: 'left'},
+        { to: '/', label: '首页', position: 'left', activeBaseRegex: '^/$' },
+        { to: '/about', label: '关于', position: 'left' },
+        { to: '/projects', label: '项目', position: 'left' },
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           label: '文档',
           position: 'left',
         },
-        {to: '/blog', label: '博客', position: 'left'},
+        { to: '/blog', label: '博客', position: 'left' },
         {
           href: 'https://gfssm.butian.club',
           label: '协作平台',
           position: 'right',
         },
-        {to: '/join', label: '加入我们', position: 'right'},
-        {type: 'localeDropdown', position: 'right'},
+        { to: '/join', label: '加入我们', position: 'right' },
+        { type: 'localeDropdown', position: 'right' },
         {
           href: 'https://github.com/butian-club',
           position: 'right',
@@ -181,29 +173,29 @@ const config: Config = {
         {
           title: '社团',
           items: [
-            {label: '关于我们', to: '/about'},
-            {label: '加入我们', to: '/join'},
-            {label: '项目', to: '/projects'},
+            { label: '关于我们', to: '/about' },
+            { label: '加入我们', to: '/join' },
+            { label: '项目', to: '/projects' },
           ],
         },
         {
           title: '内容',
           items: [
-            {label: '活动记录', to: '/blog'},
-            {label: '文档', to: '/docs/intro'},
+            { label: '活动记录', to: '/blog' },
+            { label: '文档', to: '/docs/intro' },
           ],
         },
         {
           title: '协作平台',
           items: [
-            {label: '协作平台', href: 'https://gfssm.butian.club'},
-            {label: '平台使用文档', to: '/docs/intro'},
+            { label: '协作平台', href: 'https://gfssm.butian.club' },
+            { label: '平台使用文档', to: '/docs/intro' },
           ],
         },
         {
           title: '更多',
           items: [
-            {label: 'GitHub', href: 'https://github.com/butian-club'},
+            { label: 'GitHub', href: 'https://github.com/butian-club' },
             {
               label: '杭州第二中学',
               href: 'http://www.hz2hs.cn/',

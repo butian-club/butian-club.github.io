@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 /**
  * 协作平台文档侧边栏（唯一文档）。
@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'dashboard',
         'chat',
+        'ai',
         'notifications',
         'departments',
         'members',

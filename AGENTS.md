@@ -13,12 +13,13 @@ npm install
 npm start                                      # default dev server
 npm start -- --no-open --port 8964             # configured local preview
 npm start -- --no-open --locale en --port 8965 # English preview
+npm test
 npm run typecheck
 npm run build
 npm run serve
 ```
 
-Run `npm run typecheck` and `npm run build` before delivering code changes.
+Run `npm test`, `npm run typecheck`, and `npm run build` before delivering changes.
 
 ## Structure and conventions
 
@@ -33,6 +34,13 @@ Run `npm run typecheck` and `npm run build` before delivering code changes.
 - Do not invent missing teachers, members, contact details, recruitment dates, or other club
   facts. Leave the existing TODOs until verified information is available.
 - Preserve the bilingual structure when changing user-facing content.
+- The collaboration-platform handbook must describe behavior verified in
+  `/Users/lailai/GitHub/butian-club-gfssm-website`. Treat its routes, schema,
+  services, and tests as implementation evidence; do not preserve an old manual
+  claim merely because it appeared in an earlier release.
+- When a platform fact changes, update every affected handbook page and the
+  bilingual website READMEs in the same change. Extend
+  `tests/content-consistency.test.mjs` for facts likely to regress.
 
 ## Agent configuration
 

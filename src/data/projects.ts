@@ -2,7 +2,7 @@
  * 项目数据源（单一可信来源，双语）。
  * 首页「精选项目」与 /projects 列表页均从此读取。
  *
- * 内容依据公开报道；存疑细节（具体队名、奖项、名单）在文中标注待补证。
+ * 内容依据公开报道；未经核实的具体队名、奖项或名单不进入展示文案。
  * 新增项目：往数组追加一项即可；详情可指向 blog 活动文章或 docs 文档。
  */
 
@@ -26,10 +26,10 @@ export interface Project {
 
 export const STATUS_META: Record<
   ProjectStatus,
-  {labelZh: string; labelEn: string; tone: 'active' | 'completed'}
+  { labelZh: string; labelEn: string; tone: 'active' | 'completed' }
 > = {
-  active: {labelZh: '进行中', labelEn: 'In Progress', tone: 'active'},
-  completed: {labelZh: '已完成', labelEn: 'Completed', tone: 'completed'},
+  active: { labelZh: '进行中', labelEn: 'In Progress', tone: 'active' },
+  completed: { labelZh: '已完成', labelEn: 'Completed', tone: 'completed' },
 };
 
 export const projects: Project[] = [

@@ -14,7 +14,7 @@
 
 The official website of the Butian Engineering Club at Hangzhou No. 2 High School.
 It presents the club, projects, activity records, and an operating guide for the club's
-collaboration platform at [butian-club.github.io](https://butian-club.github.io).
+collaboration platform at [butian.club](https://butian.club).
 
 ## Website Features
 
@@ -24,8 +24,8 @@ selection and the complete project index.
 📝 **Activity archive** — Docusaurus blog posts record competitions, outreach, and project
 reviews with shared author and tag metadata.
 
-📚 **Operations handbook** — the docs section covers accounts, permissions, tasks,
-tickets, documents, notifications, and administration.
+📚 **Operations handbook** — the docs section covers accounts, permissions, chat and AI,
+tasks, tickets, documents, notifications, and administration.
 
 🎨 **Shared visual system** — reusable page components and CSS tokens keep light and dark
 themes consistent across the site.
@@ -56,8 +56,8 @@ npm run build
   navigation position changes.
 - Change brand or theme tokens at the top of `src/css/custom.css`.
 
-Do not invent missing club information. Teacher names, member lists, contact details,
-recruitment dates, and other factual fields remain TODOs until the club confirms them.
+Do not invent missing club information. Omit teacher names, member lists, contact details,
+recruitment dates, and other factual fields until the club confirms them.
 
 ## Project Structure
 
