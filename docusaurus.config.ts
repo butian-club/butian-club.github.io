@@ -172,7 +172,7 @@ const config: Config = {
         {
           title: '社团',
           items: [
-            { label: '关于我们', to: '/about' },
+            { label: '认识步天', to: '/#club-profile' },
             { label: '加入我们', to: '/join' },
           ],
         },

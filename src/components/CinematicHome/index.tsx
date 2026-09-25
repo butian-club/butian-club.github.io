@@ -1,4 +1,4 @@
-import React, {type ReactNode, useRef, useState} from 'react';
+import React, {type MouseEvent, type ReactNode, useEffect, useRef, useState} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import {useT} from '@site/src/lib/i18n';
@@ -7,6 +7,7 @@ import {useGSAP} from '@gsap/react';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import OrbitalScene from './OrbitalScene';
+import ClubProfile from '@site/src/components/ClubProfile';
 import styles from './styles.module.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -25,12 +26,34 @@ const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars']
   .map((id) => projects.find((project) => project.id === id))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
 
+function scrollToClubProfile(): void {
+  const profile = document.getElementById('club-profile');
+  if (!profile) return;
+  window.scrollTo({top: window.scrollY + profile.getBoundingClientRect().top, behavior: 'instant'});
+}
+
 export default function CinematicHome(): ReactNode {
   const t = useT();
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const [activeStop, setActiveStop] = useState(0);
+
+  useEffect(() => {
+    if (window.location.hash !== '#club-profile') return;
+    const timer = window.setTimeout(() => {
+      ScrollTrigger.refresh();
+      scrollToClubProfile();
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const openClubProfile = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    window.history.pushState(null, '', '#club-profile');
+    ScrollTrigger.refresh();
+    scrollToClubProfile();
+  };
 
   useGSAP(() => {
     const root = rootRef.current;
@@ -282,8 +305,8 @@ export default function CinematicHome(): ReactNode {
                 'Curious about engineering and space? Ready to research, build and explain your ideas? Join the next mission. We keep our proposals and lessons for those who come after us.',
               )}</p>
               <div className={styles.endActions}>
-                <Link className={styles.primaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
-                <Link className={styles.secondaryLink} to="/blog">{t('阅读活动记录', 'Explore our stories')} <span>↗</span></Link>
+                <Link className={styles.primaryLink} to="/#club-profile" onClick={openClubProfile}>{t('继续认识步天', 'Meet the club')} <span>↓</span></Link>
+                <Link className={styles.secondaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
               </div>
             </div>
 
@@ -294,9 +317,10 @@ export default function CinematicHome(): ReactNode {
             </div>
           </div>
         </section>
+        <ClubProfile />
         <div className={styles.afterword}>
           <span>END OF TRANSMISSION · BUTIAN ENGINEERING CLUB</span>
-          <Link to="/about">{t('阅读社团完整档案 ↗', 'EXPLORE THE CLUB ARCHIVE ↗')}</Link>
+          <Link to="/blog">{t('阅读活动记录 ↗', 'EXPLORE THE ACTIVITY LOG ↗')}</Link>
         </div>
       </main>
     </Layout>

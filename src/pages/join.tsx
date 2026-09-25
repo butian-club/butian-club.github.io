@@ -15,8 +15,8 @@ const traits = [
 
 const steps = [
   {
-    zh: ['了解社团', '先读一读关于我们与知识库，看看我们在做什么、怎么做事，判断是否合拍。'],
-    en: ['Get to know us', 'Read About and the knowledge base first — see what we do and how, and whether it clicks.'],
+    zh: ['了解社团', '先读一读首页的社团介绍与知识库，看看我们在做什么、怎么做事，判断是否合拍。'],
+    en: ['Get to know us', 'Read the club story on the homepage and the knowledge base first — see what we do and how, and whether it clicks.'],
   },
   {
     zh: ['报名招新', '在招新季通过社团报名渠道提交申请，简单介绍你的兴趣方向与想做的事。'],
@@ -147,7 +147,7 @@ export default function Join(): ReactNode {
             </ul>
             <p className={styles.note}>
               {t('报名之前，可以先读', 'Before applying, read ')}
-              <Link to="/about">{t('关于步天', 'About Butian')}</Link>
+              <Link to="/#club-profile">{t('首页的社团介绍', 'the club story on our homepage')}</Link>
               {t('并浏览', ' and browse the ')}
               <Link to="/blog">{t('活动记录', 'activity log')}</Link>
               {t('，了解社团的工作方式。', ' to understand how the club works.')}

@@ -75,7 +75,7 @@ butian-club.github.io/
 │   ├── css/custom.css              # visual tokens and global styles
 │   ├── data/                       # project and organization data
 │   ├── lib/i18n.ts                 # interface strings
-│   └── pages/                      # home, about, and join routes
+│   └── pages/                      # home and join routes
 ├── static/                         # Logos, icons, and social assets
 ├── docusaurus.config.ts            # Docusaurus configuration
 ├── LICENSE                         # Code license

@@ -658,6 +658,7 @@ body:has(#cinematic-home) .navbar {
 .footer {
   border-top: 1px solid var(--ap-line);
 }
+.footer__link-item { max-width: 100%; overflow-wrap: anywhere; }
 .footer__title {
   font-family: var(--font-mono);
   letter-spacing: 0.14em;
