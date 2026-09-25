@@ -25,9 +25,9 @@
   --ifm-color-primary-lightest: #63a886;
 
   /* 与协作平台一致的字体栈：SF / 苹方 / Inter 回退 */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
-    'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei',
-    system-ui, sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', 'PingFang SC',
+    'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
   --font-mono: 'SF Mono', 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
 
   --ifm-font-family-base: var(--font-sans);
@@ -321,7 +321,10 @@ h4 {
 /* 主按钮：保留清晰的按压与键盘状态。 */
 .button {
   font-weight: 600;
-  transition: transform 0.12s ease, filter 0.15s ease, background 0.15s ease;
+  transition:
+    transform 0.12s ease,
+    filter 0.15s ease,
+    background 0.15s ease;
 }
 
 .button--primary {
@@ -384,7 +387,9 @@ button:focus-visible,
   border: 1px solid var(--ap-line);
   border-radius: 0;
   box-shadow: none;
-  transition: border-color 160ms ease, background-color 160ms ease;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
 }
 
 .pagination-nav__link:hover {
@@ -467,5 +472,152 @@ button:focus-visible,
   *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* Aerospace identity: the homepage is a dark cinematic experience; content pages
+   inherit these quieter companion palettes so long-form reading remains clear. */
+:root {
+  --ifm-color-primary: #17677a;
+  --ifm-color-primary-dark: #135e70;
+  --ifm-color-primary-darker: #0f5364;
+  --ifm-color-primary-darkest: #0b4352;
+  --ifm-color-primary-light: #23768a;
+  --ifm-color-primary-lighter: #32869a;
+  --ifm-color-primary-lightest: #5aa3ae;
+  --ifm-background-color: #f5f8f7;
+  --ifm-background-surface-color: #f9fbfa;
+  --ifm-navbar-background-color: #edf3f3;
+  --ifm-navbar-link-color: #233942;
+  --ifm-navbar-link-hover-color: #17677a;
+  --ifm-footer-background-color: #e6eeed;
+  --ifm-footer-color: #43575f;
+  --ifm-footer-link-color: #43575f;
+  --ifm-footer-title-color: #142b35;
+  --ifm-link-color: #17677a;
+  --ap-bg: #eff4f3;
+  --ap-bg-subtle: #e5eeee;
+  --ap-surface: #f8fbfa;
+  --ap-surface-2: #eaf1f0;
+  --ap-surface-soft: #f0f5f4;
+  --ap-line: #cbdad9;
+  --ap-line-strong: #aabfbe;
+  --ap-brand: #17677a;
+  --ap-brand-strong: #115667;
+  --ap-brand-soft: #dceeee;
+  --ap-brand-line: #91c3c7;
+  --ap-title: #10252f;
+  --ap-ink: #10252f;
+  --ap-body: #3a535d;
+  --ap-muted: #607780;
+  --ap-faint: #768c91;
+  --bt-school-green: #17677a;
+  --bt-school-green-strong: #115667;
+  --bt-school-green-soft: #dceeee;
+  --mc-mono: var(--font-mono);
+  --ifm-heading-font-family:
+    'Avenir Next Condensed', 'Avenir Next', 'PingFang SC', var(--font-sans);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #9bdde2;
+  --ifm-color-primary-dark: #82cdd4;
+  --ifm-color-primary-darker: #6dbbc5;
+  --ifm-color-primary-darkest: #4f9eaa;
+  --ifm-color-primary-light: #b0e8e9;
+  --ifm-color-primary-lighter: #c4eff0;
+  --ifm-color-primary-lightest: #e3f8f7;
+  --ifm-background-color: #07131c;
+  --ifm-background-surface-color: #0b1a24;
+  --ifm-navbar-background-color: #07131ced;
+  --ifm-navbar-link-color: #d1e0e2;
+  --ifm-navbar-link-hover-color: #a9e7e9;
+  --ifm-footer-background-color: #040e16;
+  --ifm-footer-color: #9caeb5;
+  --ifm-footer-link-color: #b8cacf;
+  --ifm-footer-title-color: #edf5f5;
+  --ifm-link-color: #9bdde2;
+  --ap-bg: #07131c;
+  --ap-bg-subtle: #0a1923;
+  --ap-surface: #0b1a24;
+  --ap-surface-2: #112530;
+  --ap-surface-soft: #0a1821;
+  --ap-line: #27414a;
+  --ap-line-strong: #3a5961;
+  --ap-brand: #9bdde2;
+  --ap-brand-strong: #c3eef0;
+  --ap-brand-soft: #17343d;
+  --ap-brand-line: #356874;
+  --ap-title: #f1f6f5;
+  --ap-ink: #f1f6f5;
+  --ap-body: #c1d0d4;
+  --ap-muted: #91a8af;
+  --ap-faint: #75919a;
+  --bt-school-green: #9bdde2;
+  --bt-school-green-strong: #c3eef0;
+  --bt-school-green-soft: #17343d;
+  --mc-mono: var(--font-mono);
+}
+
+.navbar {
+  border-bottom: 1px solid var(--ap-line);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.navbar__logo img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+.navbar__title {
+  font-family: var(--ifm-heading-font-family);
+  font-size: 1.04rem;
+  letter-spacing: 0.04em;
+}
+.navbar__link {
+  font-size: 0.84rem;
+  letter-spacing: 0.03em;
+}
+.footer {
+  border-top: 1px solid var(--ap-line);
+}
+.footer__title {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.main-wrapper,
+.blog-wrapper {
+  background: var(--ap-surface);
+}
+.theme-doc-markdown h1,
+.blog-wrapper article h1 {
+  font-family: var(--ifm-heading-font-family);
+  letter-spacing: -0.045em;
+}
+.theme-doc-sidebar-container {
+  background: var(--ap-surface-soft);
+}
+.menu__link,
+.table-of-contents__link {
+  font-size: 0.85rem;
+}
+.alert--success,
+.alert--info {
+  --ifm-alert-background-color: var(--ap-brand-soft);
+  --ifm-alert-border-color: var(--ap-brand-line);
+  --ifm-alert-foreground-color: var(--ap-ink);
+  border: 1px solid var(--ap-brand-line);
+}
+.alert--success a,
+.alert--info a {
+  color: var(--ap-brand-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
   }
 }

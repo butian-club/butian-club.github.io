@@ -1,0 +1,331 @@
+.home {
+  --ice: #b9f4ed;
+  --amber: #f4b782;
+  position: relative;
+  overflow: clip;
+  color: #f7fbfc;
+  background: #030a11;
+  font-family: var(--font-sans);
+}
+
+.home * { box-sizing: border-box; }
+.home ::selection { background: #b9f4ed; color: #06131c; }
+.journey { position: relative; min-height: 100svh; }
+.stage {
+  --journey-progress: 0;
+  position: relative;
+  height: 100svh;
+  min-height: 620px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #030a11;
+}
+.spaceBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 71% 61%, rgba(134, 68, 46, .26), transparent 43%),
+    radial-gradient(ellipse at 57% 28%, rgba(29, 94, 105, .16), transparent 52%),
+    url('/img/mars-orbit-hero.jpg') 75% 48% / cover no-repeat;
+  opacity: .72;
+  will-change: transform, opacity;
+}
+.spaceBackdrop::after {
+  content: 'CONCEPT VISUAL / MARS ORBIT';
+  position: absolute;
+  right: clamp(24px, 4.4vw, 78px);
+  bottom: 57px;
+  color: rgba(229, 246, 242, .55);
+  font: 500 8px var(--font-mono);
+  letter-spacing: .16em;
+}
+.stage:not([data-webgl='ready']) .spaceBackdrop {
+  opacity: .72 !important;
+  visibility: visible !important;
+}
+.orbitalShell {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  will-change: clip-path;
+}
+.orbitalScene { position: absolute; inset: 0; }
+.orbitalScene canvas { display: block; width: 100%; height: 100%; }
+.spaceVeil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(2, 10, 17, .9), rgba(2, 10, 17, .54) 42%, rgba(2, 10, 17, .1) 80%);
+}
+.spaceVeil::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .55;
+  background: linear-gradient(0deg, #030a11 0%, transparent 29%, transparent 77%, #030a11 100%);
+}
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: .13;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+}
+.reticle {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 51%;
+  width: min(29vw, 410px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(191, 233, 236, .13);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: .6;
+  pointer-events: none;
+}
+.reticle::before, .reticle::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border: 1px solid rgba(191, 233, 236, .14);
+  border-radius: 50%;
+}
+.reticle::after { inset: 48%; background: rgba(191, 233, 236, .65); }
+.reticle span {
+  position: absolute;
+  left: 50%;
+  top: -11px;
+  height: 22px;
+  border-left: 1px solid rgba(191, 233, 236, .5);
+}
+.reticle span:nth-child(2) { top: auto; bottom: -11px; }
+.reticle span:nth-child(3) { top: 50%; left: -11px; width: 22px; height: 0; border-left: 0; border-top: 1px solid rgba(191, 233, 236, .5); }
+.reticle span:nth-child(4) { top: 50%; left: auto; right: -11px; width: 22px; height: 0; border-left: 0; border-top: 1px solid rgba(191, 233, 236, .5); }
+.orbitLine {
+  position: absolute;
+  z-index: 3;
+  width: 92vw;
+  aspect-ratio: 1.8;
+  left: 44%;
+  top: 59%;
+  border: 1px solid rgba(151, 221, 225, .11);
+  border-radius: 50%;
+  transform: rotate(-19deg) translate(-50%, -50%);
+  pointer-events: none;
+}
+.hud {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  color: rgba(228, 247, 247, .68);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .18em;
+}
+.hudBrand { position: absolute; top: 30px; left: clamp(24px, 4.4vw, 78px); display: flex; align-items: center; gap: 13px; }
+.hudDiamond { width: 8px; height: 8px; border: 1px solid var(--ice); transform: rotate(45deg); box-shadow: 0 0 14px rgba(185, 244, 237, .8); }
+.hudCoordinates { position: absolute; top: 30px; right: clamp(24px, 4.4vw, 78px); }
+.hudCoordinates span { color: var(--amber); }
+.hudBottom { position: absolute; bottom: 28px; left: clamp(24px, 4.4vw, 78px); right: clamp(24px, 4.4vw, 78px); display: flex; justify-content: space-between; }
+.phaseIndex, .eyebrow, .signal, .scrollCue, .recordEyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .21em; }
+.phaseIndex, .eyebrow { color: var(--ice); }
+.heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy { position: absolute; z-index: 12; }
+.briefCopy, .yearGhost, .assemblyCopy, .calloutLeft, .calloutRight, .calloutBottom,
+.habitatCaption, .teamCaption, .record, .recordEntry, .endCopy {
+  opacity: 0;
+  visibility: hidden;
+}
+.heroCopy { top: 50%; left: clamp(28px, 8vw, 150px); width: min(59vw, 760px); transform: translateY(-44%); will-change: transform, opacity; }
+.heroCopy h1, .endCopy h2 {
+  margin: 23px 0 22px;
+  font-size: clamp(3.8rem, 7.2vw, 8.1rem);
+  font-weight: 610;
+  line-height: 1.09;
+  letter-spacing: -.075em;
+  text-wrap: nowrap;
+  text-shadow: 0 8px 80px rgba(0, 0, 0, .26);
+}
+.heroCopy h1 em, .assemblyCopy h2 em, .endCopy h2 em { font-style: normal; color: var(--ice); }
+.heroLead { max-width: 470px; margin: 0; color: rgba(236, 248, 247, .74); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.8; }
+.scrollCue { display: flex; align-items: center; gap: 14px; margin-top: 57px; color: rgba(233, 248, 247, .68); }
+.scrollGlyph { display: grid; place-items: center; width: 33px; height: 47px; border: 1px solid rgba(185, 244, 237, .56); border-radius: 21px; color: var(--ice); font-size: 19px; animation: float 2.7s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(7px); } }
+
+.briefCopy { top: 25%; left: clamp(44px, 8vw, 140px); width: min(38vw, 510px); text-align: left; }
+.briefCopy h2, .assemblyCopy h2, .habitatCaption h2, .teamCaption h2 {
+  margin: 14px 0 20px;
+  font-size: clamp(2.3rem, 4.2vw, 5.2rem);
+  line-height: 1.15;
+  letter-spacing: -.065em;
+}
+.briefCopy p:last-child, .assemblyCopy p, .habitatCaption p, .teamCaption p, .endCopy > p:not(.phaseIndex) {
+  max-width: 430px;
+  color: rgba(238, 249, 249, .8);
+  font-size: clamp(14px, 1.25vw, 18px);
+  line-height: 1.8;
+}
+.signal { display: flex; align-items: center; gap: 10px; color: var(--amber); margin-bottom: 34px; }
+.signal span { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 14px var(--amber); }
+.yearGhost {
+  position: absolute;
+  z-index: 4;
+  bottom: -12%;
+  left: 6%;
+  font-size: clamp(13rem, 35vw, 39rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -.095em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(196, 243, 239, .24);
+  pointer-events: none;
+}
+.assemblyCopy { top: 17%; left: clamp(34px, 6.2vw, 112px); width: min(42vw, 530px); }
+.assemblyCopy h2 { font-size: clamp(2.7rem, 5vw, 6.3rem); }
+.assemblyCopy p { max-width: 340px; }
+.calloutLeft, .calloutRight, .calloutBottom {
+  position: absolute;
+  z-index: 14;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 0 13px 18px;
+  border-left: 1px solid rgba(185, 244, 237, .74);
+  background: linear-gradient(90deg, rgba(3, 14, 22, .72), transparent);
+  text-shadow: 0 2px 12px #000;
+}
+.calloutLeft { left: 7%; bottom: 22%; }
+.calloutRight { right: 7%; top: 31%; }
+.calloutBottom { right: 15%; bottom: 16%; }
+.calloutNumber { color: var(--amber); font: 600 9px var(--font-mono); letter-spacing: .18em; }
+.calloutLeft b, .calloutRight b, .calloutBottom b { color: #f6fbfa; font-size: 16px; letter-spacing: -.02em; }
+.calloutLeft small, .calloutRight small, .calloutBottom small { color: rgba(225, 243, 242, .7); font: 500 9px var(--font-mono); letter-spacing: .12em; }
+.portal, .reality { position: absolute; inset: 0; z-index: 8; visibility: hidden; opacity: 0; will-change: clip-path; }
+.portalImage, .realityImage { position: absolute; inset: 0; background-position: center; background-size: cover; will-change: transform; }
+.portalImage { background-image: url('/img/life-support-concept.jpg'); }
+.portalTint { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0, 10, 16, .82), transparent 52%, rgba(0, 12, 15, .2)); }
+.portalFrame { position: absolute; inset: 3%; border: 1px solid rgba(222, 251, 238, .23); border-radius: min(12vw, 140px); pointer-events: none; }
+.habitatCaption { left: clamp(36px, 8vw, 140px); bottom: 11%; width: min(46vw, 600px); text-shadow: 0 2px 18px #000; }
+.habitatCaption h2 { font-size: clamp(2.4rem, 4.7vw, 5.7rem); }
+.habitatCaption small, .teamCaption small { display: block; margin-top: 23px; color: rgba(232, 246, 242, .63); font: 500 9px var(--font-mono); letter-spacing: .16em; }
+.reality { z-index: 10; }
+.realityImage { background-image: url('/img/projects/2024-gfssm/team.jpg'); background-position: center 44%; }
+.realityTint { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1, 12, 16, .79), rgba(1, 12, 16, .16) 70%), linear-gradient(0deg, rgba(1, 12, 16, .85), transparent 55%); }
+.teamCaption { z-index: 13; left: clamp(36px, 8vw, 140px); bottom: 12%; width: min(58vw, 760px); text-shadow: 0 2px 18px #000; }
+.teamCaption h2 { font-size: clamp(3rem, 5vw, 6.2rem); }
+.record { position: absolute; inset: 0; z-index: 15; padding: 21vh clamp(36px, 8vw, 140px); background: linear-gradient(90deg, rgba(1, 11, 16, .81), rgba(1, 11, 16, .35)); }
+.recordEyebrow { margin: 0; color: var(--ice); }
+.recordEntry { position: absolute; top: 33%; left: clamp(36px, 8vw, 140px); width: min(70vw, 850px); }
+.recordEntry > span { display: block; color: var(--amber); font-size: clamp(6rem, 15vw, 15rem); font-weight: 650; line-height: .8; letter-spacing: -.11em; }
+.recordEntry h2 { margin: 20px 0 15px; font-size: clamp(1.7rem, 3vw, 3.7rem); line-height: 1.2; letter-spacing: -.055em; }
+.recordEntry p { max-width: 700px; color: rgba(234, 248, 247, .78); font-size: clamp(13px, 1.12vw, 16px); line-height: 1.75; }
+.recordEntry a { display: inline-flex; margin-top: 12px; color: var(--ice); font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(185, 244, 237, .62); padding-bottom: 6px; }
+.recordEntry a:hover { color: #fff; border-color: #fff; }
+.recordTicks { position: absolute; right: 7%; bottom: 16%; display: flex; gap: 9px; }
+.recordTicks i { display: block; width: 38px; height: 2px; background: rgba(185, 244, 237, .48); }
+.endCopy { z-index: 16; top: 50%; left: clamp(30px, 8vw, 140px); width: min(76vw, 950px); transform: translateY(-48%); }
+.endCopy h2 { font-size: clamp(3.5rem, 6.7vw, 8rem); }
+.endCopy > p:not(.phaseIndex) { max-width: 540px; }
+.endActions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 38px; }
+.endActions a { display: inline-flex; justify-content: space-between; align-items: center; min-width: 185px; gap: 36px; padding: 15px 21px; border-radius: 3px; font-size: 13px; font-weight: 650; text-decoration: none; transition: transform .25s, background .25s, color .25s; }
+.endActions a:hover { transform: translateY(-3px); }
+.primaryLink { background: var(--ice); color: #05141a; }
+.primaryLink:hover { background: #fff; color: #05141a; }
+.secondaryLink { border: 1px solid rgba(185, 244, 237, .48); color: #fff; background: rgba(5, 17, 25, .48); }
+.secondaryLink:hover { color: #fff; background: rgba(185, 244, 237, .14); }
+.progressRail { position: absolute; z-index: 27; right: clamp(20px, 3.5vw, 60px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: 15px; transform: translateY(-50%); color: rgba(228, 247, 247, .7); font: 600 9px var(--font-mono); letter-spacing: .13em; pointer-events: none; }
+.progressTrack { position: relative; width: 1px; height: clamp(80px, 22vh, 180px); background: rgba(203, 241, 239, .24); overflow: hidden; }
+.progressTrack i { display: block; width: 100%; height: 100%; background: var(--ice); transform: scaleY(var(--journey-progress)); transform-origin: top; box-shadow: 0 0 12px var(--ice); }
+.progressName { writing-mode: vertical-rl; white-space: nowrap; }
+.afterword { min-height: 110px; padding: 30px clamp(25px, 6vw, 100px); display: flex; justify-content: space-between; align-items: center; gap: 24px; color: rgba(221, 242, 241, .58); background: #02070c; font: 500 10px var(--font-mono); letter-spacing: .14em; }
+.afterword a { color: var(--ice); text-decoration: none; }
+.afterword a:hover { color: #fff; }
+
+@media (max-width: 900px) {
+  .stage { min-height: 560px; }
+  .hudCoordinates { display: none; }
+  .heroCopy { left: 6%; width: 82%; }
+  .heroCopy h1 { font-size: clamp(3.5rem, 9vw, 6rem); }
+  .briefCopy { left: 8%; width: 55%; }
+  .assemblyCopy { width: 55%; }
+  .calloutRight { right: 8%; top: 57%; }
+  .calloutBottom { right: 10%; bottom: 15%; }
+  .habitatCaption, .teamCaption { width: 75%; }
+  .recordEntry { width: 76%; }
+}
+@media (max-width: 600px) {
+  .stage { height: 100svh; min-height: 580px; }
+  .spaceBackdrop { background-position: 80% center; }
+  .hudBrand { top: 20px; left: 24px; font-size: 8px; }
+  .hudBottom { left: 24px; right: 24px; bottom: 18px; font-size: 7px; }
+  .hudBottom span:last-child { display: none; }
+  .reticle { width: 56vw; left: 60%; }
+  .heroCopy { left: 7%; top: 42%; width: 84%; }
+  .heroCopy h1 { font-size: clamp(2.6rem, 11vw, 4.4rem); text-wrap: nowrap; }
+  .heroLead { max-width: 295px; font-size: 14px; }
+  .scrollCue { margin-top: 30px; font-size: 8px; }
+  .briefCopy { left: 8%; top: 18%; right: auto; width: 78%; }
+  .briefCopy h2 { font-size: 2.7rem; }
+  .yearGhost { left: 0; bottom: 5%; font-size: 38vw; }
+  .assemblyCopy { top: 14%; left: 7%; width: 85%; }
+  .assemblyCopy h2 { font-size: 3.1rem; }
+  .assemblyCopy p { max-width: 240px; }
+  .calloutLeft { left: 8%; bottom: 28%; }
+  .calloutRight { right: 10%; top: 54%; }
+  .calloutBottom { left: 9%; right: auto; bottom: 15%; }
+  .calloutLeft b, .calloutRight b, .calloutBottom b { font-size: 13px; }
+  .portalImage { background-position: 51% center; }
+  .habitatCaption, .teamCaption { left: 8%; bottom: 15%; width: 83%; }
+  .habitatCaption h2, .teamCaption h2 { font-size: 2.8rem; }
+  .habitatCaption p, .teamCaption p { font-size: 13px; }
+  .record { padding: 22vh 8%; }
+  .recordEntry { top: 35%; left: 8%; width: 80%; }
+  .recordEntry > span { font-size: 24vw; }
+  .recordEntry h2 { font-size: 1.75rem; }
+  .recordEntry p { font-size: 12px; }
+  .recordTicks { bottom: 12%; }
+  .endCopy { left: 8%; width: 83%; }
+  .endCopy h2 { font-size: 3.6rem; text-wrap: wrap; }
+  .endActions { gap: 9px; }
+  .endActions a { min-width: 170px; padding: 13px 15px; }
+  .progressRail { right: 14px; top: 48%; }
+  .progressName { display: none; }
+  .afterword { flex-direction: column; align-items: flex-start; font-size: 8px; }
+}
+@media (max-width: 360px) {
+  .heroCopy h1 { font-size: 10vw; }
+  .hudBrand { letter-spacing: .09em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey { min-height: 0; }
+  .stage { height: auto; min-height: 0; overflow: visible; padding: 120px 7% 100px; }
+  .orbitalShell, .reticle, .orbitLine, .yearGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .recordTicks { display: none; }
+  .spaceBackdrop { background-image: url('/img/mars-orbit-hero.jpg'); }
+  .spaceVeil { background: rgba(2, 10, 17, .65); }
+  .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
+    position: relative;
+    inset: auto;
+    z-index: 12;
+    width: min(100%, 900px);
+    max-width: 900px;
+    margin: 0 0 100px;
+    padding: 0;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    background: none;
+  }
+  .heroCopy h1, .endCopy h2 { text-wrap: wrap; }
+  .recordEntry { margin: 35px 0; }
+  .scrollCue { display: none; }
+  .afterword { position: relative; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

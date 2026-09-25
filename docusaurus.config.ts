@@ -131,8 +131,8 @@ const config: Config = {
       },
     ],
     colorMode: {
-      defaultMode: 'light',
-      respectPrefersColorScheme: true,
+      defaultMode: 'dark',
+      respectPrefersColorScheme: false,
     },
     navbar: {
       title: '步天工程社',
