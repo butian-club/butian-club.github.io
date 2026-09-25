@@ -73,6 +73,7 @@ export default function CinematicHome(): ReactNode {
         pin: stage,
         scrub: 0.65,
         anticipatePin: 1,
+        refreshPriority: 10,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const value = self.progress * 100;

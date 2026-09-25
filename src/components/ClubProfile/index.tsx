@@ -88,102 +88,150 @@ export default function ClubProfile(): ReactNode {
   const rootRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const root = rootRef.current;
-    if (!root) return;
+    if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    gsap.fromTo(root.querySelector('[data-profile-photo]'),
+      {scale: 1.16, clipPath: 'circle(16% at 73% 48%)'},
+      {scale: 1, clipPath: 'circle(115% at 73% 48%)', ease: 'none',
+        scrollTrigger: {trigger: root.querySelector('[data-profile-intro]'), start: 'top bottom', end: 'bottom top', scrub: true}},
+    );
     gsap.utils.toArray<HTMLElement>('[data-profile-reveal]', root).forEach((element) => {
       gsap.from(element, {
-        autoAlpha: 0,
-        y: 34,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: {trigger: element, start: 'top 88%', once: true},
+        autoAlpha: 0, y: 44, duration: 1.05, ease: 'power3.out',
+        scrollTrigger: {trigger: element, start: 'top 90%', once: true},
       });
     });
-    const trace = root.querySelector<HTMLElement>('[data-profile-trace]');
-    const history = root.querySelector<HTMLElement>('[data-profile-history]');
-    if (trace && history) {
-      gsap.fromTo(trace, {scaleY: 0}, {
-        scaleY: 1,
-        ease: 'none',
-        scrollTrigger: {trigger: history, start: 'top 70%', end: 'bottom 72%', scrub: true},
-      });
-    }
+
+    const media = gsap.matchMedia();
+    media.add('(min-width: 761px)', () => {
+      const workflow = root.querySelector<HTMLElement>('[data-profile-workflow]');
+      const slides = gsap.utils.toArray<HTMLElement>('[data-workflow-slide]', workflow);
+      const orbit = workflow?.querySelector<HTMLElement>('[data-workflow-orbit]');
+      const line = workflow?.querySelector<HTMLElement>('[data-workflow-line]');
+      if (workflow && slides.length === 3 && orbit && line) {
+        gsap.set(slides, {autoAlpha: 0, y: 40});
+        gsap.set(slides[0], {autoAlpha: 1, y: 0});
+        gsap.set(line, {scaleX: 0});
+        const timeline = gsap.timeline({scrollTrigger: {
+          trigger: workflow, start: 'top top', end: 'bottom bottom', scrub: 0.55,
+        }});
+        timeline.to(orbit, {rotation: 55, duration: 3, ease: 'none'}, 0)
+          .to(line, {scaleX: 1, duration: 3, ease: 'none'}, 0)
+          .to(slides[0], {autoAlpha: 0, y: -42, duration: .3}, .73)
+          .fromTo(slides[1], {autoAlpha: 0, y: 46}, {autoAlpha: 1, y: 0, duration: .35}, .9)
+          .to(slides[1], {autoAlpha: 0, y: -42, duration: .3}, 1.72)
+          .fromTo(slides[2], {autoAlpha: 0, y: 46}, {autoAlpha: 1, y: 0, duration: .35}, 1.9);
+      }
+
+      const history = root.querySelector<HTMLElement>('[data-profile-history]');
+      const chapters = gsap.utils.toArray<HTMLElement>('[data-history-chapter]', history);
+      const historyLine = history?.querySelector<HTMLElement>('[data-history-line]');
+      if (history && chapters.length === lineage.length && historyLine) {
+        gsap.set(chapters, {autoAlpha: 0, y: 38});
+        gsap.set(chapters[0], {autoAlpha: 1, y: 0});
+        gsap.set(historyLine, {scaleX: 0});
+        const timeline = gsap.timeline({scrollTrigger: {
+          trigger: history, start: 'top top', end: 'bottom bottom', scrub: 0.55,
+        }});
+        const driver = {value: 0};
+        timeline.to(driver, {value: 1, duration: 5, ease: 'none'}, 0)
+          .to(historyLine, {scaleX: 1, duration: 5, ease: 'none'}, 0);
+        for (let index = 1; index < chapters.length; index += 1) {
+          timeline.to(chapters[index - 1], {autoAlpha: 0, y: -38, duration: .28}, index - .23)
+            .fromTo(chapters[index], {autoAlpha: 0, y: 44}, {autoAlpha: 1, y: 0, duration: .36}, index);
+        }
+      }
+    });
+    const refresh = window.requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => {
+      window.cancelAnimationFrame(refresh);
+      media.revert();
+    };
   }, {scope: rootRef});
 
   return (
     <section id="club-profile" className={styles.profile} ref={rootRef} aria-labelledby="profile-heading">
-      <div className={styles.intro}>
-        <div className={styles.introCopy} data-profile-reveal>
-          <p className={styles.kicker}>08 / BUTIAN ENGINEERING CLUB</p>
+      <div className={styles.intro} data-profile-intro>
+        <div className={styles.introPhoto} data-profile-photo aria-hidden="true">
+          <img src="/img/projects/2024-gfssm/work-02.jpg" alt="" loading="lazy" />
+        </div>
+        <div className={styles.introShade} />
+        <div className={styles.introContent} data-profile-reveal>
+          <p className={styles.kicker}>08 / THE PEOPLE BEHIND THE MISSION</p>
           <h2 id="profile-heading">{t('把好奇心，', 'Turn curiosity')}<br /><em>{t('变成一份方案。', 'into a proposal.')}</em></h2>
           <p className={styles.introLead}>{t(
             '步天工程社是杭州第二中学求是创新学院的学生社团，主要开展太空城市与基地设计、工程实践及航天科普。',
             'Butian is a student club at the Qiushi Innovation Academy of Hangzhou No.2 High School, focused on space-settlement design, engineering practice and space-science outreach.',
           )}</p>
-          <p>{t(
+          <p className={styles.introDetail}>{t(
             '社团以太空城市与基地设计项目组织成员学习。成员从赛事任务书出发，分工研究结构、人居、运营与基础设施，最后完成提案和英文答辩。社团提供资料检索、方案讨论、模拟答辩和项目复盘的场合，并将成熟的方法整理进知识库。',
             'The club organizes learning around space-settlement design projects. Members begin with competition briefs, research structure, habitat, operations and infrastructure in teams, then produce a proposal and defend it in English. The club provides a setting for research, design reviews, mock defenses and retrospectives, with established methods documented in the knowledge base.',
           )}</p>
         </div>
-        <figure className={styles.introImage} data-profile-reveal>
-          <img src="/img/projects/2024-gfssm/work-02.jpg" loading="lazy" alt={t('步天工程社成员在 2024 GFSSM 中国站现场讨论方案', 'Butian members discussing their proposal at the 2024 GFSSM China round')} />
-          <figcaption>{t('2024 GFSSM 中国站 · 现场协作', '2024 GFSSM China · Team workshop')}</figcaption>
-        </figure>
-        <span className={styles.introIndex} aria-hidden="true">BUTIAN / 01</span>
+        <span className={styles.introStamp}>{t('真实影像 · 2024 GFSSM 中国站现场协作', 'ARCHIVE PHOTO · GFSSM CHINA 2024 WORKSHOP')}</span>
+        <span className={styles.introGhost} aria-hidden="true">BUTIAN</span>
+        <span className={styles.edgeNumber} aria-hidden="true">08 / 13</span>
       </div>
 
-      <div className={styles.method}>
-        <div className={styles.sectionSide} data-profile-reveal>
-          <p className={styles.kicker}>01 / CULTURE & STRUCTURE</p>
-          <h2>{t('我们的', 'How we')}<br /><em>{t('工作方式。', 'work together.')}</em></h2>
+      <div className={styles.workflow} data-profile-workflow>
+        <div className={styles.workflowStage}>
+          <div className={styles.workflowGrid} aria-hidden="true" />
+          <div className={styles.workflowHead}>
+            <p className={styles.kicker}>09 / HOW WE BUILD</p>
+            <p>{t('求是创新学院 · 赛事代表队 · 虚拟航天公司', 'QIUSHI ACADEMY · COMPETITION TEAMS · VIRTUAL AEROSPACE COMPANY')}</p>
+          </div>
+          <div className={styles.workflowSlides}>
+            {culture.map((item, index) => (
+              <article className={styles.workflowSlide} data-workflow-slide key={item.zh[0]}>
+                <span className={styles.slideNumber}>0{index + 1}<small> / 03</small></span>
+                <h2>{t(item.zh[0], item.en[0])}</h2>
+                <p>{t(item.zh[1], item.en[1])}</p>
+              </article>
+            ))}
+          </div>
+          <div className={styles.workflowDiagram} aria-label={t('五个部门协作构成一份方案', 'Five departments working together on one proposal')}>
+            <div className={styles.orbitRings} data-workflow-orbit aria-hidden="true"><i /><i /><i /></div>
+            <div className={styles.diagramCore}><span>BUTIAN</span><b>{t('共同方案', 'ONE PROPOSAL')}</b></div>
+            {departments.map((department, index) => (
+              <span className={`${styles.diagramNode} ${styles['node' + index]}`} key={department[0]}>
+                <small>0{index + 1}</small>{t(department[0], department[1])}
+              </span>
+            ))}
+          </div>
+          <div className={styles.workflowFoot}>
+            <span>{t('方法 / 协作 / 复盘', 'METHOD / COLLABORATION / REVIEW')}</span>
+            <i><b data-workflow-line /></i>
+            <span>01 — 03</span>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.structure}>
+        <div className={styles.structureHead} data-profile-reveal>
+          <p className={styles.kicker}>10 / THE OPERATING SYSTEM</p>
+          <h2>{t('五个部门，', 'Five departments.')}<br /><em>{t('一份共同的方案。', 'One shared proposal.')}</em></h2>
           <p>{t(
             '社团依托求是创新学院运转，以赛事代表队为单位组织，按虚拟航天公司的部门分工协作。',
             'The club runs under the Qiushi Innovation Academy, organized by competition teams and collaborating along the departments of a virtual aerospace company.',
           )}</p>
         </div>
-        <div className={styles.methodContent}>
-          <ol className={styles.principles}>
-            {culture.map((item, index) => (
-              <li key={item.zh[0]} data-profile-reveal>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3>{t(item.zh[0], item.en[0])}</h3>
-                  <p>{t(item.zh[1], item.en[1])}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <div className={styles.structure} data-profile-reveal>
-            <div className={styles.structureHeading}>
-              <p className={styles.kicker}>A VIRTUAL AEROSPACE COMPANY</p>
-              <h3>{t('五个部门，一份共同的方案。', 'Five departments. One shared proposal.')}</h3>
-            </div>
-            <ol className={styles.departments}>
-              {departments.map((department, index) => (
-                <li key={department[0]}><span>{String(index + 1).padStart(2, '0')}</span>{t(department[0], department[1])}</li>
-              ))}
-            </ol>
-            <dl className={styles.structureNotes}>
-              {structure.map((item) => (
-                <div key={item.zh[0]}>
-                  <dt>{t(item.zh[0], item.en[0])}</dt>
-                  <dd>{t(item.zh[1], item.en[1])}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+        <div className={styles.structureDetail}>
+          {structure.map((item, index) => (
+            <article key={item.zh[0]} data-profile-reveal>
+              <span>0{index + 1} / SYSTEM</span>
+              <h3>{t(item.zh[0], item.en[0])}</h3>
+              <p>{t(item.zh[1], item.en[1])}</p>
+            </article>
+          ))}
         </div>
       </div>
 
       <div className={styles.knowledge}>
-        <figure className={styles.knowledgeImage} data-profile-reveal>
-          <img src="/img/projects/2024-gfssm/presentation-01.jpg" loading="lazy" alt={t('2024 GFSSM 中国站现场答辩', 'A presentation at GFSSM China 2024')} />
-          <figcaption>{t('现场答辩 / 2024', 'PRESENTATION / 2024')}</figcaption>
-        </figure>
-        <div className={styles.knowledgeCopy} data-profile-reveal>
-          <p className={styles.kicker}>02 / DOCUMENTATION</p>
+        <div className={styles.knowledgePhoto} aria-hidden="true"><img src="/img/projects/2024-gfssm/presentation-01.jpg" alt="" loading="lazy" /></div>
+        <div className={styles.knowledgeShade} />
+        <div className={styles.knowledgeContent} data-profile-reveal>
+          <p className={styles.kicker}>11 / PASS IT FORWARD</p>
           <h2>{t('做过的事，', 'Pass the work')}<br /><em>{t('写下来。', 'forward.')}</em></h2>
           <p>{t(
             '项目结束后，成员会整理提案、分工记录和复盘。可公开的内容进入活动记录与知识库，供下一届成员继续查阅和修订。',
@@ -198,43 +246,51 @@ export default function ClubProfile(): ReactNode {
             <Link to="/docs/intro">{t('进入知识库 ↗', 'Open the knowledge base ↗')}</Link>
           </div>
         </div>
+        <span className={styles.knowledgeStamp}>{t('现场答辩 / 2024 GFSSM 中国站', 'PRESENTATION / GFSSM CHINA 2024')}</span>
       </div>
 
       <div className={styles.history} data-profile-history>
-        <div className={styles.historyHeading} data-profile-reveal>
-          <p className={styles.kicker}>03 / LINEAGE</p>
-          <h2>{t('一段仍在延续的航迹。', 'A record still in motion.')}</h2>
-          <p>{t(
-            '公开资料勾勒出一条较清晰的脉络：从求是创新学院的制度土壤，到社团以「步天工程社」名义见于公开报道并在 2023 年后逐渐清晰。',
-            'Public records sketch a fairly clear thread — from the founding of the Qiushi Innovation Academy to the club appearing by the name “Butian” in public reporting, clear from 2023 onward.',
-          )}</p>
-        </div>
-        <div className={styles.historyBody}>
-          <span className={styles.trace} aria-hidden="true"><i data-profile-trace /></span>
-          <ol>
-            {lineage.map((item) => (
-              <li key={item.year} data-profile-reveal>
-                <span className={styles.year}>{item.year}</span>
-                <div>
+        <div className={styles.historyStage}>
+          <div className={styles.historyGrid} aria-hidden="true" />
+          <div className={styles.historyOrbit} aria-hidden="true" />
+          <div className={styles.historyHead}>
+            <p className={styles.kicker}>12 / FLIGHT LINEAGE</p>
+            <h2>{t('一段仍在延续的航迹。', 'A record still in motion.')}</h2>
+            <p>{t(
+              '公开资料勾勒出一条较清晰的脉络：从求是创新学院的制度土壤，到社团以「步天工程社」名义见于公开报道并在 2023 年后逐渐清晰。',
+              'Public records sketch a fairly clear thread — from the founding of the Qiushi Innovation Academy to the club appearing by the name “Butian” in public reporting, clear from 2023 onward.',
+            )}</p>
+          </div>
+          <div className={styles.historyChapters}>
+            {lineage.map((item, index) => (
+              <article className={styles.historyChapter} data-history-chapter key={item.year}>
+                <span className={styles.historyYear}>{item.year}</span>
+                <div className={styles.historyEntry}>
+                  <small>0{index + 1} / {t('航迹档案', 'FLIGHT RECORD')}</small>
                   <h3>{t(item.zh[0], item.en[0])}</h3>
                   <p>{t(item.zh[1], item.en[1])}</p>
                 </div>
-              </li>
+              </article>
             ))}
-          </ol>
+          </div>
+          <div className={styles.historyTrack}>
+            <i><b data-history-line /></i>
+            <div>{lineage.map((item) => <span key={item.year}>{item.year}</span>)}</div>
+          </div>
         </div>
-        <p className={styles.archiveNote} data-profile-reveal>
-          <strong>{t('档案说明：', 'Archive note:')}</strong>
-          {t(
-            '社团正式成立时间、首任社长与完整历任名单尚未获得可公开核对的资料。现有记录确认前社长钱焜曾任 2024 GFSSM 天权队队长；朱毛奇、邵温馨老师曾参与相关赛事指导。',
-            'A publicly verifiable record of the club’s founding date, founding president and full list of past presidents is not yet available. Existing records confirm that former president Qian Kun captained Team Tianquan at the 2024 GFSSM, and that teachers Zhu Maoqi and Shao Wenxin advised related competition work.',
-          )}
-        </p>
       </div>
+      <p className={styles.archiveNote}>
+        <strong>{t('档案说明：', 'Archive note:')}</strong>
+        {t(
+          '社团正式成立时间、首任社长与完整历任名单尚未获得可公开核对的资料。现有记录确认前社长钱焜曾任 2024 GFSSM 天权队队长；朱毛奇、邵温馨老师曾参与相关赛事指导。',
+          'A publicly verifiable record of the club’s founding date, founding president and full list of past presidents is not yet available. Existing records confirm that former president Qian Kun captained Team Tianquan at the 2024 GFSSM, and that teachers Zhu Maoqi and Shao Wenxin advised related competition work.',
+        )}
+      </p>
 
       <div className={styles.fit}>
+        <div className={styles.fitOrbit} aria-hidden="true" />
         <div className={styles.fitHeading} data-profile-reveal>
-          <p className={styles.kicker}>04 / YOUR PLACE IN THE STORY</p>
+          <p className={styles.kicker}>13 / THE NEXT CREW</p>
           <h2>{t('从这里，', 'Could your next')}<br /><em>{t('一起出发。', 'chapter start here?')}</em></h2>
           <p>{t(
             '我们不设硬性门槛，更看重态度而非起点。如果下面几条里你认同大多数，这里大概率适合你：',
@@ -243,7 +299,7 @@ export default function ClubProfile(): ReactNode {
         </div>
         <ol className={styles.fitList}>
           {fit.map((item, index) => (
-            <li key={item[0]} data-profile-reveal><span>{String(index + 1).padStart(2, '0')}</span><p>{t(item[0], item[1])}</p></li>
+            <li key={item[0]} data-profile-reveal><span>0{index + 1}</span><p>{t(item[0], item[1])}</p></li>
           ))}
         </ol>
         <Link className={styles.fitLink} to="/join" data-profile-reveal>{t('了解如何加入', 'How to join')} <span aria-hidden="true">↗</span></Link>
