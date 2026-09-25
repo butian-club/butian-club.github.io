@@ -96,7 +96,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 600 ? 1.3 : 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.03;
+    renderer.toneMappingExposure = 1.1;
     mount.appendChild(renderer.domElement);
     mount.dataset.ready = 'true';
     const stage = mount.parentElement?.parentElement;
@@ -109,13 +109,13 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     room.dispose();
     pmrem.dispose();
     scene.environment = environment.texture;
-    scene.environmentIntensity = 0.42;
+    scene.environmentIntensity = 0.62;
     const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
     const dockCamera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
-    const ambient = new THREE.AmbientLight(0x9fb7c1, 0.45);
+    const ambient = new THREE.AmbientLight(0x9fb7c1, 0.58);
     const sun = new THREE.DirectionalLight(0xffd0aa, 2.7);
     sun.position.set(12, 8, 14);
-    const blue = new THREE.DirectionalLight(0x67b9cc, 1.35);
+    const blue = new THREE.DirectionalLight(0x67b9cc, 1.55);
     blue.position.set(-10, -6, 5);
     scene.add(ambient, sun, blue);
 

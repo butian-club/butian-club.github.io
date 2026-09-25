@@ -205,6 +205,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
   background-color: var(--ap-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -381,6 +382,63 @@ button:focus-visible,
   background: var(--bt-school-green-soft);
   color: var(--bt-school-green);
   font-weight: 600;
+}
+
+/* 活动记录首页延续航程的编号与留白，不把文章排成默认的长博客清单。 */
+.blog-list-page .main-wrapper > .container {
+  max-width: 1440px;
+  padding-top: clamp(2rem, 5vw, 5rem);
+  padding-bottom: clamp(5rem, 8vw, 8rem);
+}
+.blog-list-page main { counter-reset: flight-note; }
+.blog-list-page main article {
+  counter-increment: flight-note;
+  position: relative;
+  margin: 0 !important;
+  padding: clamp(2.8rem, 5vw, 4.8rem) 0 clamp(2.8rem, 5vw, 4.8rem) clamp(4rem, 8vw, 7rem);
+  border-top: 1px solid var(--ap-line);
+  border-bottom: 0;
+}
+.blog-list-page main article::before {
+  content: counter(flight-note, decimal-leading-zero);
+  position: absolute;
+  top: clamp(3rem, 5.4vw, 5.1rem);
+  left: 0;
+  color: var(--ap-brand);
+  font: 600 0.76rem var(--font-mono);
+  letter-spacing: 0.18em;
+}
+.blog-list-page main article h2 {
+  max-width: 50rem;
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.75rem, 2.75vw, 2.85rem);
+  font-weight: 620;
+  line-height: 1.22;
+  letter-spacing: -0.045em;
+}
+.blog-list-page main article header time,
+.blog-list-page main article header time + span {
+  color: var(--ap-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+.blog-list-page main article .avatar { display: none; }
+.blog-list-page main article .markdown {
+  max-width: 48rem;
+  color: var(--ap-body);
+  font-size: clamp(0.95rem, 1.25vw, 1.05rem);
+  line-height: 1.72;
+}
+.blog-list-page main article footer {
+  align-items: center;
+  margin-top: 2rem;
+}
+.blog-list-page main article footer a { transition: color 180ms ease; }
+.blog-list-page main article footer .tag { border-radius: 2px; }
+@media (max-width: 600px) {
+  .blog-list-page main article { padding-left: 0; padding-top: 4.2rem; }
+  .blog-list-page main article::before { top: 2rem; }
 }
 
 .pagination-nav__link {
@@ -564,6 +622,10 @@ button:focus-visible,
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
+body:has(#cinematic-home) .navbar {
+  background: rgba(4, 13, 20, 0.82);
+  border-bottom-color: rgba(185, 244, 237, 0.12);
+}
 .navbar__logo img {
   width: 2rem;
   height: 2rem;
@@ -577,6 +639,21 @@ button:focus-visible,
 .navbar__link {
   font-size: 0.84rem;
   letter-spacing: 0.03em;
+}
+@media (min-width: 800px) and (max-width: 996px) {
+  .navbar .navbar__toggle { display: none; }
+  .navbar .navbar__item { display: inline-flex; }
+  .navbar .navbar__items--right > .dropdown { display: block; }
+  .navbar .navbar__items--right > [class*='navbarSearchContainer'] {
+    position: static;
+    flex: 0 0 134px;
+    width: 134px;
+  }
+  .navbar .navbar__search-input { width: 134px; }
+}
+@media (min-width: 800px) and (max-width: 1120px) {
+  .navbar .nav-platform-link,
+  .navbar .header-github-link { display: none; }
 }
 .footer {
   border-top: 1px solid var(--ap-line);

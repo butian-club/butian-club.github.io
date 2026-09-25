@@ -13,12 +13,12 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const stops = [
   {at: 0, zh: '离开地球', en: 'Departure'},
-  {at: 18, zh: '任务坐标', en: 'The mission'},
-  {at: 28, zh: '拆解未来', en: 'The system'},
-  {at: 63, zh: '穿越舱门', en: 'The habitat'},
-  {at: 80, zh: '回到现场', en: 'The people'},
-  {at: 87, zh: '航迹', en: 'The record'},
-  {at: 98, zh: '继续向前', en: 'Next orbit'},
+  {at: 17, zh: '认识步天', en: 'Who we are'},
+  {at: 28, zh: '协作成形', en: 'How we work'},
+  {at: 65, zh: '验证想象', en: 'Grounded ideas'},
+  {at: 79, zh: '一起完成', en: 'The people'},
+  {at: 87, zh: '留下航迹', en: 'Our record'},
+  {at: 98, zh: '继续出发', en: 'What comes next'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars']
@@ -71,11 +71,11 @@ export default function CinematicHome(): ReactNode {
         autoAlpha: 1, clipPath: 'circle(100% at 69% 50%)', duration: 10,
       }, 13)
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
-      .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.9, duration: 10}, 7)
-      .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 7}, 14)
-      .fromTo(target('year'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.84, scale: 1, x: 0, duration: 8}, 13)
+      .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.92, duration: 7}, 7)
+      .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 5}, 15)
+      .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 8}, 13)
       .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 22)
-      .to(target('year'), {autoAlpha: 0, scale: 0.75, duration: 6}, 22)
+      .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 6}, 22)
       .fromTo(target('assembly'), {autoAlpha: 0, y: 34}, {autoAlpha: 1, y: 0, duration: 5}, 25)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
       .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 18}, 28)
@@ -107,8 +107,10 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5}, 84)
       .to(target('reality'), {autoAlpha: 0, duration: 4}, 84)
       .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.08, x: 80}, {
-        autoAlpha: 1, scale: 1, x: 0, duration: 1.5,
-      }, 88.5)
+        autoAlpha: 1, scale: 1, x: 0, duration: 2,
+      }, 85)
+      .to(target('archive-visual'), {x: -18, y: -9, rotation: -1.5, duration: 2}, 88.5)
+      .to(target('archive-visual'), {x: 12, y: 8, rotation: 1.2, duration: 2}, 91.5)
       .fromTo(target('archive-photo-0'), {xPercent: -9, yPercent: 8}, {
         xPercent: 0, yPercent: 0, duration: 10,
       }, 84)
@@ -122,7 +124,7 @@ export default function CinematicHome(): ReactNode {
       .to(target('record-0'), {autoAlpha: 0, x: -70, duration: 1}, 87.5)
       .fromTo(target('record-1'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 1.5}, 88.5)
       .to(target('record-1'), {autoAlpha: 0, x: -70, duration: 1}, 90.5)
-      .to(target('archive-visual'), {autoAlpha: 0, x: -55, duration: 1}, 91)
+      .to(target('archive-visual'), {autoAlpha: 0, x: -55, duration: 2}, 94)
       .fromTo(target('record-2'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 1.5}, 91.5)
       .to(target('record'), {autoAlpha: 0, duration: 2}, 94)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
@@ -161,11 +163,11 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.heroCopy} data-motion="hero">
-              <p className={styles.eyebrow}>{t('杭州第二中学 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · BUTIAN')}</p>
+              <p className={styles.eyebrow}>{t('杭州第二中学 · 求是创新学院 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</p>
               <h1>{t('把未来，', 'Build the future')}<br /><em>{t('建在星辰之间。', 'beyond Earth.')}</em></h1>
               <p className={styles.heroLead}>{t(
-                '从一张设计图，到一座能让人生活的地外基地。我们用工程、协作与想象，把遥远的问题拉到眼前。',
-                'From a drawing to a place where people could live. We bring distant questions into focus through engineering, collaboration and imagination.',
+                '我们是杭州第二中学求是创新学院的学生社团。用太空城市与基地设计组织学习，也把工程实践与航天科普带到真实世界。',
+                'We are a student club at Hangzhou No.2 High School’s Qiushi Innovation Academy. We learn through space-settlement design, engineering practice and space-science outreach.',
               )}</p>
               <div className={styles.scrollCue}>
                 <span className={styles.scrollGlyph} aria-hidden="true">
@@ -178,39 +180,39 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.briefCopy} data-motion="brief">
-              <div className={styles.signal}><span /> {t('任务已接收', 'MISSION RECEIVED')}</div>
-              <p className={styles.phaseIndex}>02 / THE BRIEF</p>
-              <h2>{t('如果要在火星住下去，', 'What would it take')}<br />{t('先解决什么？', 'to live on Mars?')}</h2>
+              <div className={styles.signal}><span /> {t('步天工程社 · 我们做什么', 'BUTIAN · WHAT WE DO')}</div>
+              <p className={styles.phaseIndex}>02 / FROM BRIEF TO PROPOSAL</p>
+              <h2>{t('从一份任务书，', 'From a brief')}<br />{t('走向一座太空城。', 'to a place to live.')}</h2>
               <p>{t(
-                '2025 年，步天社两支队伍以 2075 年火星基地为题，完成从结构、人居到运营的系统设计。',
-                'In 2025, two Butian teams designed a 2075 Mars base, connecting structure, habitat and operations into one system.',
+                '我们从赛事任务书出发，分工研究结构、人居、运营与基础设施，最后把想象汇成有依据的提案，并用英文答辩。',
+                'Starting with a competition brief, we research structure, habitat, operations and infrastructure, then turn our ideas into an evidence-based proposal and defend it in English.',
               )}</p>
             </div>
-            <div className={styles.yearGhost} data-motion="year" aria-hidden="true">2075</div>
+            <div className={styles.wordmarkGhost} data-motion="wordmark" aria-hidden="true">{t('步天', 'BUTIAN')}</div>
 
             <div className={styles.assemblyCopy} data-motion="assembly">
               <span className={styles.phaseIndex}>03 / SYSTEMS THINKING</span>
-              <h2>{t('一座基地，', 'A settlement is')}<br /><em>{t('不止一张图。', 'a living system.')}</em></h2>
+              <h2>{t('一座基地，', 'A settlement takes')}<br /><em>{t('需要一支队伍。', 'a whole team.')}</em></h2>
               <p>{t(
-                '让每个模块先独立成立，再让它们共同运转。',
-                'Design each module to work, then make them work together.',
+                '管理、结构、人居、运营与基础设施各有分工，也必须彼此衔接。',
+                'Management, structure, habitat, operations and infrastructure each have a role. The design only works when they connect.',
               )}</p>
               <small className={styles.conceptNote}>{t('概念视觉 · 非实际方案模型', 'CONCEPT VISUAL · NOT A PROJECT MODEL')}</small>
             </div>
             <div className={styles.calloutLeft} data-motion="callout-1">
               <span className={styles.calloutNumber}>01 / 03</span>
-              <b>{t('结构与基础设施', 'STRUCTURE')}</b>
-              <small>{t('承载 · 增压 · 组装', 'LOAD · PRESSURE · ASSEMBLY')}</small>
+              <b>{t('先把问题查清楚', 'RESEARCH FIRST')}</b>
+              <small>{t('文献 · 数据 · 依据', 'EVIDENCE · DATA · REASONING')}</small>
             </div>
             <div className={styles.calloutRight} data-motion="callout-2">
               <span className={styles.calloutNumber}>02 / 03</span>
-              <b>{t('人居与生命保障', 'HABITAT')}</b>
-              <small>{t('空气 · 食物 · 循环', 'AIR · FOOD · CYCLES')}</small>
+              <b>{t('在约束中做设计', 'DESIGN WITH CONSTRAINTS')}</b>
+              <small>{t('结构 · 人居 · 运营', 'STRUCTURE · HABITAT · OPERATIONS')}</small>
             </div>
             <div className={styles.calloutBottom} data-motion="callout-3">
               <span className={styles.calloutNumber}>03 / 03</span>
-              <b>{t('运营与协作', 'OPERATIONS')}</b>
-              <small>{t('风险 · 资源 · 答辩', 'RISK · RESOURCES · DEFENSE')}</small>
+              <b>{t('让不同的人互相补位', 'BUILD IT TOGETHER')}</b>
+              <small>{t('协作 · 表达 · 复盘', 'TEAMWORK · DEFENSE · REVIEW')}</small>
             </div>
 
             <div className={styles.portal} data-motion="portal" aria-hidden="true">
@@ -221,10 +223,10 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.habitatCaption} data-motion="habitat-caption">
               <img className={styles.stillImage} src="/img/life-support-concept.jpg" alt={t('地外生命保障空间概念视觉', 'Concept visual of an off-world life-support habitat')} />
               <span className={styles.phaseIndex}>04 / INSIDE THE HABITAT</span>
-              <h2>{t('真正的难题，', 'The real question:')}<br />{t('是让生命延续。', 'can life continue?')}</h2>
+              <h2>{t('想象必须，', 'Imagination needs')}<br />{t('经得起推敲。', 'to stand up to scrutiny.')}</h2>
               <p>{t(
-                '大气循环、食物工程和生命保障，必须被算清楚，才能让“住下去”成为可能。',
-                'Atmosphere, food and life support must be worked out before living there becomes possible.',
+                '从文献检索、方案讨论到模拟答辩，空气、食物与循环都要成为可以计算和讨论的问题。',
+                'From research and design reviews to mock defenses, air, food and life-support cycles must become questions we can calculate and debate.',
               )}</p>
               <small>{t('概念视觉 · 非实际社团项目渲染', 'CONCEPT VISUAL · NOT A PROJECT RENDER')}</small>
             </div>
@@ -239,10 +241,10 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.teamCaption} data-motion="team-caption">
               <img className={styles.stillImage} src="/img/projects/2024-gfssm/team.jpg" alt={t('2024 GFSSM 中国站合影', 'Team at GFSSM China 2024')} />
               <span className={styles.phaseIndex}>05 / BACK ON EARTH</span>
-              <h2>{t('这一切，', 'The future is built')}<br />{t('由此刻的我们开始。', 'by people here, now.')}</h2>
+              <h2>{t('没有人，', 'No one builds')}<br />{t('能独自建造未来。', 'the future alone.')}</h2>
               <p>{t(
-                '图纸背后，是一次次讨论、分工和现场 24 小时协作。',
-                'Behind the plans: debates, different disciplines and a 24-hour on-site design sprint.',
+                '不同方向的同伴彼此补位。图纸背后，是一次次讨论、分工与现场 24 小时协作。',
+                'Members with different strengths cover for each other. Behind every plan are debates, shared work and a 24-hour on-site design sprint.',
               )}</p>
               <small>{t('真实影像 · 2024 GFSSM 中国站', 'ARCHIVE PHOTO · GFSSM CHINA 2024')}</small>
             </div>
@@ -274,14 +276,14 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.endCopy} data-motion="end">
               <p className={styles.phaseIndex}>07 / NEXT ORBIT</p>
-              <h2>{t('下一站，', 'The next orbit')}<br /><em>{t('继续向未知出发。', 'starts with us.')}</em></h2>
+              <h2>{t('未来还没写完。', 'The future is')}<br /><em>{t('一起动手建造。', 'still being built.')}</em></h2>
               <p>{t(
-                '在步天，未来是一项可以一起动手完成的工程。',
-                'At Butian, the future is something we can build together.',
+                '好奇工程与航天，愿意查资料、动手，并把想法讲清楚？下一段航程，期待你的加入。做过的方案和复盘，也会留给后来的人。',
+                'Curious about engineering and space? Ready to research, build and explain your ideas? Join the next mission. We keep our proposals and lessons for those who come after us.',
               )}</p>
               <div className={styles.endActions}>
-                <Link className={styles.primaryLink} to="/blog">{t('阅读活动记录', 'Explore our stories')} <span>↗</span></Link>
-                <Link className={styles.secondaryLink} to="/about">{t('了解步天', 'Meet Butian')} <span>↗</span></Link>
+                <Link className={styles.primaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
+                <Link className={styles.secondaryLink} to="/blog">{t('阅读活动记录', 'Explore our stories')} <span>↗</span></Link>
               </div>
             </div>
 
@@ -294,7 +296,7 @@ export default function CinematicHome(): ReactNode {
         </section>
         <div className={styles.afterword}>
           <span>END OF TRANSMISSION · BUTIAN ENGINEERING CLUB</span>
-          <Link to="/blog">{t('阅读活动记录 ↗', 'EXPLORE THE STORIES ↗')}</Link>
+          <Link to="/about">{t('阅读社团完整档案 ↗', 'EXPLORE THE CLUB ARCHIVE ↗')}</Link>
         </div>
       </main>
     </Layout>

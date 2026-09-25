@@ -143,7 +143,6 @@ const config: Config = {
       hideOnScroll: true,
       items: [
         { to: '/', label: '首页', position: 'left', activeBaseRegex: '^/$' },
-        { to: '/about', label: '关于', position: 'left' },
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
@@ -155,6 +154,7 @@ const config: Config = {
           href: 'https://gfssm.butian.club',
           label: '协作平台',
           position: 'right',
+          className: 'nav-platform-link',
         },
         { to: '/join', label: '加入我们', position: 'right' },
         { type: 'localeDropdown', position: 'right' },

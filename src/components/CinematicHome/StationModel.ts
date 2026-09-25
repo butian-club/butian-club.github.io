@@ -92,18 +92,18 @@ export function createStation(): StationModel {
   group.position.set(6, 0, -4);
 
   const ceramic = new THREE.MeshPhysicalMaterial({
-    color: 0xaebfc0, metalness: 0.52, roughness: 0.42, envMapIntensity: 0.9,
-    clearcoat: 0.16, clearcoatRoughness: 0.38,
+    color: 0xc0cecc, metalness: 0.4, roughness: 0.35, envMapIntensity: 1.05,
+    clearcoat: 0.25, clearcoatRoughness: 0.3,
   });
   const titanium = new THREE.MeshPhysicalMaterial({
-    color: 0x718b92, metalness: 0.78, roughness: 0.34, envMapIntensity: 1.1,
-    clearcoat: 0.1, clearcoatRoughness: 0.32,
+    color: 0x849fa4, metalness: 0.76, roughness: 0.29, envMapIntensity: 1.25,
+    clearcoat: 0.18, clearcoatRoughness: 0.27,
   });
   const carbon = new THREE.MeshStandardMaterial({
-    color: 0x111d24, metalness: 0.5, roughness: 0.52, envMapIntensity: 0.65,
+    color: 0x14242c, metalness: 0.48, roughness: 0.43, envMapIntensity: 0.75,
   });
   const copper = new THREE.MeshStandardMaterial({
-    color: 0x9f785c, metalness: 0.82, roughness: 0.36, envMapIntensity: 1.15,
+    color: 0xb28567, metalness: 0.82, roughness: 0.32, envMapIntensity: 1.2,
   });
   const light = new THREE.MeshStandardMaterial({
     color: 0x80bfc5,
@@ -113,9 +113,9 @@ export function createStation(): StationModel {
     roughness: 0.31,
   });
   const glass = new THREE.MeshPhysicalMaterial({
-    color: 0x183440, metalness: 0.55, roughness: 0.16,
-    clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.55,
-    emissive: 0x15343a, emissiveIntensity: 0.28,
+    color: 0x31535d, metalness: 0.45, roughness: 0.13,
+    clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 1.65,
+    emissive: 0x336773, emissiveIntensity: 0.36,
   });
   const solarTexture = solarCellTexture();
   const solarCells = new THREE.MeshStandardMaterial({
@@ -181,13 +181,21 @@ export function createStation(): StationModel {
         index % 4 === 0 ? copper : titanium,
       ));
     }
+    for (const side of [-1, 1]) {
+      const serviceRib = new THREE.Mesh(
+        new RoundedBoxGeometry(0.12, 0.59, 0.04, 2, 0.018),
+        index % 4 === 0 ? copper : titanium,
+      );
+      serviceRib.position.set(3.52, side * 0.23, -0.42);
+      pod.add(serviceRib);
+    }
     const vent = new THREE.Mesh(new RoundedBoxGeometry(0.15, 0.36, 0.038, 2, 0.015), carbon);
     vent.position.set(3.48, 0, -0.42);
     pod.add(vent);
     ring.add(pod);
     pods.push({group: pod, angle});
 
-    const boundary = new THREE.Mesh(new THREE.SphereGeometry(0.028, 8, 8), light);
+    const boundary = new THREE.Mesh(new THREE.SphereGeometry(0.036, 8, 8), light);
     boundary.position.set(Math.cos(angle + Math.PI / 16) * 3.75, Math.sin(angle + Math.PI / 16) * 3.75, 0.55);
     ring.add(boundary);
   }
@@ -206,6 +214,12 @@ export function createStation(): StationModel {
       new THREE.Vector3(Math.cos(braceAngle) * 2.89, Math.sin(braceAngle) * 2.89, 0.4),
       0.013,
       carbon,
+    ));
+    ring.add(beam(
+      radial(1.8, -0.18),
+      new THREE.Vector3(Math.cos(braceAngle) * 2.89, Math.sin(braceAngle) * 2.89, -0.41),
+      0.012,
+      index % 2 === 0 ? copper : titanium,
     ));
   }
 
