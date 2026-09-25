@@ -1,4 +1,4 @@
-/* 关于、项目与招新页共用：学校刊物与项目档案版式。 */
+/* 关于与招新页共用的内容版式。 */
 .page {
   --page-paper: var(--ap-surface);
   --page-panel: var(--ap-surface-2);
@@ -209,31 +209,6 @@
   color: var(--page-accent);
   font-weight: 600;
   text-underline-offset: 0.16rem;
-}
-
-.filterBar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem clamp(1.5rem, 4vw, 3.5rem);
-  align-items: baseline;
-  padding: 1.35rem 0;
-  border-bottom: 1px solid var(--page-line);
-}
-
-.filterStat {
-  color: var(--page-muted);
-  font-size: 0.76rem;
-  letter-spacing: 0.04em;
-}
-
-.filterStat strong {
-  color: var(--page-accent);
-  font-size: 1rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.projectList {
-  border-bottom: 1px solid var(--page-line);
 }
 
 .contactList {

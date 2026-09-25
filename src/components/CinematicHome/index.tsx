@@ -280,7 +280,7 @@ export default function CinematicHome(): ReactNode {
                 'At Butian, the future is something we can build together.',
               )}</p>
               <div className={styles.endActions}>
-                <Link className={styles.primaryLink} to="/projects">{t('探索我们的项目', 'Explore our projects')} <span>↗</span></Link>
+                <Link className={styles.primaryLink} to="/blog">{t('阅读活动记录', 'Explore our stories')} <span>↗</span></Link>
                 <Link className={styles.secondaryLink} to="/about">{t('了解步天', 'Meet Butian')} <span>↗</span></Link>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function CinematicHome(): ReactNode {
         </section>
         <div className={styles.afterword}>
           <span>END OF TRANSMISSION · BUTIAN ENGINEERING CLUB</span>
-          <Link to="/projects">{t('进入项目档案 ↗', 'OPEN PROJECT ARCHIVE ↗')}</Link>
+          <Link to="/blog">{t('阅读活动记录 ↗', 'EXPLORE THE STORIES ↗')}</Link>
         </div>
       </main>
     </Layout>

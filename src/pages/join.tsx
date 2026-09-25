@@ -149,7 +149,7 @@ export default function Join(): ReactNode {
               {t('报名之前，可以先读', 'Before applying, read ')}
               <Link to="/about">{t('关于步天', 'About Butian')}</Link>
               {t('并浏览', ' and browse the ')}
-              <Link to="/projects">{t('项目档案', 'project archive')}</Link>
+              <Link to="/blog">{t('活动记录', 'activity log')}</Link>
               {t('，了解社团的工作方式。', ' to understand how the club works.')}
             </p>
           </section>

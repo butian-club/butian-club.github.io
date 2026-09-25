@@ -18,8 +18,8 @@ collaboration platform at [butian.club](https://butian.club).
 
 ## Website Features
 
-🚀 **Project showcase** — project data in `src/data/projects.ts` drives both the home-page
-selection and the complete project index.
+🚀 **Project stories** — the home-page journey draws its milestones from
+`src/data/projects.ts`; full reports remain available in the activity archive.
 
 📝 **Activity archive** — Docusaurus blog posts record competitions, outreach, and project
 reviews with shared author and tag metadata.
@@ -50,7 +50,8 @@ npm run build
 
 ## Common Changes
 
-- Add a project in `src/data/projects.ts`; set `featured: true` to show it on the home page.
+- Add or revise project data in `src/data/projects.ts`. Home-page milestones are selected by
+  ID in `src/components/CinematicHome/index.tsx`.
 - Add an activity record under `blog/` and reuse entries from `blog/authors.yml` and
   `blog/tags.yml`.
 - Add or revise platform documentation under `docs/`, then update `sidebars.ts` when its
@@ -74,7 +75,7 @@ butian-club.github.io/
 │   ├── css/custom.css              # visual tokens and global styles
 │   ├── data/                       # project and organization data
 │   ├── lib/i18n.ts                 # interface strings
-│   └── pages/                      # home, about, projects, and join routes
+│   └── pages/                      # home, about, and join routes
 ├── static/                         # Logos, icons, and social assets
 ├── docusaurus.config.ts            # Docusaurus configuration
 ├── LICENSE                         # Code license

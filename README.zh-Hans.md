@@ -18,7 +18,7 @@
 
 ## 网站特性
 
-🚀 **项目展示** —— `src/data/projects.ts` 同时驱动首页精选项目与完整项目列表。
+🚀 **项目故事** —— 首页航程从 `src/data/projects.ts` 读取项目里程碑；完整报道保留在活动记录中。
 
 📝 **活动档案** —— Docusaurus 博客记录比赛、科普与项目复盘，并复用作者和标签元数据。
 
@@ -46,7 +46,8 @@ npm run build
 
 ## 常见修改
 
-- 在 `src/data/projects.ts` 添加项目；设置 `featured: true` 后会显示在首页。
+- 在 `src/data/projects.ts` 添加或修订项目；首页里程碑由
+  `src/components/CinematicHome/index.tsx` 中的项目 ID 选取。
 - 在 `blog/` 添加活动记录，并复用 `blog/authors.yml` 与 `blog/tags.yml` 中的条目。
 - 在 `docs/` 添加或修订平台文档；导航位置变化时同步更新 `sidebars.ts`。
 - 在 `src/css/custom.css` 顶部修改品牌色或主题 token。
@@ -68,7 +69,7 @@ butian-club.github.io/
 │   ├── css/custom.css              # 视觉 token 与全局样式
 │   ├── data/                       # 项目与社团数据
 │   ├── lib/i18n.ts                 # 界面文案
-│   └── pages/                      # 首页、关于、项目与加入页面
+│   └── pages/                      # 首页、关于与加入页面
 ├── static/                         # Logo、图标与社交媒体素材
 ├── docusaurus.config.ts            # Docusaurus 配置
 ├── LICENSE                         # 代码许可协议

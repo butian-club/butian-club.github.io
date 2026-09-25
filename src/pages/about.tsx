@@ -113,8 +113,8 @@ export default function About(): ReactNode {
             <div className={styles.prose}>
               <p>
                 {t(
-                  '项目结束后，成员会整理提案、分工记录和复盘。可公开的内容进入项目档案与知识库，供下一届成员继续查阅和修订。',
-                  'After each project, members organize proposals, working notes and retrospectives. Material suitable for publication enters the project archive and knowledge base for future members to consult and revise.',
+                  '项目结束后，成员会整理提案、分工记录和复盘。可公开的内容进入活动记录与知识库，供下一届成员继续查阅和修订。',
+                  'After each project, members organize proposals, working notes and retrospectives. Material suitable for publication enters the activity log and knowledge base for future members to consult and revise.',
                 )}
               </p>
               <p>

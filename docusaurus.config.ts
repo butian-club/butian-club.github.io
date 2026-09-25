@@ -144,7 +144,6 @@ const config: Config = {
       items: [
         { to: '/', label: '首页', position: 'left', activeBaseRegex: '^/$' },
         { to: '/about', label: '关于', position: 'left' },
-        { to: '/projects', label: '项目', position: 'left' },
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
@@ -175,7 +174,6 @@ const config: Config = {
           items: [
             { label: '关于我们', to: '/about' },
             { label: '加入我们', to: '/join' },
-            { label: '项目', to: '/projects' },
           ],
         },
         {

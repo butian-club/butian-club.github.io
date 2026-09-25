@@ -15,10 +15,6 @@
     "message": "About",
     "description": "Navbar item with label 关于"
   },
-  "item.label.项目": {
-    "message": "Projects",
-    "description": "Navbar item with label 项目"
-  },
   "item.label.博客": {
     "message": "Blog",
     "description": "Navbar item with label 博客"

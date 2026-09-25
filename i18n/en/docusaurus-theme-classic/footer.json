@@ -19,10 +19,6 @@
     "message": "Join Us",
     "description": "The label of footer link with label=加入我们 linking to /join"
   },
-  "link.item.label.项目": {
-    "message": "Projects",
-    "description": "The label of footer link with label=项目 linking to /projects"
-  },
   "link.item.label.活动记录": {
     "message": "Activity Log",
     "description": "The label of footer link with label=活动记录 linking to /blog"

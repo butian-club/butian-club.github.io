@@ -24,10 +24,9 @@ Run `npm test`, `npm run typecheck`, and `npm run build` before delivering chang
 ## Structure and conventions
 
 - `src/data/projects.ts` is the single source of truth for projects. Add or edit project
-  records there; the home page and `/projects` derive from it.
+  records there; the home-page milestones read from it.
 - `src/data/site.ts` owns the club directions and headline statistics.
-- Reuse `src/components/ProjectCard` and `src/components/PageHero` instead of recreating
-  equivalent UI.
+- Reuse `src/components/PageHero` instead of recreating equivalent UI.
 - Global design tokens and light/dark theme behavior live in `src/css/custom.css`.
 - Put activity posts in `blog/`, documentation in `docs/`, and register documentation in
   `sidebars.ts`.
