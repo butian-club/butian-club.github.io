@@ -156,7 +156,14 @@ export default function CinematicHome(): ReactNode {
                 '从一张设计图，到一座能让人生活的地外基地。我们用工程、协作与想象，把遥远的问题拉到眼前。',
                 'From a drawing to a place where people could live. We bring distant questions into focus through engineering, collaboration and imagination.',
               )}</p>
-              <div className={styles.scrollCue}><span className={styles.scrollGlyph}>↓</span>{t('向下滚动，开启航程', 'SCROLL TO BEGIN THE JOURNEY')}</div>
+              <div className={styles.scrollCue}>
+                <span className={styles.scrollGlyph} aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M12 4v15m-5-5 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                {t('向下滚动，开启航程', 'SCROLL TO BEGIN THE JOURNEY')}
+              </div>
             </div>
 
             <div className={styles.briefCopy} data-motion="brief">

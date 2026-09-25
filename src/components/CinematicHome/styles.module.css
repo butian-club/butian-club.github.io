@@ -157,8 +157,9 @@
 .heroCopy h1 em, .assemblyCopy h2 em, .endCopy h2 em { font-style: normal; color: var(--ice); }
 .heroLead { max-width: 470px; margin: 0; color: rgba(236, 248, 247, .74); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.8; }
 .scrollCue { display: flex; align-items: center; gap: 14px; margin-top: 57px; color: rgba(233, 248, 247, .68); }
-.scrollGlyph { display: grid; place-items: center; width: 33px; height: 47px; border: 1px solid rgba(185, 244, 237, .56); border-radius: 21px; color: var(--ice); font-size: 19px; animation: float 2.7s ease-in-out infinite; }
-@keyframes float { 50% { transform: translateY(7px); } }
+.scrollGlyph { display: grid; place-items: center; flex: 0 0 33px; width: 33px; height: 47px; border: 1px solid rgba(185, 244, 237, .56); border-radius: 21px; color: var(--ice); letter-spacing: 0; line-height: 0; animation: cuePulse 2.7s ease-in-out infinite; }
+.scrollGlyph svg { display: block; width: 20px; height: 20px; }
+@keyframes cuePulse { 50% { border-color: rgba(185, 244, 237, .82); box-shadow: 0 0 0 4px rgba(185, 244, 237, .055); } }
 
 .briefCopy { top: 25%; left: clamp(44px, 8vw, 140px); width: min(38vw, 510px); text-align: left; }
 .briefCopy h2, .assemblyCopy h2, .habitatCaption h2, .teamCaption h2 {
