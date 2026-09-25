@@ -13,12 +13,12 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const stops = [
   {at: 0, zh: '离开地球', en: 'Departure'},
-  {at: 13, zh: '任务坐标', en: 'The mission'},
+  {at: 18, zh: '任务坐标', en: 'The mission'},
   {at: 28, zh: '拆解未来', en: 'The system'},
-  {at: 51, zh: '穿越舱门', en: 'The habitat'},
-  {at: 72, zh: '回到现场', en: 'The people'},
-  {at: 84, zh: '航迹', en: 'The record'},
-  {at: 97, zh: '继续向前', en: 'Next orbit'},
+  {at: 63, zh: '穿越舱门', en: 'The habitat'},
+  {at: 80, zh: '回到现场', en: 'The people'},
+  {at: 87, zh: '航迹', en: 'The record'},
+  {at: 98, zh: '继续向前', en: 'Next orbit'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars']
@@ -99,9 +99,9 @@ export default function CinematicHome(): ReactNode {
       .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 4}, 84)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5}, 84)
       .to(target('reality'), {autoAlpha: 0, duration: 4}, 84)
-      .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.12, x: 120}, {
-        autoAlpha: 1, scale: 1, x: 0, duration: 5,
-      }, 84)
+      .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.08, x: 80}, {
+        autoAlpha: 1, scale: 1, x: 0, duration: 1.5,
+      }, 88.5)
       .fromTo(target('archive-photo-0'), {xPercent: 18, yPercent: 15, rotation: -10}, {
         xPercent: 0, yPercent: 0, rotation: -5, duration: 10,
       }, 84)
@@ -112,14 +112,15 @@ export default function CinematicHome(): ReactNode {
         xPercent: 0, yPercent: 0, rotation: -4, duration: 10,
       }, 84)
       .fromTo(target('record-0'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 85)
-      .to(target('record-0'), {autoAlpha: 0, x: -70, duration: 2}, 88)
-      .fromTo(target('record-1'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 88)
-      .to(target('record-1'), {autoAlpha: 0, x: -70, duration: 2}, 91)
-      .fromTo(target('record-2'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 91)
-      .to(target('record'), {autoAlpha: 0, duration: 3}, 94)
+      .to(target('record-0'), {autoAlpha: 0, x: -70, duration: 1}, 87.5)
+      .fromTo(target('record-1'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 1.5}, 88.5)
+      .to(target('record-1'), {autoAlpha: 0, x: -70, duration: 1}, 90.5)
+      .to(target('archive-visual'), {autoAlpha: 0, x: -55, duration: 1}, 91)
+      .fromTo(target('record-2'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 1.5}, 91.5)
+      .to(target('record'), {autoAlpha: 0, duration: 2}, 94)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
-        autoAlpha: 1, y: 0, scale: 1, duration: 5,
-      }, 95);
+        autoAlpha: 1, y: 0, scale: 1, duration: 4,
+      }, 96);
   }, {scope: rootRef});
 
   return (

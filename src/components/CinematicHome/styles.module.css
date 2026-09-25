@@ -244,7 +244,7 @@
 .recordTicks { position: absolute; right: 7%; bottom: 16%; display: flex; gap: 9px; }
 .recordTicks i { display: block; width: 38px; height: 2px; background: rgba(185, 244, 237, .48); }
 .endCopy { z-index: 16; top: 24%; left: clamp(30px, 8vw, 140px); width: min(76vw, 950px); }
-.endCopy h2 { font-size: clamp(3.5rem, 6.7vw, 8rem); }
+.endCopy h2 { font-size: clamp(3.5rem, 6.1vw, 7.5rem); text-shadow: 0 2px 22px rgba(1, 7, 12, .95), 0 8px 62px #01070c; }
 .endCopy > p:not(.phaseIndex) { max-width: 540px; }
 .endActions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 38px; }
 .endActions a { display: inline-flex; justify-content: space-between; align-items: center; min-width: 185px; gap: 36px; padding: 15px 21px; border-radius: 3px; font-size: 13px; font-weight: 650; text-decoration: none; transition: transform .25s, background .25s, color .25s; }
@@ -300,13 +300,15 @@
   .habitatCaption h2, .teamCaption h2 { font-size: 2.8rem; }
   .habitatCaption p, .teamCaption p { font-size: 13px; }
   .record { padding: 22vh 8%; }
-  .recordEntry { top: 35%; left: 8%; width: 80%; }
-  .archiveVisual { top: 13%; right: -8%; width: 75vw; height: 73%; }
-  .archivePhoto { padding: 4px; }
-  .archiveVisual > span { right: 16%; bottom: -3%; font-size: 8px; }
-  .recordEntry > span { font-size: 24vw; }
-  .recordEntry h2 { font-size: 1.75rem; }
-  .recordEntry p { font-size: 12px; }
+  .recordEntry { top: 28%; left: 8%; width: 80%; }
+  .archiveVisual { top: 10%; right: 5%; width: 37vw; height: 24%; }
+  .archiveVisual::before, .archivePhoto:nth-child(2), .archivePhoto:nth-child(3) { display: none; }
+  .archivePhoto { top: 0; left: 0; width: 100%; padding: 4px; }
+  .archivePhoto:nth-child(1)::after { content: '2024'; position: absolute; right: 7px; bottom: 7px; padding: 2px 5px; color: #fff; background: rgba(1, 10, 16, .78); font: 600 9px var(--font-mono); letter-spacing: .08em; }
+  .archiveVisual > span { display: none; }
+  .recordEntry > span { font-size: clamp(4.7rem, 20vw, 7rem); }
+  .recordEntry h2 { font-size: clamp(1.4rem, 6vw, 1.75rem); }
+  .recordEntry p { font-size: clamp(11px, 2.7vw, 13px); line-height: 1.55; }
   .recordTicks { bottom: 12%; }
   .endCopy { left: 8%; width: 83%; }
   .endCopy h2 { font-size: 3.6rem; text-wrap: wrap; }
