@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 
 export type StationModel = {
   group: THREE.Group;
@@ -10,6 +11,9 @@ export type StationModel = {
   textures: THREE.Texture[];
 };
 
+// Every strut uses the same unit geometry; only its transform changes.
+const beamGeometry = new THREE.CylinderGeometry(1, 1, 1, 8);
+
 function beam(
   from: THREE.Vector3,
   to: THREE.Vector3,
@@ -17,13 +21,34 @@ function beam(
   material: THREE.Material,
 ): THREE.Mesh {
   const direction = to.clone().sub(from);
-  const mesh = new THREE.Mesh(
-    new THREE.CylinderGeometry(radius, radius, direction.length(), 8),
-    material,
-  );
+  const mesh = new THREE.Mesh(beamGeometry, material);
   mesh.position.copy(from).add(to).multiplyScalar(0.5);
+  mesh.scale.set(radius, direction.length(), radius);
   mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
   return mesh;
+}
+
+function consolidatePod(pod: THREE.Group): void {
+  const byMaterial = new Map<THREE.Material, THREE.Mesh[]>();
+  for (const child of pod.children) {
+    if (!(child instanceof THREE.Mesh) || Array.isArray(child.material)) continue;
+    const meshes = byMaterial.get(child.material) ?? [];
+    meshes.push(child);
+    byMaterial.set(child.material, meshes);
+  }
+  for (const [material, meshes] of byMaterial) {
+    if (meshes.length < 2) continue;
+    const geometries = meshes.map((mesh) => {
+      mesh.updateMatrix();
+      const geometry = mesh.geometry.index ? mesh.geometry.toNonIndexed() : mesh.geometry.clone();
+      return geometry.applyMatrix4(mesh.matrix);
+    });
+    const merged = mergeGeometries(geometries, false);
+    geometries.forEach((geometry) => geometry.dispose());
+    if (!merged) continue;
+    meshes.forEach((mesh) => pod.remove(mesh));
+    pod.add(new THREE.Mesh(merged, material));
+  }
 }
 
 function solarCellTexture(): THREE.CanvasTexture {
@@ -95,12 +120,19 @@ export function createStation(): StationModel {
     color: 0xc0cecc, metalness: 0.4, roughness: 0.35, envMapIntensity: 1.05,
     clearcoat: 0.25, clearcoatRoughness: 0.3,
   });
+  const armor = new THREE.MeshPhysicalMaterial({
+    color: 0xe2e8e2, metalness: 0.24, roughness: 0.43, envMapIntensity: 0.92,
+    clearcoat: 0.18, clearcoatRoughness: 0.36,
+  });
   const titanium = new THREE.MeshPhysicalMaterial({
     color: 0x849fa4, metalness: 0.76, roughness: 0.29, envMapIntensity: 1.25,
     clearcoat: 0.18, clearcoatRoughness: 0.27,
   });
   const carbon = new THREE.MeshStandardMaterial({
     color: 0x14242c, metalness: 0.48, roughness: 0.43, envMapIntensity: 0.75,
+  });
+  const pressureMetal = new THREE.MeshStandardMaterial({
+    color: 0x2a3a42, metalness: 0.63, roughness: 0.37, envMapIntensity: 1.05,
   });
   const copper = new THREE.MeshStandardMaterial({
     color: 0xb28567, metalness: 0.82, roughness: 0.32, envMapIntensity: 1.2,
@@ -124,13 +156,16 @@ export function createStation(): StationModel {
 
   const ring = new THREE.Group();
   group.add(ring);
-  const pressureHull = new THREE.Mesh(new THREE.TorusGeometry(3.29, 0.36, 14, 160), carbon);
-  pressureHull.scale.z = 1.75;
+  // Keep the pressure tube behind the removable forward armor. Its old front
+  // surface covered the entire face of the habitat segments in the hero shot.
+  const pressureHull = new THREE.Mesh(new THREE.TorusGeometry(3.29, 0.35, 14, 160), pressureMetal);
+  pressureHull.scale.z = 1.08;
+  pressureHull.position.z = -0.17;
   ring.add(pressureHull);
   for (const [radius, tube, z, material] of [
     [3.72, 0.055, 0.52, titanium],
     [3.72, 0.045, -0.52, titanium],
-    [2.88, 0.075, 0.48, carbon],
+    [2.88, 0.075, 0.48, titanium],
     [2.88, 0.055, -0.51, copper],
     [3.78, 0.012, 0.55, copper],
     [2.91, 0.009, 0.55, light],
@@ -139,12 +174,31 @@ export function createStation(): StationModel {
     rail.position.z = z;
     ring.add(rail);
   }
+  const clampGeometry = new THREE.TorusGeometry(0.357, 0.013, 6, 32);
+  const clampNormal = new THREE.Vector3(0, 0, 1);
+  for (let index = 0; index < 16; index += 1) {
+    const angle = (index + 0.5) * Math.PI / 8;
+    const clamp = new THREE.Mesh(clampGeometry, index % 4 === 0 ? copper : titanium);
+    clamp.position.set(Math.cos(angle) * 3.29, Math.sin(angle) * 3.29, -0.17);
+    clamp.quaternion.setFromUnitVectors(clampNormal, new THREE.Vector3(-Math.sin(angle), Math.cos(angle), 0));
+    ring.add(clamp);
+  }
 
   const podGeometry = habitatSegmentGeometry(16);
-  const frontPanel = new RoundedBoxGeometry(0.37, 0.78, 0.055, 2, 0.025);
+  const frontPanel = new RoundedBoxGeometry(0.28, 0.77, 0.055, 2, 0.025);
+  const panelBezel = new RoundedBoxGeometry(0.36, 0.84, 0.025, 2, 0.024);
   const windowFrame = new RoundedBoxGeometry(0.22, 0.16, 0.032, 2, 0.023);
   const windowGlass = new RoundedBoxGeometry(0.17, 0.115, 0.014, 2, 0.018);
+  const armorStrip = new RoundedBoxGeometry(0.09, 0.62, 0.035, 2, 0.014);
+  const hatch = new RoundedBoxGeometry(0.1, 0.1, 0.026, 2, 0.018);
+  const hatchMarkGeometry = new THREE.BoxGeometry(0.055, 0.009, 0.009);
+  const seamGeometry = new THREE.BoxGeometry(0.4, 0.012, 0.012);
+  const serviceRibGeometry = new RoundedBoxGeometry(0.12, 0.59, 0.04, 2, 0.018);
+  const ventGeometry = new RoundedBoxGeometry(0.15, 0.36, 0.038, 2, 0.015);
+  const ventSlat = new THREE.BoxGeometry(0.12, 0.012, 0.012);
   const rivetGeometry = new THREE.SphereGeometry(0.016, 6, 6);
+  const boundaryGeometry = new THREE.CylinderGeometry(0.067, 0.067, 0.075, 12);
+  const boundaryCapGeometry = new THREE.CylinderGeometry(0.039, 0.039, 0.081, 12);
   const pods: StationModel['pods'] = [];
   for (let index = 0; index < 16; index += 1) {
     const angle = (index / 16) * Math.PI * 2;
@@ -152,9 +206,17 @@ export function createStation(): StationModel {
     pod.rotation.z = angle;
     pod.add(new THREE.Mesh(podGeometry, index % 8 === 0 ? titanium : ceramic));
 
+    const bezel = new THREE.Mesh(panelBezel, titanium);
+    bezel.position.set(3.29, 0, 0.399);
+    pod.add(bezel);
     const inset = new THREE.Mesh(frontPanel, carbon);
     inset.position.set(3.29, 0, 0.43);
     pod.add(inset);
+    for (const radius of [3.05, 3.53]) {
+      const plate = new THREE.Mesh(armorStrip, armor);
+      plate.position.set(radius, 0, 0.389);
+      pod.add(plate);
+    }
     for (const offset of [-0.235, 0, 0.235]) {
       const frame = new THREE.Mesh(windowFrame, titanium);
       frame.position.set(3.31, offset, 0.477);
@@ -163,7 +225,7 @@ export function createStation(): StationModel {
       pod.add(frame, glazing);
     }
     for (const offset of [-0.34, 0.34]) {
-      const seam = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.012, 0.012), copper);
+      const seam = new THREE.Mesh(seamGeometry, copper);
       seam.position.set(3.29, offset, 0.49);
       pod.add(seam);
       for (const radial of [3.07, 3.51]) {
@@ -172,6 +234,12 @@ export function createStation(): StationModel {
         pod.add(rivet);
       }
     }
+    const serviceHatch = new THREE.Mesh(hatch, carbon);
+    serviceHatch.position.set(3.53, 0, 0.412);
+    pod.add(serviceHatch);
+    const hatchMark = new THREE.Mesh(hatchMarkGeometry, index % 4 === 0 ? light : copper);
+    hatchMark.position.set(3.53, 0, 0.43);
+    pod.add(hatchMark);
 
     for (const offset of [-0.44, 0.44]) {
       pod.add(beam(
@@ -183,44 +251,50 @@ export function createStation(): StationModel {
     }
     for (const side of [-1, 1]) {
       const serviceRib = new THREE.Mesh(
-        new RoundedBoxGeometry(0.12, 0.59, 0.04, 2, 0.018),
+        serviceRibGeometry,
         index % 4 === 0 ? copper : titanium,
       );
       serviceRib.position.set(3.52, side * 0.23, -0.42);
       pod.add(serviceRib);
     }
-    const vent = new THREE.Mesh(new RoundedBoxGeometry(0.15, 0.36, 0.038, 2, 0.015), carbon);
+    const vent = new THREE.Mesh(ventGeometry, carbon);
     vent.position.set(3.48, 0, -0.42);
     pod.add(vent);
+    for (const offset of [-0.12, -0.06, 0, 0.06, 0.12]) {
+      const slat = new THREE.Mesh(ventSlat, titanium);
+      slat.position.set(3.48, offset, -0.448);
+      pod.add(slat);
+    }
+    consolidatePod(pod);
     ring.add(pod);
     pods.push({group: pod, angle});
 
-    const boundary = new THREE.Mesh(new THREE.SphereGeometry(0.036, 8, 8), light);
-    boundary.position.set(Math.cos(angle + Math.PI / 16) * 3.75, Math.sin(angle + Math.PI / 16) * 3.75, 0.55);
-    ring.add(boundary);
+    const jointAngle = angle + Math.PI / 16;
+    const joint = new THREE.Group();
+    joint.position.set(Math.cos(jointAngle) * 3.74, Math.sin(jointAngle) * 3.74, 0.54);
+    const jointBase = new THREE.Mesh(boundaryGeometry, carbon);
+    jointBase.rotation.x = Math.PI / 2;
+    const jointCap = new THREE.Mesh(boundaryCapGeometry, index % 4 === 0 ? light : copper);
+    jointCap.rotation.x = Math.PI / 2;
+    jointCap.position.z = 0.043;
+    joint.add(jointBase, jointCap);
+    ring.add(joint);
   }
 
   for (let index = 0; index < 8; index += 1) {
     const angle = (index / 8) * Math.PI * 2;
     const radial = (distance: number, z: number) =>
       new THREE.Vector3(Math.cos(angle) * distance, Math.sin(angle) * distance, z);
+    const nextAngle = angle + Math.PI / 4;
+    const adjacent = (distance: number, z: number) =>
+      new THREE.Vector3(Math.cos(nextAngle) * distance, Math.sin(nextAngle) * distance, z);
     ring.add(
-      beam(radial(0.83, 0.16), radial(2.88, 0.4), 0.043, index % 4 === 0 ? copper : titanium),
-      beam(radial(0.83, -0.18), radial(2.88, -0.41), 0.034, titanium),
+      beam(radial(0.83, 0.22), radial(2.88, 0.4), 0.041, index % 4 === 0 ? copper : titanium),
+      beam(radial(0.83, -0.22), radial(2.88, -0.41), 0.034, titanium),
+      beam(radial(1.65, 0.25), adjacent(2.79, 0.39), 0.014, titanium),
+      beam(adjacent(1.65, -0.25), radial(2.79, -0.39), 0.014, titanium),
+      beam(radial(2.42, 0.38), adjacent(2.42, 0.38), 0.018, carbon),
     );
-    const braceAngle = angle + Math.PI / 8;
-    ring.add(beam(
-      radial(1.8, 0.18),
-      new THREE.Vector3(Math.cos(braceAngle) * 2.89, Math.sin(braceAngle) * 2.89, 0.4),
-      0.013,
-      carbon,
-    ));
-    ring.add(beam(
-      radial(1.8, -0.18),
-      new THREE.Vector3(Math.cos(braceAngle) * 2.89, Math.sin(braceAngle) * 2.89, -0.41),
-      0.012,
-      index % 2 === 0 ? copper : titanium,
-    ));
   }
 
   const hub = new THREE.Group();
@@ -231,6 +305,24 @@ export function createStation(): StationModel {
   );
   hull.rotation.x = Math.PI / 2;
   hub.add(hull);
+  const hubArmorGeometry = new THREE.CylinderGeometry(0.835, 0.835, 0.63, 48, 1, true, 0.075, Math.PI / 3 - 0.15);
+  for (let index = 0; index < 6; index += 1) {
+    const panel = new THREE.Mesh(hubArmorGeometry, index % 3 === 0 ? ceramic : armor);
+    panel.rotation.set(Math.PI / 2, 0, index * Math.PI / 3);
+    panel.position.z = -0.23;
+    hub.add(panel);
+  }
+  for (let index = 0; index < 8; index += 1) {
+    const angle = index * Math.PI / 4;
+    const position = (radius: number, z: number) =>
+      new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, z);
+    hub.add(beam(position(0.82, -1.07), position(0.82, 0.99), 0.018, index % 2 ? carbon : copper));
+    for (const z of [-0.94, 0.84]) {
+      const fitting = new THREE.Mesh(new THREE.SphereGeometry(0.034, 8, 6), titanium);
+      fitting.position.copy(position(0.84, z));
+      hub.add(fitting);
+    }
+  }
   for (const z of [-1.12, -0.57, 0.13, 0.76, 1.2]) {
     const collar = new THREE.Mesh(
       new THREE.TorusGeometry(z === 1.2 ? 0.77 : 0.8, z === 1.2 ? 0.09 : 0.037, 10, 64),
@@ -239,6 +331,12 @@ export function createStation(): StationModel {
     collar.position.z = z;
     hub.add(collar);
   }
+  const dockingOuter = new THREE.Mesh(new THREE.TorusGeometry(0.91, 0.045, 8, 64), ceramic);
+  dockingOuter.position.z = 1.16;
+  hub.add(dockingOuter);
+  const dockingInner = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.024, 8, 64), carbon);
+  dockingInner.position.z = 1.31;
+  hub.add(dockingInner);
   const dockingBezel = new THREE.Mesh(new THREE.TorusGeometry(0.51, 0.075, 12, 64), light);
   dockingBezel.position.z = 1.26;
   hub.add(dockingBezel);
@@ -274,6 +372,16 @@ export function createStation(): StationModel {
   innerTunnel.rotation.x = Math.PI / 2;
   hub.add(innerTunnel);
   for (let index = 0; index < 8; index += 1) {
+    const angle = index * Math.PI / 4;
+    const radius = 0.486;
+    hub.add(beam(
+      new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, -1.08),
+      new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 1.05),
+      0.005,
+      index % 2 === 0 ? light : copper,
+    ));
+  }
+  for (let index = 0; index < 8; index += 1) {
     const angle = (index / 8) * Math.PI * 2;
     const portLight = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.04, 0.03), light);
     portLight.position.set(Math.cos(angle) * 0.64, Math.sin(angle) * 0.64, 1.31);
@@ -283,6 +391,9 @@ export function createStation(): StationModel {
     latch.position.set(Math.cos(angle) * 0.55, Math.sin(angle) * 0.55, 1.34);
     latch.rotation.z = angle;
     hub.add(latch);
+    const latchPin = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 6), copper);
+    latchPin.position.set(Math.cos(angle) * 0.56, Math.sin(angle) * 0.56, 1.43);
+    hub.add(latchPin);
   }
 
   const solar: THREE.Group[] = [];
@@ -302,6 +413,15 @@ export function createStation(): StationModel {
     hinge.rotation.x = Math.PI / 2;
     hinge.position.set(-side * 0.51, 0, 0);
     wing.add(hinge);
+    const hingeCap = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.095, 0.34, 16), copper);
+    hingeCap.rotation.x = Math.PI / 2;
+    hingeCap.position.set(-side * 0.51, 0, 0);
+    wing.add(hingeCap);
+
+    wing.add(
+      beam(new THREE.Vector3(-side * 0.5, 0, -0.02), new THREE.Vector3(side * 0.18, 1.25, -0.06), 0.022, titanium),
+      beam(new THREE.Vector3(-side * 0.5, 0, -0.02), new THREE.Vector3(side * 0.18, -1.25, -0.06), 0.022, titanium),
+    );
 
     for (const row of [-1, 1]) {
       const panel = new THREE.Group();
@@ -320,6 +440,11 @@ export function createStation(): StationModel {
       );
       const spine = new THREE.Mesh(new THREE.BoxGeometry(0.035, 1.16, 0.07), copper);
       panel.add(spine);
+      for (const x of [-0.59, 0.59]) {
+        const reinforcingRib = new THREE.Mesh(new THREE.BoxGeometry(0.012, 1.18, 0.014), titanium);
+        reinforcingRib.position.set(x, 0, 0.032);
+        panel.add(reinforcingRib);
+      }
       wing.add(panel);
     }
     solar.push(wing);
@@ -328,11 +453,21 @@ export function createStation(): StationModel {
   const antenna = new THREE.Group();
   antenna.position.set(0.22, 3.66, -0.3);
   antenna.add(beam(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1.25, 0), 0.023, titanium));
-  const dish = new THREE.Mesh(new THREE.ConeGeometry(0.29, 0.17, 24, 1, true), ceramic);
+  antenna.add(
+    beam(new THREE.Vector3(0, 0.42, 0), new THREE.Vector3(-0.29, 0.68, 0.15), 0.014, titanium),
+    beam(new THREE.Vector3(0, 0.42, 0), new THREE.Vector3(0.29, 0.68, 0.15), 0.014, titanium),
+  );
+  const dish = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.14, 24, 1, true), titanium);
   dish.rotation.x = Math.PI / 2;
   dish.position.set(0, 0.96, 0);
   antenna.add(dish);
-  const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.055, 12, 12), light);
+  const dishRim = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.014, 6, 24), carbon);
+  dishRim.position.set(0, 0.96, 0.07);
+  antenna.add(dishRim);
+  const feed = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 8), light);
+  feed.position.set(0, 0.96, 0.18);
+  antenna.add(feed);
+  const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.044, 12, 12), light);
   beacon.position.set(0, 1.27, 0);
   antenna.add(beacon);
   group.add(antenna);
