@@ -18,7 +18,7 @@ const stops = [
   {at: 51, zh: '穿越舱门', en: 'The habitat'},
   {at: 72, zh: '回到现场', en: 'The people'},
   {at: 84, zh: '航迹', en: 'The record'},
-  {at: 95, zh: '继续向前', en: 'Next orbit'},
+  {at: 97, zh: '继续向前', en: 'Next orbit'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars']
@@ -70,7 +70,7 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('orbital'), {autoAlpha: 1, clipPath: 'circle(0% at 69% 50%)'}, {
         autoAlpha: 1, clipPath: 'circle(100% at 69% 50%)', duration: 10,
       }, 13)
-      .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 7}, 8)
+      .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
       .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.9, duration: 10}, 7)
       .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 7}, 14)
       .fromTo(target('year'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.84, scale: 1, x: 0, duration: 8}, 13)
@@ -98,13 +98,25 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 5}, 78)
       .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 4}, 84)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5}, 84)
+      .to(target('reality'), {autoAlpha: 0, duration: 4}, 84)
+      .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.12, x: 120}, {
+        autoAlpha: 1, scale: 1, x: 0, duration: 5,
+      }, 84)
+      .fromTo(target('archive-photo-0'), {xPercent: 18, yPercent: 15, rotation: -10}, {
+        xPercent: 0, yPercent: 0, rotation: -5, duration: 10,
+      }, 84)
+      .fromTo(target('archive-photo-1'), {xPercent: -18, yPercent: -10, rotation: 12}, {
+        xPercent: 0, yPercent: 0, rotation: 5, duration: 10,
+      }, 84)
+      .fromTo(target('archive-photo-2'), {xPercent: 15, yPercent: -20, rotation: -13}, {
+        xPercent: 0, yPercent: 0, rotation: -4, duration: 10,
+      }, 84)
       .fromTo(target('record-0'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 85)
       .to(target('record-0'), {autoAlpha: 0, x: -70, duration: 2}, 88)
       .fromTo(target('record-1'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 88)
       .to(target('record-1'), {autoAlpha: 0, x: -70, duration: 2}, 91)
       .fromTo(target('record-2'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 91)
       .to(target('record'), {autoAlpha: 0, duration: 3}, 94)
-      .to(target('reality'), {autoAlpha: 0, duration: 4}, 94)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
         autoAlpha: 1, y: 0, scale: 1, duration: 5,
       }, 95);
@@ -149,7 +161,7 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.briefCopy} data-motion="brief">
               <div className={styles.signal}><span /> {t('任务已接收', 'MISSION RECEIVED')}</div>
-              <p className={styles.phaseIndex}>01 / THE BRIEF</p>
+              <p className={styles.phaseIndex}>02 / THE BRIEF</p>
               <h2>{t('如果要在火星住下去，', 'What would it take')}<br />{t('先解决什么？', 'to live on Mars?')}</h2>
               <p>{t(
                 '2025 年，步天社两支队伍以 2075 年火星基地为题，完成从结构、人居到运营的系统设计。',
@@ -159,12 +171,13 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.yearGhost} data-motion="year" aria-hidden="true">2075</div>
 
             <div className={styles.assemblyCopy} data-motion="assembly">
-              <span className={styles.phaseIndex}>02 / SYSTEMS THINKING</span>
+              <span className={styles.phaseIndex}>03 / SYSTEMS THINKING</span>
               <h2>{t('一座基地，', 'A settlement is')}<br /><em>{t('不止一张图。', 'a living system.')}</em></h2>
               <p>{t(
                 '让每个模块先独立成立，再让它们共同运转。',
                 'Design each module to work, then make them work together.',
               )}</p>
+              <small className={styles.conceptNote}>{t('概念视觉 · 非实际方案模型', 'CONCEPT VISUAL · NOT A PROJECT MODEL')}</small>
             </div>
             <div className={styles.calloutLeft} data-motion="callout-1">
               <span className={styles.calloutNumber}>01 / 03</span>
@@ -188,7 +201,8 @@ export default function CinematicHome(): ReactNode {
               <div className={styles.portalFrame} />
             </div>
             <div className={styles.habitatCaption} data-motion="habitat-caption">
-              <span className={styles.phaseIndex}>03 / INSIDE THE HABITAT</span>
+              <img className={styles.stillImage} src="/img/life-support-concept.jpg" alt={t('地外生命保障空间概念视觉', 'Concept visual of an off-world life-support habitat')} />
+              <span className={styles.phaseIndex}>04 / INSIDE THE HABITAT</span>
               <h2>{t('真正的难题，', 'The real question:')}<br />{t('是让生命延续。', 'can life continue?')}</h2>
               <p>{t(
                 '大气循环、食物工程和生命保障，必须被算清楚，才能让“住下去”成为可能。',
@@ -202,7 +216,8 @@ export default function CinematicHome(): ReactNode {
               <div className={styles.realityTint} />
             </div>
             <div className={styles.teamCaption} data-motion="team-caption">
-              <span className={styles.phaseIndex}>04 / BACK ON EARTH</span>
+              <img className={styles.stillImage} src="/img/projects/2024-gfssm/team.jpg" alt={t('2024 GFSSM 中国站合影', 'Team at GFSSM China 2024')} />
+              <span className={styles.phaseIndex}>05 / BACK ON EARTH</span>
               <h2>{t('这一切，', 'The future is built')}<br />{t('由此刻的我们开始。', 'by people here, now.')}</h2>
               <p>{t(
                 '图纸背后，是一次次讨论、分工和现场 24 小时协作。',
@@ -212,7 +227,19 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.record} data-motion="record">
-              <p className={styles.recordEyebrow}>05 / FLIGHT RECORD</p>
+              <p className={styles.recordEyebrow}>06 / FLIGHT RECORD</p>
+              <div className={styles.archiveVisual} data-motion="archive-visual" aria-hidden="true">
+                <div className={styles.archivePhoto} data-motion="archive-photo-0">
+                  <img src="/img/projects/2024-gfssm/work-02.jpg" alt="" />
+                </div>
+                <div className={styles.archivePhoto} data-motion="archive-photo-1">
+                  <img src="/img/projects/2024-gfssm/presentation-01.jpg" alt="" />
+                </div>
+                <div className={styles.archivePhoto} data-motion="archive-photo-2">
+                  <img src="/img/projects/2024-gfssm/team.jpg" alt="" />
+                </div>
+                <span>{t('影像档案 / 2024 GFSSM 中国站', 'PHOTO ARCHIVE / GFSSM CHINA 2024')}</span>
+              </div>
               {milestones.map((project, index) => (
                 <div className={styles.recordEntry} data-motion={'record-' + index} key={project.id}>
                   <span>{2023 + index}</span>

@@ -1,5 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {createStation} from './StationModel';
 
 type Props = {
   progressRef: React.RefObject<number>;
@@ -33,116 +35,28 @@ function smooth(a: number, b: number, value: number): number {
   return x * x * (3 - 2 * x);
 }
 
-function poseAt(progress: number): {position: THREE.Vector3; target: THREE.Vector3} {
-  let right = cameraPath.findIndex((pose) => pose.at >= progress);
-  if (right < 1) right = 1;
-  const first = cameraPath[right - 1];
-  const second = cameraPath[right];
-  const local = smooth(first.at, second.at, progress);
-  return {
-    position: new THREE.Vector3(...first.position).lerp(new THREE.Vector3(...second.position), local),
-    target: new THREE.Vector3(...first.target).lerp(new THREE.Vector3(...second.target), local),
-  };
-}
-
-function beam(from: THREE.Vector3, to: THREE.Vector3, radius: number, material: THREE.Material): THREE.Mesh {
-  const delta = to.clone().sub(from);
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, delta.length(), 8), material);
-  mesh.position.copy(from).add(to).multiplyScalar(0.5);
-  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
-  return mesh;
-}
-
-function createStation(): {
-  group: THREE.Group;
-  ring: THREE.Group;
-  pods: Array<{group: THREE.Group; angle: number}>;
-  solar: THREE.Group[];
-} {
-  const group = new THREE.Group();
-  group.position.set(6, 0, -4);
-
-  const hull = new THREE.MeshStandardMaterial({color: 0xb7c4c9, metalness: 0.88, roughness: 0.28});
-  const dark = new THREE.MeshStandardMaterial({color: 0x15242c, metalness: 0.78, roughness: 0.34});
-  const copper = new THREE.MeshStandardMaterial({color: 0xe2aa72, metalness: 0.72, roughness: 0.32});
-  const glass = new THREE.MeshStandardMaterial({color: 0x78d9e0, emissive: 0x3fa5b2, emissiveIntensity: 1.8, metalness: 0.32, roughness: 0.18});
-  const panel = new THREE.MeshStandardMaterial({color: 0x102b43, emissive: 0x12314a, emissiveIntensity: 0.38, metalness: 0.42, roughness: 0.3, side: THREE.DoubleSide});
-
-  const ring = new THREE.Group();
-  group.add(ring);
-  const outer = new THREE.Mesh(new THREE.TorusGeometry(3.28, 0.12, 12, 128), hull);
-  const inner = new THREE.Mesh(new THREE.TorusGeometry(2.92, 0.035, 8, 128), copper);
-  ring.add(outer, inner);
-
-  const pods: Array<{group: THREE.Group; angle: number}> = [];
-  for (let index = 0; index < 18; index += 1) {
-    const angle = (index / 18) * Math.PI * 2;
-    const pod = new THREE.Group();
-    pod.position.set(Math.cos(angle) * 3.28, Math.sin(angle) * 3.28, 0);
-    pod.rotation.z = angle + Math.PI / 2;
-    const shell = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.44, 0.7), index % 3 === 0 ? copper : hull);
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(0.84, 0.05, 0.76), dark);
-    roof.position.y = 0.245;
-    pod.add(shell, roof);
-    for (let window = -1; window <= 1; window += 1) {
-      const light = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.08, 0.016), glass);
-      light.position.set(window * 0.25, 0.03, 0.365);
-      pod.add(light);
-    }
-    ring.add(pod);
-    pods.push({group: pod, angle});
+function interpolatePose(progress: number, field: 'position' | 'target', output: THREE.Vector3): void {
+  const right = Math.max(1, cameraPath.findIndex((pose) => pose.at >= progress));
+  const a = cameraPath[right - 1];
+  const b = cameraPath[right];
+  const previous = cameraPath[Math.max(0, right - 2)];
+  const next = cameraPath[Math.min(cameraPath.length - 1, right + 1)];
+  const span = b.at - a.at;
+  const t = clamp((progress - a.at) / span);
+  const t2 = t * t;
+  const t3 = t2 * t;
+  const h00 = 2 * t3 - 3 * t2 + 1;
+  const h10 = t3 - 2 * t2 + t;
+  const h01 = -2 * t3 + 3 * t2;
+  const h11 = t3 - t2;
+  const result: number[] = [];
+  for (let axis = 0; axis < 3; axis += 1) {
+    const entrySlope = (b[field][axis] - previous[field][axis]) / (b.at - previous.at);
+    const exitSlope = (next[field][axis] - a[field][axis]) / (next.at - a.at);
+    result[axis] = h00 * a[field][axis] + h10 * span * entrySlope
+      + h01 * b[field][axis] + h11 * span * exitSlope;
   }
-
-  for (let index = 0; index < 8; index += 1) {
-    const angle = (index / 8) * Math.PI * 2;
-    ring.add(beam(
-      new THREE.Vector3(Math.cos(angle) * 0.65, Math.sin(angle) * 0.65, 0),
-      new THREE.Vector3(Math.cos(angle) * 2.93, Math.sin(angle) * 2.93, 0),
-      0.055,
-      index % 2 ? copper : hull,
-    ));
-  }
-
-  const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.76, 0.76, 1.65, 32), hull);
-  hub.rotation.x = Math.PI / 2;
-  const hubCore = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 1.72, 32), dark);
-  hubCore.rotation.x = Math.PI / 2;
-  const dock = new THREE.Mesh(new THREE.TorusGeometry(0.52, 0.075, 10, 48), glass);
-  dock.position.z = 0.91;
-  ring.add(hub, hubCore, dock);
-
-  for (let index = 0; index < 10; index += 1) {
-    const angle = (index / 10) * Math.PI * 2;
-    const light = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), glass);
-    light.position.set(Math.cos(angle) * 3.28, Math.sin(angle) * 3.28, 0.42);
-    ring.add(light);
-  }
-
-  const solar: THREE.Group[] = [];
-  for (const side of [-1, 1]) {
-    const wing = new THREE.Group();
-    wing.position.set(side * 5.05, 0, -0.5);
-    group.add(beam(new THREE.Vector3(side * 3.2, 0, -0.4), new THREE.Vector3(side * 4.12, 0, -0.5), 0.045, hull));
-    for (const row of [-1, 1]) {
-      const slab = new THREE.Mesh(new THREE.BoxGeometry(1.55, 1.1, 0.045), panel);
-      slab.position.set(side * 0.46, row * 0.62, 0);
-      wing.add(slab);
-      for (let line = -3; line <= 3; line += 1) {
-        const grid = new THREE.Mesh(new THREE.BoxGeometry(0.012, 1.08, 0.051), hull);
-        grid.position.set(side * 0.46 + line * 0.21, row * 0.62, 0.02);
-        wing.add(grid);
-      }
-    }
-    group.add(wing);
-    solar.push(wing);
-  }
-
-  const mast = beam(new THREE.Vector3(0, 3.2, 0), new THREE.Vector3(0, 4.65, 0), 0.035, hull);
-  const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), glass);
-  beacon.position.set(0, 4.66, 0);
-  group.add(mast, beacon);
-
-  return {group, ring, pods, solar};
+  output.set(result[0], result[1], result[2]);
 }
 
 function createStars(): THREE.Points {
@@ -182,18 +96,25 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 600 ? 1.3 : 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.17;
     mount.appendChild(renderer.domElement);
     mount.dataset.ready = 'true';
     const stage = mount.parentElement?.parentElement;
     if (stage) stage.dataset.webgl = 'ready';
 
     const scene = new THREE.Scene();
+    const room = new RoomEnvironment();
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const environment = pmrem.fromScene(room, 0.04);
+    room.dispose();
+    pmrem.dispose();
+    scene.environment = environment.texture;
+    scene.environmentIntensity = 0.52;
     const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
-    const ambient = new THREE.AmbientLight(0xb7d5dd, 0.65);
-    const sun = new THREE.DirectionalLight(0xffdec4, 3.4);
+    const ambient = new THREE.AmbientLight(0xb7d5dd, 0.52);
+    const sun = new THREE.DirectionalLight(0xffdec4, 2.9);
     sun.position.set(12, 8, 14);
-    const blue = new THREE.DirectionalLight(0x5ccbdc, 2.6);
+    const blue = new THREE.DirectionalLight(0x5ccbdc, 1.75);
     blue.position.set(-10, -6, 5);
     scene.add(ambient, sun, blue);
 
@@ -202,7 +123,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     const station = createStation();
     scene.add(station.group);
 
-    const marsMaterial = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1});
+    const marsMaterial = new THREE.MeshStandardMaterial({color: 0xb47b57, roughness: 1});
     const mars = new THREE.Mesh(new THREE.SphereGeometry(14.2, 72, 48), marsMaterial);
     mars.position.set(11, -9.5, -38);
     mars.rotation.y = 1.8;
@@ -226,6 +147,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     scene.add(aura);
 
     let disposed = false;
+    let needsRender = true;
     let texture: THREE.Texture | undefined;
     const loader = new THREE.TextureLoader();
     // NASA/JPL-Caltech Mars map: https://science.nasa.gov/3d-resources/mars/
@@ -236,10 +158,12 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       }
       texture = loaded;
       loaded.colorSpace = THREE.SRGBColorSpace;
+      marsMaterial.color.setHex(0xffffff);
       marsMaterial.map = loaded;
       marsMaterial.bumpMap = loaded;
-      marsMaterial.bumpScale = 0.025;
+      marsMaterial.bumpScale = 0.014;
       marsMaterial.needsUpdate = true;
+      needsRender = true;
     });
 
     const resize = () => {
@@ -248,6 +172,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
+      needsRender = true;
     };
     const observer = new ResizeObserver(resize);
     observer.observe(mount);
@@ -255,15 +180,19 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     let visible = true;
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
+      needsRender = true;
     });
     visibilityObserver.observe(mount);
 
+    let lastProgress = -1;
+    const lookTarget = new THREE.Vector3();
     renderer.setAnimationLoop(() => {
       if (document.hidden || !visible) return;
       const progress = progressRef.current;
-      const pose = poseAt(progress);
-      camera.position.copy(pose.position);
-      camera.lookAt(pose.target);
+      if (!needsRender && Math.abs(progress - lastProgress) < 0.00001) return;
+      interpolatePose(progress, 'position', camera.position);
+      interpolatePose(progress, 'target', lookTarget);
+      camera.lookAt(lookTarget);
 
       const sequence = Math.min(progress, 0.6);
       station.group.rotation.y = -0.63 + smooth(0.1, 0.45, sequence) * 1.02;
@@ -274,12 +203,15 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       });
       const explode = smooth(0.245, 0.34, sequence) * (1 - smooth(0.42, 0.51, sequence));
       station.pods.forEach(({group, angle}, index) => {
-        const distance = 3.28 + explode * (0.8 + (index % 3) * 0.15);
-        group.position.set(Math.cos(angle) * distance, Math.sin(angle) * distance, explode * ((index % 2) ? 0.4 : -0.35));
+        const distance = explode * (1.1 + (index % 3) * 0.2);
+        group.position.set(Math.cos(angle) * distance, Math.sin(angle) * distance, explode * (index % 2 ? 0.36 : -0.36));
+        group.rotation.y = explode * (index % 2 ? 0.19 : -0.19);
       });
       mars.rotation.y = 1.8 + progress * 0.22;
       stars.rotation.y = progress * 0.08;
       renderer.render(scene, camera);
+      lastProgress = progress;
+      needsRender = false;
     });
 
     return () => {
@@ -289,14 +221,20 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       visibilityObserver.disconnect();
       mount.removeChild(renderer.domElement);
       if (stage) delete stage.dataset.webgl;
+      const geometries = new Set<THREE.BufferGeometry>();
+      const materials = new Set<THREE.Material>();
       scene.traverse((object) => {
         if (!(object instanceof THREE.Mesh || object instanceof THREE.Points || object instanceof THREE.Sprite)) return;
-        if (object instanceof THREE.Mesh || object instanceof THREE.Points) object.geometry.dispose();
-        const materials = Array.isArray(object.material) ? object.material : [object.material];
-        materials.forEach((material) => material.dispose());
+        if (object instanceof THREE.Mesh || object instanceof THREE.Points) geometries.add(object.geometry);
+        const objectMaterials = Array.isArray(object.material) ? object.material : [object.material];
+        objectMaterials.forEach((material) => materials.add(material));
       });
+      geometries.forEach((geometry) => geometry.dispose());
+      materials.forEach((material) => material.dispose());
+      station.textures.forEach((stationTexture) => stationTexture.dispose());
       texture?.dispose();
       auraTexture.dispose();
+      environment.dispose();
       renderer.dispose();
     };
   }, [progressRef]);

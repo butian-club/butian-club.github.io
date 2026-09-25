@@ -125,9 +125,9 @@
   inset: 0;
   z-index: 25;
   pointer-events: none;
-  color: rgba(228, 247, 247, .68);
+  color: rgba(228, 247, 247, .78);
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: .18em;
 }
@@ -136,7 +136,7 @@
 .hudCoordinates { position: absolute; top: 30px; right: clamp(24px, 4.4vw, 78px); }
 .hudCoordinates span { color: var(--amber); }
 .hudBottom { position: absolute; bottom: 28px; left: clamp(24px, 4.4vw, 78px); right: clamp(24px, 4.4vw, 78px); display: flex; justify-content: space-between; }
-.phaseIndex, .eyebrow, .signal, .scrollCue, .recordEyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .21em; }
+.phaseIndex, .eyebrow, .signal, .scrollCue, .recordEyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .18em; }
 .phaseIndex, .eyebrow { color: var(--ice); }
 .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy { position: absolute; z-index: 12; }
 .briefCopy, .yearGhost, .assemblyCopy, .calloutLeft, .calloutRight, .calloutBottom,
@@ -191,6 +191,8 @@
 .assemblyCopy { top: 17%; left: clamp(34px, 6.2vw, 112px); width: min(42vw, 530px); }
 .assemblyCopy h2 { font-size: clamp(2.7rem, 5vw, 6.3rem); }
 .assemblyCopy p { max-width: 340px; }
+.conceptNote { display: block; margin-top: 16px; color: rgba(221, 243, 242, .61); font: 500 9px var(--font-mono); letter-spacing: .13em; }
+.stillImage { display: none; }
 .calloutLeft, .calloutRight, .calloutBottom {
   position: absolute;
   z-index: 14;
@@ -203,11 +205,11 @@
   text-shadow: 0 2px 12px #000;
 }
 .calloutLeft { left: 7%; bottom: 22%; }
-.calloutRight { right: 7%; top: 31%; }
+.calloutRight { right: 12%; top: 31%; }
 .calloutBottom { right: 15%; bottom: 16%; }
-.calloutNumber { color: var(--amber); font: 600 9px var(--font-mono); letter-spacing: .18em; }
+.calloutNumber { color: var(--amber); font: 600 10px var(--font-mono); letter-spacing: .18em; }
 .calloutLeft b, .calloutRight b, .calloutBottom b { color: #f6fbfa; font-size: 16px; letter-spacing: -.02em; }
-.calloutLeft small, .calloutRight small, .calloutBottom small { color: rgba(225, 243, 242, .7); font: 500 9px var(--font-mono); letter-spacing: .12em; }
+.calloutLeft small, .calloutRight small, .calloutBottom small { color: rgba(225, 243, 242, .8); font: 500 10px var(--font-mono); letter-spacing: .12em; }
 .portal, .reality { position: absolute; inset: 0; z-index: 8; visibility: hidden; opacity: 0; will-change: clip-path; }
 .portalImage, .realityImage { position: absolute; inset: 0; background-position: center; background-size: cover; will-change: transform; }
 .portalImage { background-image: url('/img/life-support-concept.jpg'); }
@@ -215,23 +217,32 @@
 .portalFrame { position: absolute; inset: 3%; border: 1px solid rgba(222, 251, 238, .23); border-radius: min(12vw, 140px); pointer-events: none; }
 .habitatCaption { left: clamp(36px, 8vw, 140px); bottom: 11%; width: min(46vw, 600px); text-shadow: 0 2px 18px #000; }
 .habitatCaption h2 { font-size: clamp(2.4rem, 4.7vw, 5.7rem); }
-.habitatCaption small, .teamCaption small { display: block; margin-top: 23px; color: rgba(232, 246, 242, .63); font: 500 9px var(--font-mono); letter-spacing: .16em; }
+.habitatCaption small, .teamCaption small { display: block; margin-top: 23px; color: rgba(232, 246, 242, .78); font: 500 10px var(--font-mono); letter-spacing: .16em; }
 .reality { z-index: 10; }
 .realityImage { background-image: url('/img/projects/2024-gfssm/team.jpg'); background-position: center 44%; }
 .realityTint { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1, 12, 16, .79), rgba(1, 12, 16, .16) 70%), linear-gradient(0deg, rgba(1, 12, 16, .85), transparent 55%); }
 .teamCaption { z-index: 13; left: clamp(36px, 8vw, 140px); bottom: 12%; width: min(58vw, 760px); text-shadow: 0 2px 18px #000; }
 .teamCaption h2 { font-size: clamp(3rem, 5vw, 6.2rem); }
-.record { position: absolute; inset: 0; z-index: 15; padding: 21vh clamp(36px, 8vw, 140px); background: linear-gradient(90deg, rgba(1, 11, 16, .81), rgba(1, 11, 16, .35)); }
-.recordEyebrow { margin: 0; color: var(--ice); }
-.recordEntry { position: absolute; top: 33%; left: clamp(36px, 8vw, 140px); width: min(70vw, 850px); }
+.record { position: absolute; inset: 0; z-index: 15; padding: 21vh clamp(36px, 8vw, 140px); background: linear-gradient(90deg, rgba(1, 11, 16, .95), rgba(1, 11, 16, .24) 74%); }
+.recordEyebrow { position: relative; z-index: 2; margin: 0; color: var(--ice); }
+.archiveVisual { position: absolute; top: 15%; right: 7%; width: min(37vw, 530px); height: 70%; opacity: 0; visibility: hidden; pointer-events: none; }
+.archiveVisual::before { content: ''; position: absolute; inset: 12% 1%; border: 1px solid rgba(185, 244, 237, .18); border-radius: 50%; transform: rotate(-28deg); }
+.archivePhoto { position: absolute; width: 62%; aspect-ratio: 4 / 3; padding: 7px; background: #dde7e4; box-shadow: 0 22px 80px rgba(0, 0, 0, .55); }
+.archivePhoto img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) contrast(1.08); }
+.archivePhoto:nth-child(1) { top: 4%; left: 3%; }
+.archivePhoto:nth-child(2) { top: 33%; right: -5%; }
+.archivePhoto:nth-child(3) { bottom: 1%; left: 0; }
+.archiveVisual > span { position: absolute; right: 1%; bottom: -6%; color: rgba(225, 244, 240, .74); font: 600 10px var(--font-mono); letter-spacing: .16em; white-space: nowrap; }
+.recordEntry { position: absolute; z-index: 2; top: 33%; left: clamp(36px, 8vw, 140px); width: min(52vw, 690px); text-shadow: 0 2px 22px #02080d; }
 .recordEntry > span { display: block; color: var(--amber); font-size: clamp(6rem, 15vw, 15rem); font-weight: 650; line-height: .8; letter-spacing: -.11em; }
 .recordEntry h2 { margin: 20px 0 15px; font-size: clamp(1.7rem, 3vw, 3.7rem); line-height: 1.2; letter-spacing: -.055em; }
-.recordEntry p { max-width: 700px; color: rgba(234, 248, 247, .78); font-size: clamp(13px, 1.12vw, 16px); line-height: 1.75; }
+.recordEntry p { max-width: 610px; color: rgba(234, 248, 247, .9); font-size: clamp(14px, 1.2vw, 17px); line-height: 1.75; }
 .recordEntry a { display: inline-flex; margin-top: 12px; color: var(--ice); font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(185, 244, 237, .62); padding-bottom: 6px; }
 .recordEntry a:hover { color: #fff; border-color: #fff; }
+.recordEntry a:focus-visible, .endActions a:focus-visible, .afterword a:focus-visible { outline: 2px solid var(--ice); outline-offset: 5px; }
 .recordTicks { position: absolute; right: 7%; bottom: 16%; display: flex; gap: 9px; }
 .recordTicks i { display: block; width: 38px; height: 2px; background: rgba(185, 244, 237, .48); }
-.endCopy { z-index: 16; top: 50%; left: clamp(30px, 8vw, 140px); width: min(76vw, 950px); transform: translateY(-48%); }
+.endCopy { z-index: 16; top: 24%; left: clamp(30px, 8vw, 140px); width: min(76vw, 950px); }
 .endCopy h2 { font-size: clamp(3.5rem, 6.7vw, 8rem); }
 .endCopy > p:not(.phaseIndex) { max-width: 540px; }
 .endActions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 38px; }
@@ -241,7 +252,7 @@
 .primaryLink:hover { background: #fff; color: #05141a; }
 .secondaryLink { border: 1px solid rgba(185, 244, 237, .48); color: #fff; background: rgba(5, 17, 25, .48); }
 .secondaryLink:hover { color: #fff; background: rgba(185, 244, 237, .14); }
-.progressRail { position: absolute; z-index: 27; right: clamp(20px, 3.5vw, 60px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: 15px; transform: translateY(-50%); color: rgba(228, 247, 247, .7); font: 600 9px var(--font-mono); letter-spacing: .13em; pointer-events: none; }
+.progressRail { position: absolute; z-index: 27; right: clamp(20px, 3.5vw, 60px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: 15px; transform: translateY(-50%); color: rgba(228, 247, 247, .78); font: 600 10px var(--font-mono); letter-spacing: .13em; pointer-events: none; }
 .progressTrack { position: relative; width: 1px; height: clamp(80px, 22vh, 180px); background: rgba(203, 241, 239, .24); overflow: hidden; }
 .progressTrack i { display: block; width: 100%; height: 100%; background: var(--ice); transform: scaleY(var(--journey-progress)); transform-origin: top; box-shadow: 0 0 12px var(--ice); }
 .progressName { writing-mode: vertical-rl; white-space: nowrap; }
@@ -260,6 +271,7 @@
   .calloutBottom { right: 10%; bottom: 15%; }
   .habitatCaption, .teamCaption { width: 75%; }
   .recordEntry { width: 76%; }
+  .archiveVisual { right: 3%; width: 43vw; opacity: .7; }
 }
 @media (max-width: 600px) {
   .stage { height: 100svh; min-height: 580px; }
@@ -288,6 +300,9 @@
   .habitatCaption p, .teamCaption p { font-size: 13px; }
   .record { padding: 22vh 8%; }
   .recordEntry { top: 35%; left: 8%; width: 80%; }
+  .archiveVisual { top: 13%; right: -8%; width: 75vw; height: 73%; }
+  .archivePhoto { padding: 4px; }
+  .archiveVisual > span { right: 16%; bottom: -3%; font-size: 8px; }
   .recordEntry > span { font-size: 24vw; }
   .recordEntry h2 { font-size: 1.75rem; }
   .recordEntry p { font-size: 12px; }
@@ -307,9 +322,8 @@
 @media (prefers-reduced-motion: reduce) {
   .journey { min-height: 0; }
   .stage { height: auto; min-height: 0; overflow: visible; padding: 120px 7% 100px; }
-  .orbitalShell, .reticle, .orbitLine, .yearGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .recordTicks { display: none; }
-  .spaceBackdrop { background-image: url('/img/mars-orbit-hero.jpg'); }
-  .spaceVeil { background: rgba(2, 10, 17, .65); }
+  .orbitalShell, .reticle, .orbitLine, .yearGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .archiveVisual, .recordTicks { display: none; }
+  .spaceBackdrop, .spaceVeil { display: none; }
   .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
     position: relative;
     inset: auto;
@@ -325,6 +339,7 @@
   }
   .heroCopy h1, .endCopy h2 { text-wrap: wrap; }
   .recordEntry { margin: 35px 0; }
+  .stillImage { display: block; width: min(100%, 620px); max-height: 350px; margin: 0 0 25px; object-fit: cover; border-radius: 10px; }
   .scrollCue { display: none; }
   .afterword { position: relative; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
