@@ -17,8 +17,8 @@ type Pose = {
 const cameraPath: Pose[] = [
   {at: 0, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 0.14, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
-  {at: 0.3, position: [9.2, 2.3, 10.2], target: [6, 0, -4]},
-  {at: 0.43, position: [6.5, 0.7, 7.8], target: [6, 0, -4]},
+  {at: 0.3, position: [7.5, 2.2, 12.4], target: [3.6, 0, -4]},
+  {at: 0.43, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
   {at: 0.56, position: [6, 0, 0.2], target: [6, 0, -13]},
   {at: 0.64, position: [6, 0, -8], target: [6, 0, -20]},
   {at: 0.9, position: [6, 0, -8], target: [6, 0, -20]},
@@ -96,7 +96,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 600 ? 1.3 : 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.17;
+    renderer.toneMappingExposure = 1.03;
     mount.appendChild(renderer.domElement);
     mount.dataset.ready = 'true';
     const stage = mount.parentElement?.parentElement;
@@ -109,12 +109,13 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     room.dispose();
     pmrem.dispose();
     scene.environment = environment.texture;
-    scene.environmentIntensity = 0.52;
+    scene.environmentIntensity = 0.42;
     const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
-    const ambient = new THREE.AmbientLight(0xb7d5dd, 0.52);
-    const sun = new THREE.DirectionalLight(0xffdec4, 2.9);
+    const dockCamera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
+    const ambient = new THREE.AmbientLight(0x9fb7c1, 0.45);
+    const sun = new THREE.DirectionalLight(0xffd0aa, 2.7);
     sun.position.set(12, 8, 14);
-    const blue = new THREE.DirectionalLight(0x5ccbdc, 1.75);
+    const blue = new THREE.DirectionalLight(0x67b9cc, 1.35);
     blue.position.set(-10, -6, 5);
     scene.add(ambient, sun, blue);
 
@@ -123,7 +124,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     const station = createStation();
     scene.add(station.group);
 
-    const marsMaterial = new THREE.MeshStandardMaterial({color: 0xb47b57, roughness: 1});
+    const marsMaterial = new THREE.MeshStandardMaterial({color: 0xb1765b, roughness: 1});
     const mars = new THREE.Mesh(new THREE.SphereGeometry(14.2, 72, 48), marsMaterial);
     mars.position.set(11, -9.5, -38);
     mars.rotation.y = 1.8;
@@ -158,10 +159,10 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       }
       texture = loaded;
       loaded.colorSpace = THREE.SRGBColorSpace;
-      marsMaterial.color.setHex(0xffffff);
+      marsMaterial.color.setHex(0xcfab9a);
       marsMaterial.map = loaded;
       marsMaterial.bumpMap = loaded;
-      marsMaterial.bumpScale = 0.014;
+      marsMaterial.bumpScale = 0.025;
       marsMaterial.needsUpdate = true;
       needsRender = true;
     });
@@ -172,6 +173,8 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
+      dockCamera.aspect = camera.aspect;
+      dockCamera.updateProjectionMatrix();
       needsRender = true;
     };
     const observer = new ResizeObserver(resize);
@@ -186,6 +189,8 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
 
     let lastProgress = -1;
     const lookTarget = new THREE.Vector3();
+    const dockLookTarget = new THREE.Vector3();
+    const dockPoint = new THREE.Vector3();
     renderer.setAnimationLoop(() => {
       if (document.hidden || !visible) return;
       const progress = progressRef.current;
@@ -195,18 +200,37 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       camera.lookAt(lookTarget);
 
       const sequence = Math.min(progress, 0.6);
-      station.group.rotation.y = -0.63 + smooth(0.1, 0.45, sequence) * 1.02;
+      station.group.rotation.y = -0.68 + smooth(0.1, 0.4, sequence) * 0.4
+        + smooth(0.34, 0.49, sequence) * 0.55;
       station.group.rotation.x = 0.2 + smooth(0.18, 0.43, sequence) * 0.14;
       station.ring.rotation.z = -0.08 + sequence * 1.65;
       station.solar.forEach((wing, index) => {
         wing.rotation.y = (index ? 1 : -1) * smooth(0.19, 0.42, sequence) * 0.42;
       });
-      const explode = smooth(0.245, 0.34, sequence) * (1 - smooth(0.42, 0.51, sequence));
       station.pods.forEach(({group, angle}, index) => {
+        const offset = index * 0.0017;
+        const explode = smooth(0.24 + offset, 0.335 + offset, sequence)
+          * (1 - smooth(0.415 + offset, 0.505 + offset, sequence));
         const distance = explode * (1.1 + (index % 3) * 0.2);
         group.position.set(Math.cos(angle) * distance, Math.sin(angle) * distance, explode * (index % 2 ? 0.36 : -0.36));
         group.rotation.y = explode * (index % 2 ? 0.19 : -0.19);
       });
+      const irisOpen = smooth(0.455, 0.53, sequence);
+      station.iris.forEach(({group, angle}, index) => {
+        group.position.set(Math.cos(angle) * irisOpen * 0.48, Math.sin(angle) * irisOpen * 0.48, 1.23 - irisOpen * 0.08);
+        group.rotation.z = angle + irisOpen * (index % 2 ? 0.12 : -0.12);
+      });
+      if (stage) {
+        const dockProgress = Math.min(progress, 0.56);
+        interpolatePose(dockProgress, 'position', dockCamera.position);
+        interpolatePose(dockProgress, 'target', dockLookTarget);
+        dockCamera.lookAt(dockLookTarget);
+        dockCamera.updateMatrixWorld();
+        station.group.updateWorldMatrix(true, false);
+        dockPoint.set(0, 0, 1.26).applyMatrix4(station.group.matrixWorld).project(dockCamera);
+        stage.style.setProperty('--dock-x', `${((dockPoint.x + 1) * 50).toFixed(2)}%`);
+        stage.style.setProperty('--dock-y', `${((1 - dockPoint.y) * 50).toFixed(2)}%`);
+      }
       mars.rotation.y = 1.8 + progress * 0.22;
       stars.rotation.y = progress * 0.08;
       renderer.render(scene, camera);
@@ -220,7 +244,11 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       observer.disconnect();
       visibilityObserver.disconnect();
       mount.removeChild(renderer.domElement);
-      if (stage) delete stage.dataset.webgl;
+      if (stage) {
+        delete stage.dataset.webgl;
+        stage.style.removeProperty('--dock-x');
+        stage.style.removeProperty('--dock-y');
+      }
       const geometries = new Set<THREE.BufferGeometry>();
       const materials = new Set<THREE.Material>();
       scene.traverse((object) => {

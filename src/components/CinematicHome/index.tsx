@@ -74,9 +74,12 @@ export default function CinematicHome(): ReactNode {
       .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.9, duration: 10}, 7)
       .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 7}, 14)
       .fromTo(target('year'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.84, scale: 1, x: 0, duration: 8}, 13)
-      .to(target('brief'), {autoAlpha: 0, x: -36, duration: 5}, 22)
+      .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 22)
       .to(target('year'), {autoAlpha: 0, scale: 0.75, duration: 6}, 22)
-      .fromTo(target('assembly'), {autoAlpha: 0, y: 34}, {autoAlpha: 1, y: 0, duration: 6}, 23)
+      .fromTo(target('assembly'), {autoAlpha: 0, y: 34}, {autoAlpha: 1, y: 0, duration: 5}, 25)
+      .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
+      .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 18}, 28)
+      .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 47)
       .fromTo(target('callout-1'), {autoAlpha: 0, x: -40}, {autoAlpha: 1, x: 0, duration: 4}, 30)
       .to(target('callout-1'), {autoAlpha: 0, x: -35, duration: 4}, 37)
       .fromTo(target('callout-2'), {autoAlpha: 0, x: 40}, {autoAlpha: 1, x: 0, duration: 4}, 36)
@@ -84,16 +87,20 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('callout-3'), {autoAlpha: 0, y: 28}, {autoAlpha: 1, y: 0, duration: 4}, 43)
       .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 5}, 49)
       .to(target('callout-3'), {autoAlpha: 0, y: -28, duration: 4}, 49)
-      .fromTo(target('portal'), {autoAlpha: 1, clipPath: 'circle(0% at 51% 50%)'}, {
-        autoAlpha: 1, clipPath: 'circle(100% at 51% 50%)', duration: 18,
+      .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
+        autoAlpha: 1, '--portal-radius': '145%', duration: 18,
       }, 52)
       .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 20}, 52)
       .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 5}, 63)
-      .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 4}, 70)
+      .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 4}, 72)
       .fromTo(target('reality'), {autoAlpha: 1, clipPath: 'circle(0% at 51% 50%)'}, {
         autoAlpha: 1, clipPath: 'circle(100% at 51% 50%)', duration: 10,
       }, 72)
       .fromTo(target('reality-image'), {scale: 1.28}, {scale: 1, duration: 20}, 72)
+      .fromTo(target('reality-frame'), {autoAlpha: 0, x: 80, scale: 0.9}, {
+        autoAlpha: 1, x: 0, scale: 1, duration: 9,
+      }, 74)
+      .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 82)
       .to(target('portal'), {autoAlpha: 0, duration: 1}, 81)
       .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 5}, 78)
       .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 4}, 84)
@@ -102,14 +109,14 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.08, x: 80}, {
         autoAlpha: 1, scale: 1, x: 0, duration: 1.5,
       }, 88.5)
-      .fromTo(target('archive-photo-0'), {xPercent: 18, yPercent: 15, rotation: -10}, {
-        xPercent: 0, yPercent: 0, rotation: -5, duration: 10,
+      .fromTo(target('archive-photo-0'), {xPercent: -9, yPercent: 8}, {
+        xPercent: 0, yPercent: 0, duration: 10,
       }, 84)
-      .fromTo(target('archive-photo-1'), {xPercent: -18, yPercent: -10, rotation: 12}, {
-        xPercent: 0, yPercent: 0, rotation: 5, duration: 10,
+      .fromTo(target('archive-photo-1'), {xPercent: 12, yPercent: -8}, {
+        xPercent: 0, yPercent: 0, duration: 10,
       }, 84)
-      .fromTo(target('archive-photo-2'), {xPercent: 15, yPercent: -20, rotation: -13}, {
-        xPercent: 0, yPercent: 0, rotation: -4, duration: 10,
+      .fromTo(target('archive-photo-2'), {xPercent: 9, yPercent: 12}, {
+        xPercent: 0, yPercent: 0, duration: 10,
       }, 84)
       .fromTo(target('record-0'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 85)
       .to(target('record-0'), {autoAlpha: 0, x: -70, duration: 1}, 87.5)
@@ -130,7 +137,7 @@ export default function CinematicHome(): ReactNode {
         '杭州第二中学步天工程社：以工程设计、协作和表达，探索人类在地外的未来。',
         'Butian Engineering Club at Hangzhou No.2 High School: exploring an off-world future through engineering, collaboration and communication.',
       )}>
-      <main className={styles.home}>
+      <main id="cinematic-home" className={styles.home}>
         <section className={styles.journey} ref={rootRef} aria-label={t('步天工程社的航程', 'The Butian journey')}>
           <div className={styles.stage} ref={stageRef}>
             <div className={styles.spaceBackdrop} data-motion="backdrop" aria-hidden="true" />
@@ -140,6 +147,9 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.spaceVeil} aria-hidden="true" />
             <div className={styles.reticle} aria-hidden="true"><span /><span /><span /><span /></div>
             <div className={styles.orbitLine} aria-hidden="true" />
+            <div className={styles.systemGrid} data-motion="system-grid" aria-hidden="true">
+              <span className={styles.scanLine} data-motion="scan-line" />
+            </div>
 
             <div className={styles.hud} aria-hidden="true">
               <div className={styles.hudBrand}><span className={styles.hudDiamond} /> BUTIAN ENGINEERING CLUB</div>
@@ -222,6 +232,9 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.reality} data-motion="reality" aria-hidden="true">
               <div className={styles.realityImage} data-motion="reality-image" />
               <div className={styles.realityTint} />
+              <div className={styles.realityFrame} data-motion="reality-frame">
+                <img src="/img/projects/2024-gfssm/team.jpg" alt="" />
+              </div>
             </div>
             <div className={styles.teamCaption} data-motion="team-caption">
               <img className={styles.stillImage} src="/img/projects/2024-gfssm/team.jpg" alt={t('2024 GFSSM 中国站合影', 'Team at GFSSM China 2024')} />
