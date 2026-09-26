@@ -17,9 +17,11 @@ type Pose = {
 const cameraPath: Pose[] = [
   {at: 0, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 0.09, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
-  {at: 0.2, position: [7.5, 2.2, 12.4], target: [3.6, 0, -4]},
-  // Hold outside the docking face while the habitat image opens over the station.
-  {at: 0.34, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
+  {at: 0.2, position: [8.4, 2.7, 14], target: [3.9, 0, -4]},
+  {at: 0.285, position: [8.6, 1.8, 12.8], target: [4, 0, -4]},
+  {at: 0.34, position: [8.2, 1.1, 11.2], target: [4.3, 0, -4]},
+  // The camera approaches only after the large headline leaves the frame.
+  {at: 0.39, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
   {at: 0.75, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
   {at: 0.91, position: [6.8, 1, 11], target: [5.8, 0, -4]},
   {at: 0.98, position: [0, 0.5, 19], target: [1.5, 0, -4]},
@@ -181,8 +183,10 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       const width = Math.max(1, mount.clientWidth);
       const height = Math.max(1, mount.clientHeight);
       renderer.setSize(width, height, false);
+      camera.fov = width < 600 ? 60 : 39;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
+      dockCamera.fov = camera.fov;
       dockCamera.aspect = camera.aspect;
       dockCamera.updateProjectionMatrix();
       needsRender = true;
@@ -207,25 +211,63 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       if (!needsRender && Math.abs(progress - lastProgress) < 0.00001) return;
       interpolatePose(progress, 'position', camera.position);
       interpolatePose(progress, 'target', lookTarget);
+      const isMobile = mount.clientWidth < 600;
+      const mobileLift = isMobile ? 2.8 * smooth(0.08, 0.2, progress) : 0;
+      const mobileReveal = isMobile
+        ? smooth(0.24, 0.31, progress) * (1 - smooth(0.345, 0.41, progress))
+        : 0;
+      const mobilePan = 4 * mobileReveal;
+      const fieldOfView = isMobile ? 60 + 12 * mobileReveal : 39;
+      if (Math.abs(camera.fov - fieldOfView) > 0.01) {
+        camera.fov = fieldOfView;
+        camera.updateProjectionMatrix();
+        dockCamera.fov = fieldOfView;
+        dockCamera.updateProjectionMatrix();
+      }
+      lookTarget.y += mobileLift;
+      lookTarget.x += mobilePan;
       camera.lookAt(lookTarget);
 
-      const sequence = Math.min(progress, 0.6);
-      station.group.rotation.y = -0.68 + smooth(0.1, 0.4, sequence) * 0.4
-        + smooth(0.34, 0.49, sequence) * 0.55;
-      station.group.rotation.x = 0.2 + smooth(0.18, 0.43, sequence) * 0.14;
-      station.ring.rotation.z = -0.08 + sequence * 1.65;
-      station.solar.forEach((wing, index) => {
-        wing.rotation.y = (index ? 1 : -1) * smooth(0.19, 0.42, sequence) * 0.42;
+      const sequence = Math.min(progress, 0.5);
+      station.group.rotation.y = -0.68 + smooth(0.11, 0.29, sequence) * 0.38
+        + smooth(0.29, 0.37, sequence) * 0.45;
+      station.group.rotation.x = 0.2 + smooth(0.19, 0.34, sequence) * 0.14;
+      station.ring.rotation.z = -0.08 + smooth(0.12, 0.36, sequence) * 1.15;
+
+      // Open the outer cassettes on radial slides, exposing the continuous
+      // pressure ring and the load-bearing spokes before they seat again.
+      station.pods.forEach(({group, angle, slides, collars}, index) => {
+        const stagger = index * 0.0018;
+        const extension = 0.46 * smooth(0.19 + stagger, 0.255 + stagger, sequence)
+          * (1 - smooth(0.295 + stagger, 0.365 + stagger, sequence));
+        group.position.set(Math.cos(angle) * extension, Math.sin(angle) * extension, 0);
+        for (const slide of slides) {
+          slide.position.set(3.015 + extension / 2, 0, slide.position.z);
+          slide.scale.y = 0.29 + extension;
+        }
+        collars.position.x = 3.16 + extension;
       });
-      const irisOpen = smooth(0.455, 0.53, sequence);
+
+      // Each solar leaf unfolds from a central hinge; the whole array then
+      // tracks toward the viewer around its bearing, without leaving the truss.
+      station.solar.forEach(({wing, leaves, side}, index) => {
+        const deployed = smooth(0.225 + index * 0.012, 0.345 + index * 0.012, sequence);
+        wing.rotation.y = side * (1.12 - deployed * 1.02);
+        leaves.forEach(({hinge, row}) => {
+          hinge.rotation.x = row * (1 - deployed) * 1.42;
+        });
+      });
+      const irisOpen = smooth(0.315, 0.36, sequence);
       station.iris.forEach(({group, angle}) => {
-        group.position.set(Math.cos(angle) * irisOpen * 0.18, Math.sin(angle) * irisOpen * 0.18, 1.23);
-        group.rotation.z = angle;
+        group.position.set(Math.cos(angle) * irisOpen * 0.34, Math.sin(angle) * irisOpen * 0.34, 1.23);
+        group.rotation.z = angle + irisOpen * 0.1;
       });
       if (stage) {
         const dockProgress = Math.min(progress, 0.56);
         interpolatePose(dockProgress, 'position', dockCamera.position);
         interpolatePose(dockProgress, 'target', dockLookTarget);
+        dockLookTarget.y += mobileLift;
+        dockLookTarget.x += mobilePan;
         dockCamera.lookAt(dockLookTarget);
         dockCamera.updateMatrixWorld();
         station.group.updateWorldMatrix(true, false);
