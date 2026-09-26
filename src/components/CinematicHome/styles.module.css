@@ -26,7 +26,7 @@
   z-index: 0;
   background:
     linear-gradient(90deg, rgba(2, 12, 23, .7), transparent 73%),
-    url('/img/journey/binjiang-campus.webp') center 55% / cover no-repeat;
+    url('/img/journey/hangzhou-no2-campus.webp') center 55% / cover no-repeat;
   opacity: 1;
   will-change: transform, opacity;
 }
@@ -187,6 +187,7 @@
 }
 .launchCopy h1 em, .heroCopy h2 em, .assemblyCopy h2 em, .endCopy h2 em { font-style: normal; color: var(--ice); }
 .launchCopy h1 { font-size: clamp(3.5rem, 7vw, 7.8rem); }
+:global(html[lang='en']) .launchCopy h1 { font-size: clamp(3rem, 5vw, 6rem); }
 .launchLead { max-width: 470px; margin: 0; color: rgba(240, 249, 248, .9); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.78; text-shadow: 0 2px 22px rgba(2, 9, 16, .6); }
 .campusCredit { position: absolute; z-index: 26; right: clamp(24px, 4.4vw, 78px); bottom: 55px; margin: 0; color: rgba(245, 253, 250, .84); font: 600 9px var(--font-mono); letter-spacing: .14em; text-shadow: 0 2px 14px #05101a; }
 .heroLead { max-width: 510px; margin: 0; color: rgba(236, 248, 247, .83); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.78; }
@@ -343,6 +344,7 @@
   .launchCopy, .heroCopy { left: 7%; top: calc(42% + 1.75rem); width: 84%; }
   .launchCopy h1, .heroCopy h2 { font-size: clamp(2.6rem, 11vw, 4.4rem); text-wrap: nowrap; }
   .launchCopy h1 { font-size: clamp(2.5rem, 9.8vw, 4rem); }
+  :global(html[lang='en']) .launchCopy h1 { font-size: clamp(2rem, 7.2vw, 3rem); }
   .launchLead { max-width: 295px; font-size: 14px; }
   .campusCredit { left: 24px; right: auto; bottom: 53px; font-size: 7px; }
   .heroLead { max-width: 295px; font-size: 14px; }

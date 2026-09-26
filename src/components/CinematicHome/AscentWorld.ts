@@ -97,7 +97,7 @@ export function createAscentWorld(scene: THREE.Scene, loader: THREE.TextureLoade
   geometries.push(campusGeometry);
   materials.push(campusMaterial);
   add(campus);
-  load('/img/journey/binjiang-campus.webp', (texture) => {
+  load('/img/journey/hangzhou-no2-campus.webp', (texture) => {
     campusMaterial.map = texture;
     campusMaterial.needsUpdate = true;
   });

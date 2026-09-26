@@ -167,7 +167,7 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
     const loader = new THREE.TextureLoader();
     const ascentWorld = createAscentWorld(scene, loader, (url) => {
       needsRender = true;
-      if (url.endsWith('binjiang-campus.webp')) renderer.domElement.style.visibility = 'visible';
+      if (url.endsWith('hangzhou-no2-campus.webp')) renderer.domElement.style.visibility = 'visible';
     });
     // NASA/JPL-Caltech Mars map: https://science.nasa.gov/3d-resources/mars/
     loader.load('/img/mars-nasa-texture.jpg', (loaded) => {

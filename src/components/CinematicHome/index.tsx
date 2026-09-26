@@ -20,7 +20,7 @@ const journeyDuration = launchDuration + spaceDuration;
 const journeyScreens = 19.9;
 
 const stops = [
-  {at: 0, zh: '滨江起点', en: 'Binjiang campus'},
+  {at: 0, zh: '杭州二中', en: 'Hangzhou No.2 High School'},
   {at: 8, zh: '穿越云层', en: 'Through the clouds'},
   {at: 19, zh: '进入太空', en: 'Into space'},
   {at: launchDuration + 16, zh: '接住问题', en: 'The brief'},
@@ -207,8 +207,8 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.launchCopy} data-motion="launch-copy">
-              <p className={styles.eyebrow}>{t('起点 · 杭州第二中学滨江校区', 'ORIGIN · HANGZHOU NO.2 HIGH SCHOOL, BINJIANG')}</p>
-              <h1>{t('从滨江校区，', 'From Binjiang,')}<br /><em>{t('飞向星辰。', 'toward the stars.')}</em></h1>
+              <p className={styles.eyebrow}>{t('起点 · 杭州二中', 'ORIGIN · HANGZHOU NO.2 HIGH SCHOOL')}</p>
+              <h1>{t('从杭州二中，', 'From Hangzhou No.2,')}<br /><em>{t('飞向星辰。', 'toward the stars.')}</em></h1>
               <p className={styles.launchLead}>{t(
                 '步天工程社的航程，从这里开始。我们把对太空的好奇，带进一次次讨论、设计与验证。',
                 'Butian’s journey begins here. We take our curiosity about space into each discussion, design and test.',
@@ -220,7 +220,7 @@ export default function CinematicHome(): ReactNode {
                 {t('向下滚动，开始升空', 'SCROLL TO LIFT OFF')}
               </div>
             </div>
-            <p className={styles.campusCredit} data-motion="campus-credit">{t('实景影像 / 杭州第二中学滨江校区', 'ACTUAL CAMPUS / HANGZHOU NO.2 HIGH SCHOOL')}</p>
+            <p className={styles.campusCredit} data-motion="campus-credit">{t('实景影像 / 杭州二中', 'ACTUAL CAMPUS / HANGZHOU NO.2 HIGH SCHOOL')}</p>
 
             <div className={styles.heroCopy} data-motion="hero">
               <p className={styles.eyebrow}>{t('杭州第二中学 · 求是创新学院 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</p>
