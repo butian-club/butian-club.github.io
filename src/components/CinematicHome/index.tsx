@@ -14,17 +14,21 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // One story unit has the same scroll distance throughout the pinned journey.
 // The archive and final invitation need enough distance to read while scrolling continuously.
-const journeyDuration = 137;
-const journeyScreens = 17.1;
+const launchDuration = 22;
+const spaceDuration = 137;
+const journeyDuration = launchDuration + spaceDuration;
+const journeyScreens = 19.9;
 
 const stops = [
-  {at: 0, zh: '离开地球', en: 'Departure'},
-  {at: 16, zh: '接住问题', en: 'The brief'},
-  {at: 29, zh: '协作设计', en: 'One team'},
-  {at: 57, zh: '经得起推敲', en: 'Test the idea'},
-  {at: 69, zh: '真实的同伴', en: 'The people'},
-  {at: 78, zh: '做过的方案', en: 'Our work'},
-  {at: 127, zh: '传给下一程', en: 'Pass it on'},
+  {at: 0, zh: '滨江起点', en: 'Binjiang campus'},
+  {at: 8, zh: '穿越云层', en: 'Through the clouds'},
+  {at: 19, zh: '进入太空', en: 'Into space'},
+  {at: launchDuration + 16, zh: '接住问题', en: 'The brief'},
+  {at: launchDuration + 29, zh: '协作设计', en: 'One team'},
+  {at: launchDuration + 57, zh: '经得起推敲', en: 'Test the idea'},
+  {at: launchDuration + 69, zh: '真实的同伴', en: 'The people'},
+  {at: launchDuration + 78, zh: '做过的方案', en: 'Our work'},
+  {at: launchDuration + 127, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
@@ -37,6 +41,7 @@ export default function CinematicHome(): ReactNode {
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
+  const ascentRef = useRef(0);
   const activeStopRef = useRef(0);
   const [activeStop, setActiveStop] = useState(0);
   const activeMissionRef = useRef(0);
@@ -70,14 +75,15 @@ export default function CinematicHome(): ReactNode {
       p: 1,
       duration: journeyDuration,
       onUpdate: () => {
-        progressRef.current = driver.p;
         const storyTime = driver.p * journeyDuration;
+        ascentRef.current = Math.max(0, Math.min(1, storyTime / launchDuration));
+        progressRef.current = Math.max(0, Math.min(1, (storyTime - launchDuration) / spaceDuration));
         const index = stops.reduce((current, stop, position) => storyTime >= stop.at ? position : current, 0);
         if (activeStopRef.current !== index) {
           activeStopRef.current = index;
           setActiveStop(index);
         }
-        const missionIndex = Math.max(0, Math.min(milestones.length - 1, Math.floor((storyTime - 77) / 11.5)));
+        const missionIndex = Math.max(0, Math.min(milestones.length - 1, Math.floor((storyTime - launchDuration - 77) / 11.5)));
         if (activeMissionRef.current !== missionIndex) {
           activeMissionRef.current = missionIndex;
           setActiveMission(missionIndex);
@@ -87,10 +93,17 @@ export default function CinematicHome(): ReactNode {
     }, 0);
 
     timeline
-      .fromTo(target('orbital'), {autoAlpha: 1, clipPath: 'circle(0% at 69% 50%)'}, {
-        autoAlpha: 1, clipPath: 'circle(100% at 69% 50%)', duration: 11,
-      }, 12)
+      .to(target('launch-copy'), {autoAlpha: 0, y: -40, duration: 4}, 3)
+      .to(target('campus-credit'), {autoAlpha: 0, duration: 3}, 4)
+      .to(target('launch-vignette'), {autoAlpha: 0, duration: 5}, 5)
+      .fromTo(target('space-veil'), {autoAlpha: 0}, {autoAlpha: 1, duration: 9}, 24)
+      .fromTo(target('reticle'), {autoAlpha: 0}, {autoAlpha: .34, duration: 6}, 23)
+      .fromTo(target('orbit-line'), {autoAlpha: 0}, {autoAlpha: 1, duration: 6}, 23);
+
+    const spaceTimeline = gsap.timeline({defaults: {ease: 'none'}});
+    spaceTimeline
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
+      .fromTo(target('hero'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4}, 0)
       .to(target('hero'), {autoAlpha: 0, y: '-=85', scale: 0.92, duration: 7}, 7)
       .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 5}, 14)
       .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 9}, 12)
@@ -152,13 +165,14 @@ export default function CinematicHome(): ReactNode {
 
     milestones.forEach((_, index) => {
       const at = 77 + index * 11.5;
-      timeline.fromTo(target('record-' + index), {autoAlpha: 0, x: 80}, {
+      spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: 80}, {
         autoAlpha: 1, x: 0, duration: 1.6,
       }, at);
       if (index < milestones.length - 1) {
-        timeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: 1.2}, at + 9.5);
+        spaceTimeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: 1.2}, at + 9.5);
       }
     });
+    timeline.add(spaceTimeline, launchDuration);
   }, {scope: rootRef});
 
   return (
@@ -172,28 +186,45 @@ export default function CinematicHome(): ReactNode {
         <section id="club-profile" className={styles.journey} ref={rootRef} aria-label={t('步天工程社的航程', 'The Butian journey')}>
           <div className={styles.stage} ref={stageRef}>
             <div className={styles.spaceBackdrop} data-motion="backdrop" aria-hidden="true" />
-            <div className={styles.orbitalShell} data-motion="orbital">
-              <OrbitalScene className={styles.orbitalScene} progressRef={progressRef} />
+            <div className={styles.orbitalShell}>
+              <OrbitalScene className={styles.orbitalScene} progressRef={progressRef} ascentRef={ascentRef} />
             </div>
-            <div className={styles.spaceVeil} aria-hidden="true" />
-            <div className={styles.reticle} aria-hidden="true"><span /><span /><span /><span /></div>
-            <div className={styles.orbitLine} aria-hidden="true" />
+            <div className={styles.spaceVeil} data-motion="space-veil" aria-hidden="true" />
+            <div className={styles.launchVignette} data-motion="launch-vignette" aria-hidden="true" />
+            <div className={styles.reticle} data-motion="reticle" aria-hidden="true"><span /><span /><span /><span /></div>
+            <div className={styles.orbitLine} data-motion="orbit-line" aria-hidden="true" />
             <div className={styles.systemGrid} data-motion="system-grid" aria-hidden="true">
               <span className={styles.scanLine} data-motion="scan-line" />
             </div>
 
             <div className={styles.hud} aria-hidden="true">
               <div className={styles.hudBrand}><span className={styles.hudDiamond} /> BUTIAN ENGINEERING CLUB</div>
-              <div className={styles.hudCoordinates}>30°16′ N &nbsp; 120°11′ E <span>→</span> DEEP SPACE</div>
+              <div className={styles.hudCoordinates}>30°10′42″ N &nbsp; 120°07′59″ E <span>→</span> DEEP SPACE</div>
               <div className={styles.hudBottom}>
                 <span>HANGZHOU NO.2 HIGH SCHOOL</span>
-                <span>MISSION LOG / 001—007</span>
+                <span>MISSION LOG / 001—009</span>
               </div>
             </div>
 
+            <div className={styles.launchCopy} data-motion="launch-copy">
+              <p className={styles.eyebrow}>{t('起点 · 杭州第二中学滨江校区', 'ORIGIN · HANGZHOU NO.2 HIGH SCHOOL, BINJIANG')}</p>
+              <h1>{t('从滨江校区，', 'From Binjiang,')}<br /><em>{t('飞向星辰。', 'toward the stars.')}</em></h1>
+              <p className={styles.launchLead}>{t(
+                '步天工程社的航程，从这里开始。我们把对太空的好奇，带进一次次讨论、设计与验证。',
+                'Butian’s journey begins here. We take our curiosity about space into each discussion, design and test.',
+              )}</p>
+              <div className={styles.scrollCue}>
+                <span className={styles.scrollGlyph} aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M12 4v15m-5-5 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </span>
+                {t('向下滚动，开始升空', 'SCROLL TO LIFT OFF')}
+              </div>
+            </div>
+            <p className={styles.campusCredit} data-motion="campus-credit">{t('实景影像 / 杭州第二中学滨江校区', 'ACTUAL CAMPUS / HANGZHOU NO.2 HIGH SCHOOL')}</p>
+
             <div className={styles.heroCopy} data-motion="hero">
               <p className={styles.eyebrow}>{t('杭州第二中学 · 求是创新学院 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</p>
-              <h1>{t('把未来，', 'Build the future')}<br /><em>{t('建在星辰之间。', 'beyond Earth.')}</em></h1>
+              <h2>{t('把未来，', 'Build the future')}<br /><em>{t('建在星辰之间。', 'beyond Earth.')}</em></h2>
               <p className={styles.heroLead}>{t(
                 '我们是杭州第二中学求是创新学院的学生社团。以太空城市与基地设计为主线，把航天兴趣变成有依据的工程方案。',
                 'We are a student club at Hangzhou No.2 High School’s Qiushi Innovation Academy. Space-settlement design turns our interest in space into evidence-based engineering proposals.',
@@ -325,7 +356,7 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.progressRail} aria-label={t('航程进度', 'Journey progress')}>
-              <span className={styles.progressLabel}>00{activeStop + 1} / 007</span>
+              <span className={styles.progressLabel}>{String(activeStop + 1).padStart(3, '0')} / 009</span>
               <div className={styles.progressTrack}><i /></div>
               <span className={styles.progressName}>{t(stops[activeStop].zh, stops[activeStop].en)}</span>
             </div>

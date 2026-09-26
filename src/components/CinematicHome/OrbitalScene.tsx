@@ -2,20 +2,18 @@ import React, {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {createStation, poseStation} from './StationModel';
+import {createAscentWorld, flightPath, orbitEntryPose, orbitOrigin, type FlightPose} from './AscentWorld';
 
 type Props = {
   progressRef: React.RefObject<number>;
+  ascentRef: React.RefObject<number>;
   className?: string;
 };
 
-type Pose = {
-  at: number;
-  position: [number, number, number];
-  target: [number, number, number];
-};
+type Pose = FlightPose;
 
 const cameraPath: Pose[] = [
-  {at: 0, position: [0, 0.5, 19], target: [1.5, 0, -4]},
+  orbitEntryPose,
   {at: 0.09, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
   {at: 0.2, position: [8.4, 2.7, 14], target: [3.9, 0, -4]},
   {at: 0.285, position: [8.6, 1.8, 12.8], target: [4, 0, -4]},
@@ -41,16 +39,16 @@ function samePose(first: Pose['position'], second: Pose['position']): boolean {
   return first[0] === second[0] && first[1] === second[1] && first[2] === second[2];
 }
 
-function interpolatePose(progress: number, field: 'position' | 'target', output: THREE.Vector3): void {
-  const right = Math.max(1, cameraPath.findIndex((pose) => pose.at >= progress));
-  const a = cameraPath[right - 1];
-  const b = cameraPath[right];
+function interpolatePose(progress: number, field: 'position' | 'target', output: THREE.Vector3, path: Pose[] = cameraPath): void {
+  const right = Math.max(1, path.findIndex((pose) => pose.at >= progress));
+  const a = path[right - 1];
+  const b = path[right];
   if (samePose(a[field], b[field])) {
     output.set(...a[field]);
     return;
   }
-  const previous = cameraPath[Math.max(0, right - 2)];
-  const next = cameraPath[Math.min(cameraPath.length - 1, right + 1)];
+  const previous = path[Math.max(0, right - 2)];
+  const next = path[Math.min(path.length - 1, right + 1)];
   const enteringHold = samePose(previous[field], a[field]);
   const leavingHold = samePose(b[field], next[field]);
   const span = b.at - a.at;
@@ -92,7 +90,7 @@ function createStars(): THREE.Points {
   );
 }
 
-export default function OrbitalScene({progressRef, className}: Props): React.ReactNode {
+export default function OrbitalScene({progressRef, ascentRef, className}: Props): React.ReactNode {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -109,6 +107,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
+    renderer.domElement.style.visibility = 'hidden';
     mount.appendChild(renderer.domElement);
     mount.dataset.ready = 'true';
     const stage = mount.parentElement?.parentElement;
@@ -122,8 +121,8 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     pmrem.dispose();
     scene.environment = environment.texture;
     scene.environmentIntensity = 0.62;
-    const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
-    const dockCamera = new THREE.PerspectiveCamera(39, 1, 0.1, 160);
+    const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 1000);
+    const dockCamera = new THREE.PerspectiveCamera(39, 1, 0.1, 1000);
     const ambient = new THREE.AmbientLight(0x9fb7c1, 0.58);
     const sun = new THREE.DirectionalLight(0xffd0aa, 2.7);
     sun.position.set(12, 8, 14);
@@ -131,16 +130,19 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     blue.position.set(-10, -6, 5);
     scene.add(ambient, sun, blue);
 
+    const orbitGroup = new THREE.Group();
+    orbitGroup.position.copy(orbitOrigin);
+    scene.add(orbitGroup);
     const stars = createStars();
-    scene.add(stars);
+    orbitGroup.add(stars);
     const station = createStation();
-    scene.add(station.group);
+    orbitGroup.add(station.group);
 
-    const marsMaterial = new THREE.MeshStandardMaterial({color: 0xb1765b, roughness: 1});
+    const marsMaterial = new THREE.MeshStandardMaterial({color: 0xb1765b, roughness: 1, transparent: true, opacity: 0, depthWrite: false});
     const mars = new THREE.Mesh(new THREE.SphereGeometry(14.2, 72, 48), marsMaterial);
     mars.position.set(11, -9.5, -38);
     mars.rotation.y = 1.8;
-    scene.add(mars);
+    orbitGroup.add(mars);
 
     const auraCanvas = document.createElement('canvas');
     auraCanvas.width = auraCanvas.height = 256;
@@ -157,12 +159,16 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     const aura = new THREE.Sprite(new THREE.SpriteMaterial({map: auraTexture, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false}));
     aura.position.copy(mars.position);
     aura.scale.set(35, 35, 1);
-    scene.add(aura);
+    orbitGroup.add(aura);
 
     let disposed = false;
     let needsRender = true;
     let texture: THREE.Texture | undefined;
     const loader = new THREE.TextureLoader();
+    const ascentWorld = createAscentWorld(scene, loader, (url) => {
+      needsRender = true;
+      if (url.endsWith('binjiang-campus.webp')) renderer.domElement.style.visibility = 'visible';
+    });
     // NASA/JPL-Caltech Mars map: https://science.nasa.gov/3d-resources/mars/
     loader.load('/img/mars-nasa-texture.jpg', (loaded) => {
       if (disposed) {
@@ -202,22 +208,37 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
     visibilityObserver.observe(mount);
 
     let lastProgress = -1;
+    let lastAscent = -1;
     const lookTarget = new THREE.Vector3();
     const dockLookTarget = new THREE.Vector3();
     const dockPoint = new THREE.Vector3();
     renderer.setAnimationLoop(() => {
       if (document.hidden || !visible) return;
       const progress = progressRef.current;
-      if (!needsRender && Math.abs(progress - lastProgress) < 0.00001) return;
-      interpolatePose(progress, 'position', camera.position);
-      interpolatePose(progress, 'target', lookTarget);
+      const ascent = ascentRef.current;
+      const escape = 80 * smooth(0, 0.16, progress);
+      orbitGroup.position.set(orbitOrigin.x, orbitOrigin.y + escape, orbitOrigin.z);
+      if (!needsRender && Math.abs(progress - lastProgress) < 0.00001 && Math.abs(ascent - lastAscent) < 0.00001) return;
+      if (ascent < 1) {
+        interpolatePose(ascent, 'position', camera.position, flightPath);
+        interpolatePose(ascent, 'target', lookTarget, flightPath);
+      } else {
+        interpolatePose(progress, 'position', camera.position);
+        interpolatePose(progress, 'target', lookTarget);
+        camera.position.add(orbitOrigin);
+        camera.position.y += escape;
+        lookTarget.add(orbitOrigin);
+        lookTarget.y += escape;
+      }
       const isMobile = mount.clientWidth < 600;
-      const mobileLift = isMobile ? 2.8 * smooth(0.08, 0.2, progress) : 0;
-      const mobileReveal = isMobile
+      const mobileLift = isMobile && ascent >= 1 ? 2.8 * smooth(0.08, 0.2, progress) : 0;
+      const mobileReveal = isMobile && ascent >= 1
         ? smooth(0.24, 0.31, progress) * (1 - smooth(0.345, 0.41, progress))
         : 0;
       const mobilePan = 4 * mobileReveal;
-      const fieldOfView = isMobile ? 60 + 12 * mobileReveal : 39;
+      const fieldOfView = ascent < 1
+        ? (isMobile ? 72 - 12 * ascent : 48 - 9 * ascent)
+        : (isMobile ? 60 + 12 * mobileReveal : 39);
       if (Math.abs(camera.fov - fieldOfView) > 0.01) {
         camera.fov = fieldOfView;
         camera.updateProjectionMatrix();
@@ -227,12 +248,22 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       lookTarget.y += mobileLift;
       lookTarget.x += mobilePan;
       camera.lookAt(lookTarget);
+      ascentWorld.update(ascent, progress, camera, isMobile);
 
       poseStation(station, progress);
+      orbitGroup.visible = ascent > 0.78;
+      marsMaterial.opacity = smooth(0.085, 0.16, progress);
+      mars.visible = marsMaterial.opacity > 0.005;
+      aura.visible = mars.visible;
+      (stars.material as THREE.PointsMaterial).opacity = 0.88 * smooth(0.74, 1, ascent);
       if (stage) {
         const dockProgress = Math.min(progress, 0.56);
         interpolatePose(dockProgress, 'position', dockCamera.position);
         interpolatePose(dockProgress, 'target', dockLookTarget);
+        dockCamera.position.add(orbitOrigin);
+        dockCamera.position.y += escape;
+        dockLookTarget.add(orbitOrigin);
+        dockLookTarget.y += escape;
         dockLookTarget.y += mobileLift;
         dockLookTarget.x += mobilePan;
         dockCamera.lookAt(dockLookTarget);
@@ -246,6 +277,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       stars.rotation.y = progress * 0.08;
       renderer.render(scene, camera);
       lastProgress = progress;
+      lastAscent = ascent;
       needsRender = false;
     });
 
@@ -260,6 +292,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
         stage.style.removeProperty('--dock-x');
         stage.style.removeProperty('--dock-y');
       }
+      ascentWorld.dispose();
       const geometries = new Set<THREE.BufferGeometry>();
       const materials = new Set<THREE.Material>();
       scene.traverse((object) => {
@@ -276,7 +309,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       environment.dispose();
       renderer.dispose();
     };
-  }, [progressRef]);
+  }, [progressRef, ascentRef]);
 
   return <div className={className} ref={mountRef} aria-hidden="true" />;
 }

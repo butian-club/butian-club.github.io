@@ -25,14 +25,13 @@
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 71% 61%, rgba(134, 68, 46, .26), transparent 43%),
-    radial-gradient(ellipse at 57% 28%, rgba(29, 94, 105, .16), transparent 52%),
-    url('/img/mars-orbit-hero-v2.jpg') 64% 48% / cover no-repeat;
-  opacity: .72;
+    linear-gradient(90deg, rgba(2, 12, 23, .7), transparent 73%),
+    url('/img/journey/binjiang-campus.webp') center 55% / cover no-repeat;
+  opacity: 1;
   will-change: transform, opacity;
 }
 .spaceBackdrop::after {
-  content: 'CONCEPT VISUAL / MARS ORBIT';
+  content: 'BINJIANG CAMPUS / HANGZHOU';
   position: absolute;
   right: clamp(24px, 4.4vw, 78px);
   bottom: 57px;
@@ -41,16 +40,15 @@
   letter-spacing: .16em;
 }
 .stage:not([data-webgl='ready']) .spaceBackdrop {
-  opacity: .72 !important;
+  opacity: 1 !important;
   visibility: visible !important;
 }
 .orbitalShell {
   position: absolute;
   inset: 0;
   z-index: 1;
-  visibility: hidden;
-  opacity: 0;
-  will-change: clip-path;
+  visibility: visible;
+  opacity: 1;
 }
 .orbitalScene { position: absolute; inset: 0; }
 .orbitalScene canvas { display: block; width: 100%; height: 100%; }
@@ -58,6 +56,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+  opacity: 0;
   pointer-events: none;
   background: linear-gradient(90deg, rgba(2, 10, 17, .96), rgba(2, 10, 17, .67) 43%, rgba(2, 10, 17, .08) 86%);
 }
@@ -67,6 +66,15 @@
   inset: 0;
   opacity: .55;
   background: linear-gradient(0deg, #030a11 0%, transparent 29%, transparent 77%, #030a11 100%);
+}
+.launchVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(2, 12, 23, .76), rgba(2, 12, 23, .3) 43%, transparent 79%),
+    linear-gradient(0deg, rgba(2, 10, 17, .55), transparent 22%, transparent 70%, rgba(2, 10, 17, .34));
 }
 .stage::after {
   content: '';
@@ -87,7 +95,7 @@
   border: 1px solid rgba(191, 233, 236, .13);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  opacity: .34;
+  opacity: 0;
   pointer-events: none;
 }
 .reticle::before, .reticle::after {
@@ -119,6 +127,7 @@
   border-radius: 50%;
   transform: rotate(-19deg) translate(-50%, -50%);
   pointer-events: none;
+  opacity: 0;
 }
 .systemGrid {
   position: absolute;
@@ -160,14 +169,14 @@
 .hudBottom { position: absolute; bottom: 28px; left: clamp(24px, 4.4vw, 78px); right: clamp(24px, 4.4vw, 78px); display: flex; justify-content: space-between; }
 .phaseIndex, .eyebrow, .signal, .scrollCue, .recordEyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .18em; }
 .phaseIndex, .eyebrow { color: var(--ice); }
-.heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy { position: absolute; z-index: 12; }
-.briefCopy, .wordmarkGhost, .assemblyCopy, .calloutLeft, .calloutRight, .calloutBottom,
+.launchCopy, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy { position: absolute; z-index: 12; }
+.heroCopy, .briefCopy, .wordmarkGhost, .assemblyCopy, .calloutLeft, .calloutRight, .calloutBottom,
 .habitatCaption, .teamCaption, .record, .recordEntry, .endCopy {
   opacity: 0;
   visibility: hidden;
 }
-.heroCopy { top: calc(50% + 1.75rem); left: clamp(28px, 8vw, 150px); width: min(59vw, 760px); transform: translateY(-44%); will-change: transform, opacity; }
-.heroCopy h1, .endCopy h2 {
+.launchCopy, .heroCopy { top: calc(50% + 1.75rem); left: clamp(28px, 8vw, 150px); width: min(59vw, 760px); transform: translateY(-44%); will-change: transform, opacity; }
+.launchCopy h1, .heroCopy h2, .endCopy h2 {
   margin: 23px 0 22px;
   font-size: clamp(3.8rem, 7.2vw, 8.1rem);
   font-weight: 610;
@@ -176,7 +185,10 @@
   text-wrap: nowrap;
   text-shadow: 0 8px 80px rgba(0, 0, 0, .26);
 }
-.heroCopy h1 em, .assemblyCopy h2 em, .endCopy h2 em { font-style: normal; color: var(--ice); }
+.launchCopy h1 em, .heroCopy h2 em, .assemblyCopy h2 em, .endCopy h2 em { font-style: normal; color: var(--ice); }
+.launchCopy h1 { font-size: clamp(3.5rem, 7vw, 7.8rem); }
+.launchLead { max-width: 470px; margin: 0; color: rgba(240, 249, 248, .9); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.78; text-shadow: 0 2px 22px rgba(2, 9, 16, .6); }
+.campusCredit { position: absolute; z-index: 26; right: clamp(24px, 4.4vw, 78px); bottom: 55px; margin: 0; color: rgba(245, 253, 250, .84); font: 600 9px var(--font-mono); letter-spacing: .14em; text-shadow: 0 2px 14px #05101a; }
 .heroLead { max-width: 510px; margin: 0; color: rgba(236, 248, 247, .83); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.78; }
 .scrollCue { display: flex; align-items: center; gap: 14px; margin-top: 57px; color: rgba(233, 248, 247, .68); }
 .scrollGlyph { display: grid; place-items: center; flex: 0 0 33px; width: 33px; height: 47px; border: 1px solid rgba(185, 244, 237, .56); border-radius: 21px; color: var(--ice); letter-spacing: 0; line-height: 0; animation: cuePulse 2.7s ease-in-out infinite; }
@@ -299,6 +311,7 @@
 .secondaryLink { border: 1px solid rgba(185, 244, 237, .48); color: #fff; background: rgba(5, 17, 25, .48); }
 .secondaryLink:hover { color: #fff; background: rgba(185, 244, 237, .14); }
 .progressRail { position: absolute; z-index: 27; right: clamp(20px, 3.5vw, 60px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: 15px; transform: translateY(-50%); color: rgba(228, 247, 247, .78); font: 600 10px var(--font-mono); letter-spacing: .13em; pointer-events: none; }
+.progressLabel { white-space: nowrap; }
 .progressTrack { position: relative; width: 1px; height: clamp(80px, 22vh, 180px); background: rgba(203, 241, 239, .24); overflow: hidden; }
 .progressTrack i { display: block; width: 100%; height: 100%; background: var(--ice); transform: scaleY(var(--journey-progress)); transform-origin: top; box-shadow: 0 0 12px var(--ice); }
 .progressName { writing-mode: vertical-rl; white-space: nowrap; }
@@ -308,8 +321,8 @@
 
 @media (max-width: 900px) {
   .hudCoordinates { display: none; }
-  .heroCopy { left: 6%; width: 82%; }
-  .heroCopy h1 { font-size: clamp(3.5rem, 9vw, 6rem); }
+  .launchCopy, .heroCopy { left: 6%; width: 82%; }
+  .launchCopy h1, .heroCopy h2 { font-size: clamp(3.5rem, 9vw, 6rem); }
   .briefCopy { left: 8%; width: 55%; }
   .assemblyCopy { width: 55%; }
   .calloutRight { right: 13%; top: 57%; }
@@ -321,13 +334,17 @@
   .archiveVisual { right: 10%; width: 39vw; }
 }
 @media (max-width: 600px) {
-  .spaceBackdrop { background-position: 80% center; }
+  .spaceBackdrop { background-position: 49% 54%; }
+  .launchVignette { background: linear-gradient(0deg, rgba(2, 10, 17, .84), rgba(2, 10, 17, .46) 54%, rgba(2, 10, 17, .31)); }
   .hudBrand { top: calc(var(--ifm-navbar-height) + 20px); left: 24px; font-size: 8px; }
   .hudBottom { left: 24px; right: 24px; bottom: 18px; font-size: 7px; }
   .hudBottom span:last-child { display: none; }
   .reticle { width: 56vw; left: 60%; }
-  .heroCopy { left: 7%; top: calc(42% + 1.75rem); width: 84%; }
-  .heroCopy h1 { font-size: clamp(2.6rem, 11vw, 4.4rem); text-wrap: nowrap; }
+  .launchCopy, .heroCopy { left: 7%; top: calc(42% + 1.75rem); width: 84%; }
+  .launchCopy h1, .heroCopy h2 { font-size: clamp(2.6rem, 11vw, 4.4rem); text-wrap: nowrap; }
+  .launchCopy h1 { font-size: clamp(2.5rem, 9.8vw, 4rem); }
+  .launchLead { max-width: 295px; font-size: 14px; }
+  .campusCredit { left: 24px; right: auto; bottom: 53px; font-size: 7px; }
   .heroLead { max-width: 295px; font-size: 14px; }
   .scrollCue { margin-top: 30px; font-size: 8px; }
   .briefCopy { left: 8%; top: 18%; right: auto; width: 78%; }
@@ -374,13 +391,15 @@
   .afterword { flex-direction: column; align-items: flex-start; font-size: 8px; }
 }
 @media (max-width: 360px) {
-  .heroCopy h1 { font-size: 10vw; }
+  .heroCopy h2 { font-size: 10vw; }
+  .launchCopy h1 { font-size: 9.3vw; }
   .hudBrand { letter-spacing: .09em; }
 }
 @media (min-width: 601px) and (max-height: 520px) {
   .hudBrand, .hudCoordinates, .hudBottom { display: none; }
-  .heroCopy { top: calc(50% + .5rem); width: min(68vw, 600px); }
-  .heroCopy h1 { margin: 8px 0 10px; font-size: clamp(2.5rem, 6vw, 3.5rem); line-height: 1.04; }
+  .launchCopy, .heroCopy { top: calc(50% + .5rem); width: min(68vw, 600px); }
+  .launchCopy h1, .heroCopy h2 { margin: 8px 0 10px; font-size: clamp(2.5rem, 6vw, 3.5rem); line-height: 1.04; }
+  .launchLead { max-width: 460px; font-size: 13px; line-height: 1.45; }
   .heroLead { max-width: 460px; font-size: 13px; line-height: 1.45; }
   .scrollCue { margin-top: 14px; font-size: 9px; }
   .scrollGlyph { flex-basis: 28px; width: 28px; height: 34px; }
@@ -393,9 +412,11 @@
   .home { margin-top: 0; }
   .journey { min-height: 0; }
   .stage { height: auto; min-height: 0; overflow: visible; padding: 120px 7% 100px; }
-  .orbitalShell, .reticle, .orbitLine, .systemGrid, .wordmarkGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .archiveVisual, .recordFutureBackdrop, .recordFuture, .recordTicks { display: none; }
-  .spaceBackdrop, .spaceVeil { display: none; }
-  .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
+  .orbitalShell, .reticle, .orbitLine, .systemGrid, .wordmarkGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .archiveVisual, .recordFutureBackdrop, .recordFuture, .recordTicks, .campusCredit { display: none; }
+  .spaceVeil { display: none; }
+  .launchVignette { display: none; }
+  .spaceBackdrop { position: relative; height: min(60vw, 480px); margin: -120px -8vw 80px; background-position: center 80%; }
+  .launchCopy, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
     position: relative;
     inset: auto;
     z-index: 12;
@@ -408,7 +429,7 @@
     transform: none;
     background: none;
   }
-  .heroCopy h1, .endCopy h2 { text-wrap: wrap; }
+  .launchCopy h1, .heroCopy h2, .endCopy h2 { text-wrap: wrap; }
   .recordEntry { margin: 35px 0; }
   .stillImage { display: block; width: min(100%, 620px); max-height: 350px; margin: 0 0 25px; object-fit: cover; border-radius: 10px; }
   .scrollCue { display: none; }
