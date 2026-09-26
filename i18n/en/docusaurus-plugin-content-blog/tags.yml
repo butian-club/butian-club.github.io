@@ -1,0 +1,28 @@
+retro:
+  label: Retrospectives
+  permalink: /retro
+  description: Looking back after events and tests.
+project-log:
+  label: Project Log
+  permalink: /project-log
+  description: Notes from work in progress.
+competition:
+  label: Competitions
+  permalink: /competition
+  description: The work and results of competitions.
+news:
+  label: Club News
+  permalink: /news
+  description: Club updates and announcements.
+aerospace:
+  label: Aerospace
+  permalink: /aerospace
+  description: Space and aerospace projects.
+outreach:
+  label: Outreach
+  permalink: /outreach
+  description: Space-science outreach and community work.
+history:
+  label: Club History
+  permalink: /history
+  description: The club's documented history.

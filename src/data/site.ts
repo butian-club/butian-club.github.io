@@ -58,9 +58,9 @@ export const directions: Direction[] = [
     id: 'outreach',
     nameZh: '科普与公益传播',
     nameEn: 'Outreach',
-    descZh: '把项目讲清楚、传出去——文档复盘、航天科普与结对公益，让积累在社团内外延续。',
+    descZh: '把项目讲清楚、传出去——文档复盘、航天科普、校园活动与结对公益，让积累在社团内外延续。',
     descEn:
-      'Explain the work and pass it on — documentation, space-science outreach and community programs that let what we learn live on inside and beyond the club.',
+      'Explain the work and pass it on — documentation, space-science outreach, school activities and community programs that let what we learn live on inside and beyond the club.',
   },
 ];
 

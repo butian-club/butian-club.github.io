@@ -15,20 +15,20 @@ const traits = [
 
 const steps = [
   {
-    zh: ['了解社团', '先读一读首页的社团介绍与知识库，看看我们在做什么、怎么做事，判断是否合拍。'],
-    en: ['Get to know us', 'Read the club story on the homepage and the knowledge base first — see what we do and how, and whether it clicks.'],
+    zh: ['从兴趣出发', '历史活动里，有天文周、纸飞机比赛，也有社团文化节；用一个具体问题开始探索。'],
+    en: ['Start with curiosity', 'Past club activities included Astronomy Week, paper-plane contests and the school club festival. Begin with a question you want to explore.'],
   },
   {
-    zh: ['报名招新', '在招新季通过社团报名渠道提交申请，简单介绍你的兴趣方向与想做的事。'],
-    en: ['Apply in recruitment season', 'During recruitment, apply through the club’s channel and briefly share your interests and what you’d like to build.'],
+    zh: ['完成试手任务', '在前辈指导下学习工具、查资料、拆解需求，逐步做出第一份可以讨论的成果。'],
+    en: ['Try a practice brief', 'Learn tools with older members, research the problem and turn requirements into a first piece of work others can discuss.'],
   },
   {
-    zh: ['面谈交流', '我们会进行一次轻松的交流，主要聊兴趣和想法，不考你已经会多少。'],
-    en: ['A relaxed chat', 'We’ll have an easy conversation about your interests and ideas — not a test of what you already know.'],
+    zh: ['一起打磨提案', '项目成员分工研究与设计，反复修改资格轮方案，练习向伙伴解释自己的决定。'],
+    en: ['Build the proposal together', 'Project members divide research and design work, revise qualifying proposals and learn to explain decisions to teammates.'],
   },
   {
-    zh: ['加入代表队', '根据你的方向加入一个项目或代表队，从一个小任务开始上手。'],
-    en: ['Join a team', 'Based on your direction, join a project or competition team and start from a small task.'],
+    zh: ['答辩与复盘', '参赛队伍在现场与其他学校的同学合作，在限时挑战后复盘，把经验传给下一届。'],
+    en: ['Defend and reflect', 'Competition teams work with students from other schools, then review the timed challenge and pass the lessons to the next cohort.'],
   },
 ];
 
@@ -49,13 +49,33 @@ export default function Join(): ReactNode {
           'Recruitment is open to current Hangzhou No.2 High School students. Prior experience in engineering, space science, modeling or writing is not required.',
         )}
         image={{
-          src: '/img/projects/2024-gfssm/team.jpg',
-          alt: t('步天工程社成员参加 2024 GFSSM 中国站后的团队合影', 'Butian members in a group photo after the 2024 GFSSM China round'),
-          caption: t('2024 GFSSM 中国站 · 参赛成员', '2024 GFSSM China · Club members'),
+          src: '/img/archive/recruitment-2024/club-presentation.webp',
+          alt: t('步天工程社历史活动中，同学向大家介绍工程内容', 'A student presenting Butian club work during a past event'),
+          caption: t('步天工程社 · 2024 年历史影像', 'Butian Engineering Club · 2024 archive'),
         }}
       />
       <main className={styles.page}>
         <div className={`${styles.container} ${styles.narrow}`}>
+          <section className={styles.clubLife} aria-labelledby="club-life">
+            <div className={styles.clubLifeCopy}>
+              <p className={styles.blockEyebrow}>Beyond the Competition</p>
+              <h2 id="club-life" className={styles.blockTitle}>{t('步天不只在赛场。', 'The club lives beyond the final.')}</h2>
+              <p>{t(
+                '2024 年的社团招新记录里，天文周、纸飞机比赛和社团文化节与太空城市设计并列出现。好奇心可以从一架纸飞机开始，也可以从一张工程图纸开始。',
+                'A 2024 recruitment feature describes Astronomy Week, paper-plane contests and the school club festival alongside space-settlement design. Curiosity can begin with a paper plane or an engineering drawing.',
+              )}</p>
+              <p>{t(
+                '这些是历史活动记录，并非本学年的固定日程。每一届的具体项目与开放活动，以当年社团和学校安排为准。',
+                'These are historical activities, not a schedule for the current school year. This year’s projects and open events follow the club and school announcements.',
+              )}</p>
+              <a href="https://mp.weixin.qq.com/s/Ktevde92c1EGj_Av6ZcjYQ" target="_blank" rel="noopener noreferrer">{t('阅读 2024 年社团招新记录 ↗', 'Read the 2024 recruitment feature ↗')}</a>
+              <p className={styles.clubLifeSource}>{t('校园社团招新现场的另一篇报道也记录了步天的展位。', 'A separate school report also records Butian at a club recruitment fair.')} <a href="https://mp.weixin.qq.com/s/snHvNkcu2KYEdeh_2sA4Vg" target="_blank" rel="noopener noreferrer">{t('查看报道 ↗', 'View the report ↗')}</a></p>
+            </div>
+            <figure className={styles.clubLifeImage}>
+              <img src="/img/archive/recruitment-2024/paper-plane-activity.webp" alt={t('社团历史活动中的纸飞机比赛现场', 'Paper-plane activity from the club archive')} loading="lazy" />
+              <figcaption>{t('社团活动影像 / 2024', 'CLUB ACTIVITY / 2024')}</figcaption>
+            </figure>
+          </section>
           <section className={styles.block} aria-labelledby="recruit">
             <p className={styles.blockEyebrow}>Recruitment</p>
             <h2 id="recruit" className={styles.blockTitle}>{t('招新说明', 'Recruitment')}</h2>
@@ -68,8 +88,8 @@ export default function Join(): ReactNode {
               </p>
               <p>
                 {t(
-                  '加入后，成员会按项目分工，参与任务书拆解、资料检索、方案评审、提案制作和模拟答辩。根据当年的安排，也可能参与科普活动、项目复盘与知识库整理。',
-                  'After joining, members work in project teams on brief analysis, research, design reviews, proposal production and mock defenses. Depending on the year’s program, members may also take part in outreach, project retrospectives and knowledge-base maintenance.',
+                  '历届项目成员会按分工参与任务书拆解、资料检索、方案评审、提案制作和模拟答辩。实际参与方式以当年项目安排为准。',
+                  'In past projects, members have divided work across brief analysis, research, design reviews, proposal production and mock defenses. Participation depends on this year’s projects.',
                 )}
               </p>
             </div>
@@ -108,8 +128,9 @@ export default function Join(): ReactNode {
           </section>
 
           <section className={styles.block} aria-labelledby="process">
-            <p className={styles.blockEyebrow}>Process</p>
-            <h2 id="process" className={styles.blockTitle}>{t('加入流程', 'How to Join')}</h2>
+            <p className={styles.blockEyebrow}>The Project Journey</p>
+            <h2 id="process" className={styles.blockTitle}>{t('从兴趣，到一份经得起推敲的方案', 'From curiosity to a defensible proposal')}</h2>
+            <p className={styles.lead}>{t('以下是历届社团项目中的典型路径，具体安排会随年份和项目变化。', 'This is a path seen across past club projects. Specific activities vary by year and project.')}</p>
             <ol className={styles.steps}>
               {steps.map((s) => (
                 <li key={s.zh[0]}>
@@ -138,11 +159,11 @@ export default function Join(): ReactNode {
               </li>
               <li>
                 <span className={styles.contactLabel}>{t('报名渠道', 'Application')}</span>
-                <span className={styles.contactValue}>{t('校内社团招新通知与现场报名', 'School club notice and on-site application')}</span>
+                <span className={styles.contactValue}>{t('以当年校内通知为准', 'See the current school notice')}</span>
               </li>
               <li>
                 <span className={styles.contactLabel}>{t('咨询方式', 'Questions')}</span>
-                <span className={styles.contactValue}>{t('社团开放日或招新现场', 'Club open day or recruitment desk')}</span>
+                <span className={styles.contactValue}>{t('以当年校内通知为准', 'See the current school notice')}</span>
               </li>
             </ul>
             <p className={styles.note}>

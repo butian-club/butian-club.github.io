@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {readdirSync, readFileSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -95,4 +95,31 @@ test('2026 GFSSM record keeps the teams, results, and homepage in sync', () => {
   assert.match(siteData, /连续四届晋级全国决赛/);
   assert.match(homepage, /'gfssm-2026-psyche'/);
   assert.match(report, /姚淑悦.*最佳领导者/);
+});
+
+test('the four-year archive uses year-matched images and describes both 2024 briefs', () => {
+  const projects = source('src/data/projects.ts');
+  const home = source('src/components/CinematicHome/index.tsx');
+  const report2024 = source('blog/2024-08-17-gfssm-2024-china-runner-up.md');
+  const report2026 = source('blog/2026-09-26-gfssm-2026-psyche.md');
+
+  for (const year of [2023, 2024, 2025, 2026]) {
+    const project = projects.match(new RegExp(`id: 'gfssm-${year}[^']*'[\\s\\S]*?archivePhotos: \\[([^\\]]+)\\]`));
+    assert.ok(project, `missing archive imagery for ${year}`);
+    const photos = [...project[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
+    assert.equal(photos.length, 3, `expected three photos for ${year}`);
+    for (const photo of photos) {
+      assert.ok(photo.startsWith(`/img/archive/${year}/`), `${year} uses an image from another year: ${photo}`);
+      assert.ok(existsSync(path.join(root, 'static', photo)), `missing image: ${photo}`);
+    }
+    assert.ok(existsSync(path.join(root, 'i18n/en/docusaurus-plugin-content-blog',
+      readdirSync(path.join(root, 'blog')).find((name) => name.includes(`gfssm-${year}-`)))),
+      `missing English report for ${year}`);
+  }
+
+  assert.match(home, /mission\.archivePhotos/);
+  assert.match(report2024, /资格轮[\s\S]*金星轨道/);
+  assert.match(report2024, /现场决赛[\s\S]*金星大气/);
+  assert.match(report2026, /这张图属于资格轮方案，不是灵神星决赛/);
+  assert.match(source('static/img/archive/SOURCES.md'), /CC BY-NC-SA 4\.0/);
 });

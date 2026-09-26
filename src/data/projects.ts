@@ -26,6 +26,10 @@ export interface Project {
   featured?: boolean;
   /** 详情入口（文档 / 活动文章 / 外链）；为空表示暂未提供 */
   detailUrl?: string;
+  /** 已公开的同期影像；首页航程按年份切换，避免跨年借图。 */
+  archivePhotos?: [string, string, string];
+  /** 原始公开报道，供读者核对照片与事件。 */
+  sourceUrl?: string;
 }
 
 export const STATUS_META: Record<
@@ -53,6 +57,8 @@ export const projects: Project[] = [
     status: 'completed',
     featured: true,
     detailUrl: '/blog/gfssm-2026-psyche',
+    archivePhotos: ['/img/archive/2026/design-session.webp', '/img/archive/2026/presentation.webp', '/img/archive/2026/final-stage.webp'],
+    sourceUrl: 'https://mp.weixin.qq.com/s/fd5izS_SE9jCA8TegJcDIQ',
   },
   {
     id: 'gfssm-2025-mars',
@@ -70,23 +76,27 @@ export const projects: Project[] = [
     status: 'completed',
     featured: true,
     detailUrl: '/blog/gfssm-2025-mars-base',
+    archivePhotos: ['/img/archive/2025/collaboration.webp', '/img/archive/2025/awards.webp', '/img/archive/2025/team.webp'],
+    sourceUrl: 'https://mp.weixin.qq.com/s/fKn7KF_sS0f8Vkpkwc3K0g',
   },
   {
     id: 'gfssm-2024-venus',
     year: 2024,
-    titleZh: '金星轨道太空城 · GFSSM 2024',
-    titleEn: 'Venus-Orbit Space City · GFSSM 2024',
+    titleZh: '金星任务 · GFSSM 2024',
+    titleEn: 'Venus Mission · GFSSM 2024',
     summaryZh:
-      '玉衡、天权两支代表队在 2024 全球未来太空学者大会中国站围绕金星轨道太空城展开设计，自寒假筹备至现场 24 小时极限挑战；两队所在公司均获全国亚军，天权队获「资格轮最佳提案」。',
+      '玉衡、天权两队在资格轮设计金星轨道太空城，决赛与跨校伙伴设计金星大气中的漂浮农业城。两队所在公司均获全国亚军，天权队获「资格轮最佳提案」。',
     summaryEn:
-      'Teams Yuheng and Tianquan designed a Venus-orbit space city at the 2024 GFSSM China round — from winter-break preparation to a 24-hour on-site sprint. Both companies took national runner-up; Team Tianquan won "Best Qualifying Proposal".',
-    homeSummaryZh: '玉衡、天权两队设计金星轨道太空城，均晋级全国决赛，所在公司均获亚军。',
-    homeSummaryEn: 'Teams Yuheng and Tianquan designed a Venus-orbit city; both reached the national final and their companies took runner-up.',
+      'Teams Yuheng and Tianquan designed a Venus-orbit city in qualification, then worked with students from other schools on a floating agricultural city in Venus’s atmosphere at the final. Both companies took national runner-up; Tianquan won Best Qualifying Proposal.',
+    homeSummaryZh: '资格轮设计金星轨道城市，决赛设计大气漂浮农业城；两队所在公司均获亚军。',
+    homeSummaryEn: 'From a Venus-orbit city in qualification to a floating agricultural city at the final; both companies took runner-up.',
     tagsZh: ['太空城市设计', '人居与生保', '运营与商业'],
     tagsEn: ['Settlement Design', 'Habitat & Life Support', 'Operations'],
     status: 'completed',
     featured: false,
     detailUrl: '/blog/gfssm-2024-china-runner-up',
+    archivePhotos: ['/img/archive/2024/design-session.webp', '/img/archive/2024/structure-study.webp', '/img/archive/2024/team.webp'],
+    sourceUrl: 'https://mp.weixin.qq.com/s/i6skuAcCSXxPq8Vqzrnlsw',
   },
   {
     id: 'panan-outreach-2023',
@@ -119,6 +129,8 @@ export const projects: Project[] = [
     status: 'completed',
     featured: true,
     detailUrl: '/blog/gfssm-2023-moon-base',
+    archivePhotos: ['/img/archive/2023/preparation.webp', '/img/archive/2023/base-design.webp', '/img/archive/2023/team.webp'],
+    sourceUrl: 'https://mp.weixin.qq.com/s/lt37seSK31SGtO3ptq8nvw',
   },
 ];
 

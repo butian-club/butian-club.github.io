@@ -430,6 +430,16 @@ button:focus-visible,
   font-size: clamp(0.95rem, 1.25vw, 1.05rem);
   line-height: 1.72;
 }
+.blog-list-page main article .markdown img {
+  display: block;
+  width: 100%;
+  max-height: 390px;
+  object-fit: cover;
+  border: 1px solid var(--ap-line);
+}
+.blog-list-page main article .markdown p:has(> img) { margin: 1.8rem 0 .45rem; }
+.blog-wrapper article .markdown p:has(> em) { color: var(--ap-muted); font-size: .8rem; line-height: 1.5; }
+.blog-wrapper article .markdown img { border: 1px solid var(--ap-line); }
 .blog-list-page main article footer {
   align-items: center;
   margin-top: 2rem;

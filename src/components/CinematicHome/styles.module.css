@@ -243,11 +243,11 @@
 .habitatCaption h2 { font-size: clamp(2.4rem, 4.7vw, 5.7rem); }
 .habitatCaption small, .teamCaption small { display: block; margin-top: 23px; color: rgba(232, 246, 242, .78); font: 500 10px var(--font-mono); letter-spacing: .16em; }
 .reality { z-index: 10; }
-.realityImage { background-image: url('/img/projects/2024-gfssm/team.jpg'); background-position: center 44%; filter: blur(28px) saturate(.38) brightness(.48); }
+.realityImage { background-image: url('/img/archive/2026/final-stage.webp'); background-position: center 44%; filter: blur(28px) saturate(.38) brightness(.48); }
 .realityTint { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1, 12, 16, .48), rgba(1, 12, 16, .88) 69%, rgba(1, 12, 16, .95)), linear-gradient(0deg, rgba(1, 12, 16, .86), transparent 60%); }
 .realityFrame { position: absolute; top: 19%; left: 6%; width: min(48vw, 700px); aspect-ratio: 700 / 469; overflow: hidden; visibility: hidden; opacity: 0; box-shadow: 0 0 0 1px rgba(201, 237, 233, .5), 0 32px 100px rgba(0, 0, 0, .5); will-change: transform, opacity; }
 .realityFrame img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.realityFrame::after { content: '2024 / GFSSM CHINA'; position: absolute; right: 0; bottom: 0; padding: 8px 11px; color: #eef8f5; background: rgba(1, 10, 16, .85); font: 600 9px var(--font-mono); letter-spacing: .15em; }
+.realityFrame::after { content: '2026 / GFSSM FINAL'; position: absolute; right: 0; bottom: 0; padding: 8px 11px; color: #eef8f5; background: rgba(1, 10, 16, .85); font: 600 9px var(--font-mono); letter-spacing: .15em; }
 .teamCaption { z-index: 13; top: 31%; right: 7%; width: min(34vw, 490px); text-shadow: 0 2px 18px #000; }
 .teamCaption h2 { font-size: clamp(2.3rem, 3.8vw, 4.9rem); }
 .teamCaption p { max-width: 370px; }
@@ -260,10 +260,10 @@
 .archiveVisual::before { content: ''; position: absolute; inset: -18px -16px; border: 1px solid rgba(185, 244, 237, .2); clip-path: polygon(0 0, 23% 0, 23% 1px, 100% 1px, 100% 77%, 99% 77%, 99% 100%, 0 100%); }
 .archivePhoto { position: absolute; overflow: hidden; background: #0b1b22; border: 1px solid rgba(195, 233, 229, .55); box-shadow: 0 24px 70px rgba(0, 0, 0, .38); }
 .archivePhoto::after { position: absolute; left: 9px; bottom: 9px; padding: 4px 6px; color: #f1faf7; background: rgba(1, 11, 17, .8); font: 600 9px var(--font-mono); letter-spacing: .14em; }
-.archivePhoto:nth-child(1)::after { content: '01 / FIELDWORK'; }
-.archivePhoto:nth-child(2)::after { content: '02 / PRESENTATION'; }
-.archivePhoto:nth-child(3)::after { content: '03 / TEAM'; }
+.archivePhoto::after { content: attr(data-label); }
 .archivePhoto img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.66) contrast(1.06) brightness(.91); }
+.archivePhoto img { animation: archiveImageArrival .75s ease both; }
+@keyframes archiveImageArrival { from { opacity: .3; transform: scale(1.06); } to { opacity: 1; transform: scale(1); } }
 .archivePhoto:nth-child(1) { top: 8%; left: 0; width: 65%; height: 47%; }
 .archivePhoto:nth-child(2) { top: 0; right: 0; width: 42%; height: 37%; }
 .archivePhoto:nth-child(3) { right: 3%; bottom: 5%; width: 61%; height: 40%; }
@@ -282,6 +282,7 @@
 .recordEntry p { max-width: 610px; color: rgba(234, 248, 247, .9); font-size: clamp(14px, 1.2vw, 17px); line-height: 1.75; }
 .recordEntry a { display: inline-flex; margin-top: 12px; color: var(--ice); font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(185, 244, 237, .62); padding-bottom: 6px; }
 .recordEntry a:hover { color: #fff; border-color: #fff; }
+.recordEntry .sourceLink { margin-left: 18px; color: rgba(221, 244, 240, .72); border-color: rgba(221, 244, 240, .34); }
 .recordEntry a:focus-visible, .endActions a:focus-visible, .afterword a:focus-visible { outline: 2px solid var(--ice); outline-offset: 5px; }
 .recordTicks { position: absolute; right: 7%; bottom: 16%; display: flex; gap: 9px; }
 .recordTicks i { display: block; width: 38px; height: 2px; background: rgba(185, 244, 237, .48); }
@@ -351,7 +352,7 @@
   .archiveVisual { top: 10%; right: 5%; width: 37vw; height: clamp(92px, 15svh, 132px); }
   .archiveVisual::before, .archivePhoto:nth-child(2), .archivePhoto:nth-child(3) { display: none; }
   .archivePhoto:nth-child(1) { top: 0; left: 0; width: 100%; height: 100%; }
-  .archivePhoto:nth-child(1)::after { content: '2024 / 01'; }
+  .recordEntry .sourceLink { margin-left: 14px; }
   .archiveVisual > span { display: none; }
   .recordFuture { top: 9%; right: 7%; width: 39vw; height: 17svh; gap: .1rem; }
   .recordFuture span { font-size: 6px; letter-spacing: .1em; }

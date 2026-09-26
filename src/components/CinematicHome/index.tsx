@@ -39,6 +39,9 @@ export default function CinematicHome(): ReactNode {
   const progressRef = useRef(0);
   const activeStopRef = useRef(0);
   const [activeStop, setActiveStop] = useState(0);
+  const activeMissionRef = useRef(0);
+  const [activeMission, setActiveMission] = useState(0);
+  const mission = milestones[activeMission];
 
   useGSAP(() => {
     const root = rootRef.current;
@@ -73,6 +76,11 @@ export default function CinematicHome(): ReactNode {
         if (activeStopRef.current !== index) {
           activeStopRef.current = index;
           setActiveStop(index);
+        }
+        const missionIndex = Math.max(0, Math.min(milestones.length - 1, Math.floor((storyTime - 77) / 11.5)));
+        if (activeMissionRef.current !== missionIndex) {
+          activeMissionRef.current = missionIndex;
+          setActiveMission(missionIndex);
         }
         stage.style.setProperty('--journey-progress', String(driver.p));
       },
@@ -132,11 +140,11 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('archive-photo-2'), {xPercent: 9, yPercent: 12}, {
         xPercent: 0, yPercent: 0, duration: 36,
       }, 76)
-      .to(target('archive-visual'), {autoAlpha: 0, scale: .92, x: -55, duration: 2.5}, 111.5)
-      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 111.5)
+      .to(target('archive-visual'), {autoAlpha: 0, scale: .92, x: -55, duration: 2.5}, 117.5)
+      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 117.5)
       .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
         autoAlpha: 1, scale: 1, rotation: 0, duration: 3,
-      }, 111.5)
+      }, 117.5)
       .to(target('record'), {autoAlpha: 0, duration: 2.2}, 123.8)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
         autoAlpha: 1, y: 0, scale: 1, duration: 4,
@@ -256,34 +264,34 @@ export default function CinematicHome(): ReactNode {
               <div className={styles.realityImage} data-motion="reality-image" />
               <div className={styles.realityTint} />
               <div className={styles.realityFrame} data-motion="reality-frame">
-                <img src="/img/projects/2024-gfssm/team.jpg" alt="" />
+                <img src="/img/archive/2026/final-stage.webp" alt="" />
               </div>
             </div>
             <div className={styles.teamCaption} data-motion="team-caption">
-              <img className={styles.stillImage} src="/img/projects/2024-gfssm/team.jpg" alt={t('2024 GFSSM 中国站合影', 'Team at GFSSM China 2024')} />
+              <img className={styles.stillImage} src="/img/archive/2026/final-stage.webp" alt={t('2026 GFSSM 步天两支代表队合影', 'Butian teams at GFSSM 2026')} />
               <span className={styles.phaseIndex}>05 / BACK ON EARTH</span>
               <h2>{t('图纸背后，', 'Behind the drawings')}<br />{t('是并肩的人。', 'are people together.')}</h2>
               <p>{t(
-                '2024 年的现场 24 小时挑战里，代表队边讨论边修改方案。不同方向的同伴，正是在这里互相补位。',
-                'In the 2024 on-site 24-hour challenge, our teams debated and revised as they worked. Different strengths became one proposal.',
+                '2026 年的 24 小时挑战里，两支代表队与来自各地的伙伴反复讨论、修改方案。不同专长，最终汇入同一份提案。',
+                'In the 2026 24-hour challenge, our teams debated and revised proposals with students from across the world. Different strengths came together in one design.',
               )}</p>
-              <small>{t('真实影像 · 2024 GFSSM 中国站', 'ARCHIVE PHOTO · GFSSM CHINA 2024')}</small>
+              <small>{t('真实影像 · 2026 GFSSM 决赛', 'ARCHIVE PHOTO · GFSSM 2026 FINAL')}</small>
             </div>
 
             <div className={styles.record} data-motion="record">
               <div className={styles.recordFutureBackdrop} data-motion="record-future-backdrop" aria-hidden="true" />
               <p className={styles.recordEyebrow}>06 / FLIGHT RECORD</p>
               <div className={styles.archiveVisual} data-motion="archive-visual" aria-hidden="true">
-                <div className={styles.archivePhoto} data-motion="archive-photo-0">
-                  <img src="/img/projects/2024-gfssm/work-02.jpg" alt="" />
+                <div className={styles.archivePhoto} data-motion="archive-photo-0" data-label={`${mission.year} / 01`}>
+                  <img key={`${mission.id}-0`} src={mission.archivePhotos?.[0]} alt="" />
                 </div>
-                <div className={styles.archivePhoto} data-motion="archive-photo-1">
-                  <img src="/img/projects/2024-gfssm/presentation-01.jpg" alt="" />
+                <div className={styles.archivePhoto} data-motion="archive-photo-1" data-label={`${mission.year} / 02`}>
+                  <img key={`${mission.id}-1`} src={mission.archivePhotos?.[1]} alt="" />
                 </div>
-                <div className={styles.archivePhoto} data-motion="archive-photo-2">
-                  <img src="/img/projects/2024-gfssm/team.jpg" alt="" />
+                <div className={styles.archivePhoto} data-motion="archive-photo-2" data-label={`${mission.year} / 03`}>
+                  <img key={`${mission.id}-2`} src={mission.archivePhotos?.[2]} alt="" />
                 </div>
-                <span>{t('影像档案 / 2024 GFSSM 中国站', 'PHOTO ARCHIVE / GFSSM CHINA 2024')}</span>
+                <span>{t(`影像档案 / ${mission.year} GFSSM`, `PHOTO ARCHIVE / GFSSM ${mission.year}`)}</span>
               </div>
               <div className={styles.recordFuture} data-motion="record-future" aria-hidden="true">
                 <i /><i />
@@ -297,6 +305,7 @@ export default function CinematicHome(): ReactNode {
                   <h2>{t(project.titleZh, project.titleEn)}</h2>
                   <p>{t(project.homeSummaryZh ?? project.summaryZh, project.homeSummaryEn ?? project.summaryEn)}</p>
                   {project.detailUrl && <Link to={project.detailUrl}>{t('查看这段航程 ↗', 'Explore this mission ↗')}</Link>}
+                  {project.sourceUrl && <a className={styles.sourceLink} href={project.sourceUrl} target="_blank" rel="noopener noreferrer">{t('原始报道 ↗', 'Original report ↗')}</a>}
                 </div>
               ))}
               <div className={styles.recordTicks} aria-hidden="true">{milestones.map((project) => <i key={project.id} />)}</div>
@@ -306,8 +315,8 @@ export default function CinematicHome(): ReactNode {
               <p className={styles.phaseIndex}>07 / PASS IT FORWARD</p>
               <h2>{t('把做过的事，', 'Pass what we learn')}<br /><em>{t('交给下一程。', 'to the next crew.')}</em></h2>
               <p>{t(
-                '提案与复盘写进知识库，航天科普也走出赛场。下一次出发，欢迎愿意查证、动手、协作并把想法讲清楚的你。',
-                'Proposals and lessons enter our knowledge base; space-science outreach carries the work beyond competitions. If you are ready to research, build, collaborate and explain, join the next crew.',
+                '提案与复盘写进知识库，航天科普走出赛场；天文周、纸飞机比赛也曾让更多同学走近工程。下一次出发，欢迎愿意查证、动手、协作并把想法讲清楚的你。',
+                'Proposals and lessons enter our knowledge base. Outreach, Astronomy Week and paper-plane activities have brought more students close to engineering. If you are ready to research, build, collaborate and explain, join the next crew.',
               )}</p>
               <div className={styles.endActions}>
                 <Link className={styles.primaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
