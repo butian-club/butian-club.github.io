@@ -12,14 +12,19 @@ import styles from './styles.module.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+// One story unit has the same scroll distance throughout the pinned journey.
+// The archive and final invitation need enough distance to read while scrolling continuously.
+const journeyDuration = 137;
+const journeyScreens = 17.1;
+
 const stops = [
   {at: 0, zh: '离开地球', en: 'Departure'},
-  {at: 17, zh: '接住问题', en: 'The brief'},
-  {at: 28, zh: '协作设计', en: 'One team'},
-  {at: 65, zh: '经得起推敲', en: 'Test the idea'},
-  {at: 79, zh: '真实的同伴', en: 'The people'},
-  {at: 87, zh: '做过的方案', en: 'Our work'},
-  {at: 98, zh: '传给下一程', en: 'Pass it on'},
+  {at: 16, zh: '接住问题', en: 'The brief'},
+  {at: 29, zh: '协作设计', en: 'One team'},
+  {at: 57, zh: '经得起推敲', en: 'Test the idea'},
+  {at: 69, zh: '真实的同伴', en: 'The people'},
+  {at: 78, zh: '做过的方案', en: 'Our work'},
+  {at: 127, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
@@ -32,6 +37,7 @@ export default function CinematicHome(): ReactNode {
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
+  const activeStopRef = useRef(0);
   const [activeStop, setActiveStop] = useState(0);
 
   useGSAP(() => {
@@ -48,98 +54,101 @@ export default function CinematicHome(): ReactNode {
       scrollTrigger: {
         trigger: root,
         start: 'top top',
-        end: () => '+=' + Math.round(window.innerHeight * 11),
+        end: () => '+=' + Math.round(window.innerHeight * journeyScreens),
         pin: stage,
-        scrub: 0.65,
+        scrub: 0.3,
         anticipatePin: 1,
         refreshPriority: 10,
         invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const value = self.progress * 100;
-          const index = stops.reduce((current, stop, position) => value >= stop.at ? position : current, 0);
-          setActiveStop((previous) => previous === index ? previous : index);
-          stage.style.setProperty('--journey-progress', String(self.progress));
-        },
       },
     });
 
     timeline.to(driver, {
       p: 1,
-      duration: 100,
-      onUpdate: () => { progressRef.current = driver.p; },
+      duration: journeyDuration,
+      onUpdate: () => {
+        progressRef.current = driver.p;
+        const storyTime = driver.p * journeyDuration;
+        const index = stops.reduce((current, stop, position) => storyTime >= stop.at ? position : current, 0);
+        if (activeStopRef.current !== index) {
+          activeStopRef.current = index;
+          setActiveStop(index);
+        }
+        stage.style.setProperty('--journey-progress', String(driver.p));
+      },
     }, 0);
 
     timeline
       .fromTo(target('orbital'), {autoAlpha: 1, clipPath: 'circle(0% at 69% 50%)'}, {
-        autoAlpha: 1, clipPath: 'circle(100% at 69% 50%)', duration: 10,
-      }, 13)
+        autoAlpha: 1, clipPath: 'circle(100% at 69% 50%)', duration: 11,
+      }, 12)
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
       .to(target('hero'), {autoAlpha: 0, y: '-=85', scale: 0.92, duration: 7}, 7)
-      .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 5}, 15)
-      .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 8}, 13)
-      .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 22)
-      .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 6}, 22)
-      .fromTo(target('assembly'), {autoAlpha: 0, y: 34}, {autoAlpha: 1, y: 0, duration: 5}, 25)
+      .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 5}, 14)
+      .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 9}, 12)
+      .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 23)
+      .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 5}, 23)
+      .fromTo(target('assembly'), {autoAlpha: 0, y: 34}, {autoAlpha: 1, y: 0, duration: 4}, 25)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
-      .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 18}, 28)
-      .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 47)
-      .fromTo(target('callout-1'), {autoAlpha: 0, x: -40}, {autoAlpha: 1, x: 0, duration: 4}, 30)
-      .to(target('callout-1'), {autoAlpha: 0, x: -35, duration: 4}, 37)
+      .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 19}, 26)
+      .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 46)
+      .fromTo(target('callout-1'), {autoAlpha: 0, x: -40}, {autoAlpha: 1, x: 0, duration: 4}, 29)
+      .to(target('callout-1'), {autoAlpha: 0, x: -35, duration: 4}, 35)
       .fromTo(target('callout-2'), {autoAlpha: 0, x: 40}, {autoAlpha: 1, x: 0, duration: 4}, 36)
-      .to(target('callout-2'), {autoAlpha: 0, x: 35, duration: 4}, 43)
-      .fromTo(target('callout-3'), {autoAlpha: 0, y: 28}, {autoAlpha: 1, y: 0, duration: 4}, 43)
-      .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 5}, 49)
+      .to(target('callout-2'), {autoAlpha: 0, x: 35, duration: 4}, 42)
+      .fromTo(target('callout-3'), {autoAlpha: 0, y: 28}, {autoAlpha: 1, y: 0, duration: 4}, 42)
+      .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 4}, 48)
       .to(target('callout-3'), {autoAlpha: 0, y: -28, duration: 4}, 49)
       .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
-        autoAlpha: 1, '--portal-radius': '145%', duration: 18,
-      }, 52)
-      .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 20}, 52)
-      .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 5}, 63)
-      .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 4}, 72)
+        autoAlpha: 1, '--portal-radius': '145%', duration: 16,
+      }, 47)
+      .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 18}, 47)
+      .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 4}, 56)
+      .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 3}, 63)
       .fromTo(target('reality'), {autoAlpha: 1, clipPath: 'circle(0% at 51% 50%)'}, {
-        autoAlpha: 1, clipPath: 'circle(100% at 51% 50%)', duration: 10,
-      }, 72)
-      .fromTo(target('reality-image'), {scale: 1.28}, {scale: 1, duration: 20}, 72)
+        autoAlpha: 1, clipPath: 'circle(100% at 51% 50%)', duration: 9,
+      }, 64)
+      .fromTo(target('reality-image'), {scale: 1.28}, {scale: 1, duration: 18}, 64)
       .fromTo(target('reality-frame'), {autoAlpha: 0, x: 80, scale: 0.9}, {
-        autoAlpha: 1, x: 0, scale: 1, duration: 9,
-      }, 74)
-      .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 82)
-      .to(target('portal'), {autoAlpha: 0, duration: 1}, 81)
-      .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 5}, 78)
-      .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 82.5)
-      .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 83.5)
-      .to(target('reality'), {autoAlpha: 0, duration: 2.5}, 83.5)
+        autoAlpha: 1, x: 0, scale: 1, duration: 7,
+      }, 66)
+      .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
+      .to(target('portal'), {autoAlpha: 0, duration: 1}, 74)
+      .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 4}, 68)
+      .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 74)
+      .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 75)
+      .to(target('reality'), {autoAlpha: 0, duration: 3}, 75)
       .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.08, x: 80}, {
-        autoAlpha: 1, scale: 1, x: 0, duration: 1.5,
-      }, 84.2)
-      .to(target('archive-visual'), {x: -18, y: -9, rotation: -1.5, duration: 2}, 87.5)
-      .to(target('archive-visual'), {x: 12, y: 8, rotation: 1.2, duration: 2}, 90.3)
+        autoAlpha: 1, scale: 1, x: 0, duration: 2,
+      }, 76)
+      .to(target('archive-visual'), {x: -18, y: -9, rotation: -1.5, duration: 5}, 88.5)
+      .to(target('archive-visual'), {x: 12, y: 8, rotation: 1.2, duration: 5}, 100)
       .fromTo(target('archive-photo-0'), {xPercent: -9, yPercent: 8}, {
-        xPercent: 0, yPercent: 0, duration: 8,
-      }, 84.2)
+        xPercent: 0, yPercent: 0, duration: 36,
+      }, 76)
       .fromTo(target('archive-photo-1'), {xPercent: 12, yPercent: -8}, {
-        xPercent: 0, yPercent: 0, duration: 8,
-      }, 84.2)
+        xPercent: 0, yPercent: 0, duration: 36,
+      }, 76)
       .fromTo(target('archive-photo-2'), {xPercent: 9, yPercent: 12}, {
-        xPercent: 0, yPercent: 0, duration: 8,
-      }, 84.2)
-      .to(target('archive-visual'), {autoAlpha: 0, scale: .92, x: -55, duration: 1.1}, 92.3)
-      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.3}, 92.1)
+        xPercent: 0, yPercent: 0, duration: 36,
+      }, 76)
+      .to(target('archive-visual'), {autoAlpha: 0, scale: .92, x: -55, duration: 2.5}, 111.5)
+      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 111.5)
       .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
-        autoAlpha: 1, scale: 1, rotation: 0, duration: 1.8,
-      }, 92.4)
-      .to(target('record'), {autoAlpha: 0, duration: 1.4}, 96.3)
+        autoAlpha: 1, scale: 1, rotation: 0, duration: 3,
+      }, 111.5)
+      .to(target('record'), {autoAlpha: 0, duration: 2.2}, 123.8)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
-        autoAlpha: 1, y: 0, scale: 1, duration: 2.9,
-      }, 97.1);
+        autoAlpha: 1, y: 0, scale: 1, duration: 4,
+      }, 124.8);
 
     milestones.forEach((_, index) => {
-      const at = 84.7 + index * 2.7;
+      const at = 77 + index * 11.5;
       timeline.fromTo(target('record-' + index), {autoAlpha: 0, x: 80}, {
-        autoAlpha: 1, x: 0, duration: index === 0 ? 1.4 : 1,
+        autoAlpha: 1, x: 0, duration: 1.6,
       }, at);
       if (index < milestones.length - 1) {
-        timeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: .7}, at + 1.9);
+        timeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: 1.2}, at + 9.5);
       }
     });
   }, {scope: rootRef});

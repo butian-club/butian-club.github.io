@@ -16,13 +16,15 @@ type Pose = {
 
 const cameraPath: Pose[] = [
   {at: 0, position: [0, 0.5, 19], target: [1.5, 0, -4]},
-  {at: 0.14, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
-  {at: 0.3, position: [7.5, 2.2, 12.4], target: [3.6, 0, -4]},
-  {at: 0.43, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
-  {at: 0.56, position: [6, 0, 0.2], target: [6, 0, -13]},
-  {at: 0.64, position: [6, 0, -8], target: [6, 0, -20]},
-  {at: 0.9, position: [6, 0, -8], target: [6, 0, -20]},
-  {at: 0.94, position: [6.8, 1, 11], target: [5.8, 0, -4]},
+  {at: 0.09, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
+  {at: 0.2, position: [7.5, 2.2, 12.4], target: [3.6, 0, -4]},
+  {at: 0.31, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
+  {at: 0.37, position: [6, 0, 0.2], target: [6, 0, -13]},
+  {at: 0.46, position: [6, 0, -8], target: [6, 0, -20]},
+  {at: 0.55, position: [6, 0, -8], target: [6, 0, -20]},
+  {at: 0.75, position: [6, 0, -8], target: [6, 0, -20]},
+  {at: 0.91, position: [6.8, 1, 11], target: [5.8, 0, -4]},
+  {at: 0.98, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 1, position: [0, 0.5, 19], target: [1.5, 0, -4]},
 ];
 

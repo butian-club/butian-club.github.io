@@ -701,6 +701,10 @@ body:has(#cinematic-home) .navbar {
 }
 
 /* Let the cinematic homepage resolve into the same visual language after the scroll journey. */
+html:has(#cinematic-home) {
+  scroll-behavior: auto;
+}
+
 body:has(#cinematic-home) .footer {
   background: #02070c;
   border-top: 1px solid rgba(185, 244, 237, .14);
