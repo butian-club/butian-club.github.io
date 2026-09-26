@@ -11,6 +11,7 @@ export type ProjectStatus = 'active' | 'completed';
 export interface Project {
   /** 唯一标识，可用于锚点 / 详情路由 */
   id: string;
+  year: number;
   titleZh: string;
   titleEn: string;
   summaryZh: string;
@@ -37,7 +38,25 @@ export const STATUS_META: Record<
 
 export const projects: Project[] = [
   {
+    id: 'gfssm-2026-psyche',
+    year: 2026,
+    titleZh: '灵神星采矿太空城 · GFSSM 2026',
+    titleEn: 'Psyche Mining Settlement · GFSSM 2026',
+    summaryZh:
+      '天玑、天枢两队在 2026 全球未来太空学者大会围绕 2115 年灵神星采矿太空城展开设计，双双晋级全国决赛；天玑队所在公司「月球快车」获亚军，天枢队所在公司「轨道工业」获季军。天枢队另获资格轮全国最佳提案，姚淑悦获最佳领导者奖。',
+    summaryEn:
+      'Teams Tianji and Tianshu designed a mining settlement on the asteroid Psyche for the 2026 GFSSM scenario set in 2115. Both reached the national final: Tianji’s company “Lunar Express” took runner-up and Tianshu’s “Orbital Industries” took third. Tianshu also won Best Qualifying Proposal, and Yao Shuyue received the Best Leader award.',
+    homeSummaryZh: '天玑、天枢两队设计灵神星采矿太空城；所在公司分获全国亚军、季军。',
+    homeSummaryEn: 'Teams Tianji and Tianshu designed a settlement on Psyche; their companies took national 2nd and 3rd place.',
+    tagsZh: ['太空城市设计', '结构与基础设施', '运营与商业'],
+    tagsEn: ['Settlement Design', 'Structure & Infrastructure', 'Operations'],
+    status: 'completed',
+    featured: true,
+    detailUrl: '/blog/gfssm-2026-psyche',
+  },
+  {
     id: 'gfssm-2025-mars',
+    year: 2025,
     titleZh: '火星熔岩管基地 · GFSSM 2025',
     titleEn: 'Mars Lava-Tube Base · GFSSM 2025',
     summaryZh:
@@ -54,6 +73,7 @@ export const projects: Project[] = [
   },
   {
     id: 'gfssm-2024-venus',
+    year: 2024,
     titleZh: '金星轨道太空城 · GFSSM 2024',
     titleEn: 'Venus-Orbit Space City · GFSSM 2024',
     summaryZh:
@@ -70,6 +90,7 @@ export const projects: Project[] = [
   },
   {
     id: 'panan-outreach-2023',
+    year: 2023,
     titleZh: '磐安航天科普公益 · 2023',
     titleEn: 'Pan’an Outreach Program · 2023',
     summaryZh:
@@ -84,6 +105,7 @@ export const projects: Project[] = [
   },
   {
     id: 'gfssm-2023',
+    year: 2023,
     titleZh: '月球基地 Idun · GFSSM 2023',
     titleEn: 'Lunar Base “Idun” · GFSSM 2023',
     summaryZh:

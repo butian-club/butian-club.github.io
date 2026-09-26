@@ -79,5 +79,20 @@ test('maintenance commands and cited result years stay aligned with repository c
   const siteData = source('src/data/site.ts');
 
   for (const readme of [english, chinese]) assert.match(readme, /npm test/);
-  assert.match(siteData, /2023-2025 GFSSM/);
+  assert.match(siteData, /2023-2026 GFSSM/);
+});
+
+test('2026 GFSSM record keeps the teams, results, and homepage in sync', () => {
+  const projects = source('src/data/projects.ts');
+  const siteData = source('src/data/site.ts');
+  const homepage = source('src/components/CinematicHome/index.tsx');
+  const report = source('blog/2026-09-26-gfssm-2026-psyche.md');
+
+  assert.match(projects, /id: 'gfssm-2026-psyche'/);
+  assert.match(projects, /天玑队所在公司「月球快车」获亚军/);
+  assert.match(projects, /天枢队所在公司「轨道工业」获季军/);
+  assert.match(projects, /天枢队另获资格轮全国最佳提案/);
+  assert.match(siteData, /连续四届晋级全国决赛/);
+  assert.match(homepage, /'gfssm-2026-psyche'/);
+  assert.match(report, /姚淑悦.*最佳领导者/);
 });

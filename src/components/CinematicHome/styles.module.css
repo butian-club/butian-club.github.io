@@ -252,6 +252,9 @@
 .teamCaption h2 { font-size: clamp(2.3rem, 3.8vw, 4.9rem); }
 .teamCaption p { max-width: 370px; }
 .record { position: absolute; inset: 0; z-index: 15; padding: 21vh clamp(36px, 8vw, 140px); background: linear-gradient(90deg, rgba(1, 11, 16, .95), rgba(1, 11, 16, .24) 74%); }
+.recordFutureBackdrop { position: absolute; inset: 0; z-index: 0; visibility: hidden; opacity: 0; overflow: hidden; background: radial-gradient(ellipse at 75% 42%, #183b43 0, #0b222d 23%, #06131e 48%, #020910 80%); pointer-events: none; }
+.recordFutureBackdrop::before { content: ''; position: absolute; top: 5%; right: 7%; width: min(52vw, 730px); aspect-ratio: 1; clip-path: polygon(16% 6%, 38% 0, 59% 5%, 81% 13%, 96% 31%, 100% 55%, 88% 79%, 70% 95%, 42% 100%, 21% 91%, 4% 71%, 0 45%, 6% 22%); background: radial-gradient(circle at 36% 32%, rgba(255,255,255,.13) 0 2%, transparent 3% 9%, rgba(1,12,21,.33) 10%, transparent 16%), radial-gradient(circle at 76% 62%, rgba(2,12,21,.45) 0 7%, rgba(172,204,207,.08) 9%, transparent 18%), radial-gradient(circle at 42% 60%, #788a88 0, #4b6267 22%, #263d48 53%, #071722 78%); box-shadow: inset -6vw -5vw 9vw #030b13; filter: saturate(.66); opacity: .68; transform: rotate(-19deg); }
+.recordFutureBackdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #020a11 0%, rgba(2,10,17,.92) 35%, rgba(2,10,17,.45) 70%, rgba(2,10,17,.2)); }
 .recordEyebrow { position: relative; z-index: 2; margin: 0; color: var(--ice); }
 .archiveVisual { position: absolute; top: 15%; right: 6%; width: min(41vw, 560px); height: 66%; opacity: 0; visibility: hidden; pointer-events: none; }
 .archiveVisual::before { content: ''; position: absolute; inset: -18px -16px; border: 1px solid rgba(185, 244, 237, .2); clip-path: polygon(0 0, 23% 0, 23% 1px, 100% 1px, 100% 77%, 99% 77%, 99% 100%, 0 100%); }
@@ -265,6 +268,14 @@
 .archivePhoto:nth-child(2) { top: 0; right: 0; width: 42%; height: 37%; }
 .archivePhoto:nth-child(3) { right: 3%; bottom: 5%; width: 61%; height: 40%; }
 .archiveVisual > span { position: absolute; left: 0; bottom: -6%; color: rgba(225, 244, 240, .74); font: 600 10px var(--font-mono); letter-spacing: .16em; white-space: nowrap; }
+.recordFuture { position: absolute; top: 16%; right: 6%; width: min(42vw, 590px); height: 68%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .7rem; visibility: hidden; opacity: 0; color: var(--ice); text-align: center; pointer-events: none; }
+.recordFuture::before { content: ''; position: absolute; inset: 4%; border: 1px solid rgba(185, 244, 237, .38); border-radius: 50%; background: radial-gradient(circle, rgba(63, 169, 172, .16), rgba(9, 28, 38, .36) 44%, transparent 65%); box-shadow: 0 0 0 5vw rgba(185, 244, 237, .025), inset 0 0 70px rgba(185, 244, 237, .07); }
+.recordFuture i { position: absolute; inset: 17%; border: 1px dashed rgba(185, 244, 237, .28); border-radius: 50%; transform: rotate(-25deg) scaleY(.64); }
+.recordFuture i:nth-child(2) { inset: 29%; border-style: solid; transform: rotate(37deg) scaleY(.7); }
+.recordFuture span, .recordFuture strong, .recordFuture small { position: relative; z-index: 1; }
+.recordFuture span { font: 650 11px var(--font-mono); letter-spacing: .26em; }
+.recordFuture strong { font-size: clamp(6rem, 13vw, 12rem); font-weight: 620; line-height: 1; letter-spacing: -.095em; -webkit-text-stroke: 1px var(--ice); color: transparent; text-shadow: 0 0 45px rgba(185, 244, 237, .2); }
+.recordFuture small { color: rgba(233, 249, 247, .8); font: 600 10px var(--font-mono); letter-spacing: .18em; }
 .recordEntry { position: absolute; z-index: 2; top: 33%; left: clamp(36px, 8vw, 140px); width: min(42vw, 620px); text-shadow: 0 2px 22px #02080d; }
 .recordEntry > span { display: block; color: var(--amber); font-size: clamp(6rem, 15vw, 15rem); font-weight: 650; line-height: .8; letter-spacing: -.11em; }
 .recordEntry h2 { margin: 20px 0 15px; font-size: clamp(1.7rem, 3vw, 3.7rem); line-height: 1.2; letter-spacing: -.055em; }
@@ -344,6 +355,10 @@
   .archivePhoto:nth-child(1) { top: 0; left: 0; width: 100%; height: 100%; }
   .archivePhoto:nth-child(1)::after { content: '2024 / 01'; }
   .archiveVisual > span { display: none; }
+  .recordFuture { top: 9%; right: 7%; width: 39vw; height: 17svh; gap: .1rem; }
+  .recordFuture span { font-size: 6px; letter-spacing: .1em; }
+  .recordFuture strong { font-size: clamp(2.4rem, 10vw, 4rem); }
+  .recordFuture small { font-size: 6px; letter-spacing: .04em; }
   .recordEntry > span { font-size: clamp(4.7rem, 20vw, 7rem); }
   .recordEntry h2 { font-size: clamp(1.4rem, 6vw, 1.75rem); }
   .recordEntry p { font-size: clamp(12px, 2.7vw, 13px); line-height: 1.55; }
@@ -370,7 +385,7 @@
 @media (prefers-reduced-motion: reduce) {
   .journey { min-height: 0; }
   .stage { height: auto; min-height: 0; overflow: visible; padding: 120px 7% 100px; }
-  .orbitalShell, .reticle, .orbitLine, .systemGrid, .wordmarkGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .archiveVisual, .recordTicks { display: none; }
+  .orbitalShell, .reticle, .orbitLine, .systemGrid, .wordmarkGhost, .hud, .progressRail, .calloutLeft, .calloutRight, .calloutBottom, .portal, .reality, .archiveVisual, .recordFutureBackdrop, .recordFuture, .recordTicks { display: none; }
   .spaceBackdrop, .spaceVeil { display: none; }
   .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
     position: relative;

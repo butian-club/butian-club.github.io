@@ -1,8 +1,8 @@
 /**
  * 站点级别的展示数据：核心方向、数据统计（双语）。
  *
- * 资料依据：公开报道（2017 求是创新学院、2023 磐安公益、
- * 2023-2025 GFSSM 中国站）。存疑或待校内补证的信息不进入展示数据，不做编造。
+ * 资料依据：公开报道与社团提供的活动报道（2017 求是创新学院、
+ * 2023 磐安公益、2023-2026 GFSSM）。存疑或待校内补证的信息不进入展示数据，不做编造。
  *
  * 每条文案内联中英文，组件按当前 locale 用 useT() 选择。
  */
@@ -86,11 +86,11 @@ export const stats: Stat[] = [
   },
   {
     id: 'finals',
-    value: '3',
-    labelZh: '连续三届晋级全国决赛',
-    labelEn: 'Three Straight National Finals',
-    captionZh: '2023 冠军 · 2024 亚军 · 2025 亚+季',
-    captionEn: '2023 1st · 2024 2nd · 2025 2nd+3rd',
+    value: '4',
+    labelZh: '连续四届晋级全国决赛',
+    labelEn: 'Four Straight National Finals',
+    captionZh: '2023 冠军 · 2024 亚军 · 2025、2026 亚季军',
+    captionEn: '2023 1st · 2024 2nd · 2025 & 2026 2nd+3rd',
   },
   {
     id: 'since-fssm',

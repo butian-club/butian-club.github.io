@@ -22,7 +22,7 @@ const stops = [
   {at: 98, zh: '传给下一程', en: 'Pass it on'},
 ];
 
-const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars']
+const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
   .map((id) => projects.find((project) => project.id === id))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
 
@@ -106,33 +106,42 @@ export default function CinematicHome(): ReactNode {
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 82)
       .to(target('portal'), {autoAlpha: 0, duration: 1}, 81)
       .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 5}, 78)
-      .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 4}, 84)
-      .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5}, 84)
-      .to(target('reality'), {autoAlpha: 0, duration: 4}, 84)
+      .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 82.5)
+      .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 83.5)
+      .to(target('reality'), {autoAlpha: 0, duration: 2.5}, 83.5)
       .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.08, x: 80}, {
-        autoAlpha: 1, scale: 1, x: 0, duration: 2,
-      }, 85)
-      .to(target('archive-visual'), {x: -18, y: -9, rotation: -1.5, duration: 2}, 88.5)
-      .to(target('archive-visual'), {x: 12, y: 8, rotation: 1.2, duration: 2}, 91.5)
+        autoAlpha: 1, scale: 1, x: 0, duration: 1.5,
+      }, 84.2)
+      .to(target('archive-visual'), {x: -18, y: -9, rotation: -1.5, duration: 2}, 87.5)
+      .to(target('archive-visual'), {x: 12, y: 8, rotation: 1.2, duration: 2}, 90.3)
       .fromTo(target('archive-photo-0'), {xPercent: -9, yPercent: 8}, {
-        xPercent: 0, yPercent: 0, duration: 10,
-      }, 84)
+        xPercent: 0, yPercent: 0, duration: 8,
+      }, 84.2)
       .fromTo(target('archive-photo-1'), {xPercent: 12, yPercent: -8}, {
-        xPercent: 0, yPercent: 0, duration: 10,
-      }, 84)
+        xPercent: 0, yPercent: 0, duration: 8,
+      }, 84.2)
       .fromTo(target('archive-photo-2'), {xPercent: 9, yPercent: 12}, {
-        xPercent: 0, yPercent: 0, duration: 10,
-      }, 84)
-      .fromTo(target('record-0'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 2}, 85)
-      .to(target('record-0'), {autoAlpha: 0, x: -70, duration: 1}, 87.5)
-      .fromTo(target('record-1'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 1.5}, 88.5)
-      .to(target('record-1'), {autoAlpha: 0, x: -70, duration: 1}, 90.5)
-      .to(target('archive-visual'), {autoAlpha: 0, x: -55, duration: 2}, 94)
-      .fromTo(target('record-2'), {autoAlpha: 0, x: 80}, {autoAlpha: 1, x: 0, duration: 1.5}, 91.5)
-      .to(target('record'), {autoAlpha: 0, duration: 2}, 94)
+        xPercent: 0, yPercent: 0, duration: 8,
+      }, 84.2)
+      .to(target('archive-visual'), {autoAlpha: 0, scale: .92, x: -55, duration: 1.1}, 92.3)
+      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.3}, 92.1)
+      .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
+        autoAlpha: 1, scale: 1, rotation: 0, duration: 1.8,
+      }, 92.4)
+      .to(target('record'), {autoAlpha: 0, duration: 1.4}, 96.3)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
-        autoAlpha: 1, y: 0, scale: 1, duration: 4,
-      }, 96);
+        autoAlpha: 1, y: 0, scale: 1, duration: 2.9,
+      }, 97.1);
+
+    milestones.forEach((_, index) => {
+      const at = 84.7 + index * 2.7;
+      timeline.fromTo(target('record-' + index), {autoAlpha: 0, x: 80}, {
+        autoAlpha: 1, x: 0, duration: index === 0 ? 1.4 : 1,
+      }, at);
+      if (index < milestones.length - 1) {
+        timeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: .7}, at + 1.9);
+      }
+    });
   }, {scope: rootRef});
 
   return (
@@ -158,7 +167,7 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.hud} aria-hidden="true">
               <div className={styles.hudBrand}><span className={styles.hudDiamond} /> BUTIAN ENGINEERING CLUB</div>
-              <div className={styles.hudCoordinates}>30°16′ N &nbsp; 120°11′ E <span>→</span> MARS</div>
+              <div className={styles.hudCoordinates}>30°16′ N &nbsp; 120°11′ E <span>→</span> DEEP SPACE</div>
               <div className={styles.hudBottom}>
                 <span>HANGZHOU NO.2 HIGH SCHOOL</span>
                 <span>MISSION LOG / 001—007</span>
@@ -253,6 +262,7 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.record} data-motion="record">
+              <div className={styles.recordFutureBackdrop} data-motion="record-future-backdrop" aria-hidden="true" />
               <p className={styles.recordEyebrow}>06 / FLIGHT RECORD</p>
               <div className={styles.archiveVisual} data-motion="archive-visual" aria-hidden="true">
                 <div className={styles.archivePhoto} data-motion="archive-photo-0">
@@ -266,15 +276,21 @@ export default function CinematicHome(): ReactNode {
                 </div>
                 <span>{t('影像档案 / 2024 GFSSM 中国站', 'PHOTO ARCHIVE / GFSSM CHINA 2024')}</span>
               </div>
+              <div className={styles.recordFuture} data-motion="record-future" aria-hidden="true">
+                <i /><i />
+                <span>SCENARIO / 2115</span>
+                <strong>2115</strong>
+                <small>{t('灵神星 · 采矿太空城', 'PSYCHE · MINING SETTLEMENT')}</small>
+              </div>
               {milestones.map((project, index) => (
                 <div className={styles.recordEntry} data-motion={'record-' + index} key={project.id}>
-                  <span>{2023 + index}</span>
+                  <span>{project.year}</span>
                   <h2>{t(project.titleZh, project.titleEn)}</h2>
                   <p>{t(project.homeSummaryZh ?? project.summaryZh, project.homeSummaryEn ?? project.summaryEn)}</p>
                   {project.detailUrl && <Link to={project.detailUrl}>{t('查看这段航程 ↗', 'Explore this mission ↗')}</Link>}
                 </div>
               ))}
-              <div className={styles.recordTicks} aria-hidden="true"><i /><i /><i /></div>
+              <div className={styles.recordTicks} aria-hidden="true">{milestones.map((project) => <i key={project.id} />)}</div>
             </div>
 
             <div className={styles.endCopy} data-motion="end">
