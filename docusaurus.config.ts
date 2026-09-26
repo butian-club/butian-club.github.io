@@ -151,13 +151,13 @@ const config: Config = {
           position: 'left',
         },
         { to: '/blog', label: '博客', position: 'left' },
+        { to: '/join', label: '加入我们', position: 'left' },
         {
           href: 'https://gfssm.butian.club',
           label: '协作平台',
           position: 'right',
           className: 'nav-platform-link',
         },
-        { to: '/join', label: '加入我们', position: 'right', className: 'nav-join-link' },
         { type: 'localeDropdown', position: 'right' },
         {
           href: 'https://github.com/butian-club',
