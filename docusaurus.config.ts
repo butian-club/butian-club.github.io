@@ -156,7 +156,7 @@ const config: Config = {
           position: 'right',
           className: 'nav-platform-link',
         },
-        { to: '/join', label: '加入我们', position: 'right' },
+        { to: '/join', label: '加入我们', position: 'right', className: 'nav-join-link' },
         { type: 'localeDropdown', position: 'right' },
         {
           href: 'https://github.com/butian-club',

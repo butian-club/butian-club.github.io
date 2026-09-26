@@ -650,6 +650,9 @@ body:has(#cinematic-home) .navbar {
   font-size: 0.84rem;
   letter-spacing: 0.03em;
 }
+.navbar__items--right > .nav-join-link {
+  order: 10;
+}
 @media (min-width: 800px) and (max-width: 996px) {
   .navbar .navbar__toggle { display: none; }
   .navbar .navbar__item { display: inline-flex; }
