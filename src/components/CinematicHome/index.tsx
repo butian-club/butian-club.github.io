@@ -74,7 +74,7 @@ export default function CinematicHome(): ReactNode {
         autoAlpha: 1, clipPath: 'circle(100% at 69% 50%)', duration: 10,
       }, 13)
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
-      .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.92, duration: 7}, 7)
+      .to(target('hero'), {autoAlpha: 0, y: '-=85', scale: 0.92, duration: 7}, 7)
       .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 5}, 15)
       .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 8}, 13)
       .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 22)
