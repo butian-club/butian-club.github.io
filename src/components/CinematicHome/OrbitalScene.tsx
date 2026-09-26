@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {createStation} from './StationModel';
+import {createStation, poseStation} from './StationModel';
 
 type Props = {
   progressRef: React.RefObject<number>;
@@ -228,40 +228,7 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       lookTarget.x += mobilePan;
       camera.lookAt(lookTarget);
 
-      const sequence = Math.min(progress, 0.5);
-      station.group.rotation.y = -0.68 + smooth(0.11, 0.29, sequence) * 0.38
-        + smooth(0.29, 0.37, sequence) * 0.45;
-      station.group.rotation.x = 0.2 + smooth(0.19, 0.34, sequence) * 0.14;
-      station.ring.rotation.z = -0.08 + smooth(0.12, 0.36, sequence) * 1.15;
-
-      // Open the outer cassettes on radial slides, exposing the continuous
-      // pressure ring and the load-bearing spokes before they seat again.
-      station.pods.forEach(({group, angle, slides, collars}, index) => {
-        const stagger = index * 0.0018;
-        const extension = 0.46 * smooth(0.19 + stagger, 0.255 + stagger, sequence)
-          * (1 - smooth(0.295 + stagger, 0.365 + stagger, sequence));
-        group.position.set(Math.cos(angle) * extension, Math.sin(angle) * extension, 0);
-        for (const slide of slides) {
-          slide.position.set(3.015 + extension / 2, 0, slide.position.z);
-          slide.scale.y = 0.29 + extension;
-        }
-        collars.position.x = 3.16 + extension;
-      });
-
-      // Each solar leaf unfolds from a central hinge; the whole array then
-      // tracks toward the viewer around its bearing, without leaving the truss.
-      station.solar.forEach(({wing, leaves, side}, index) => {
-        const deployed = smooth(0.225 + index * 0.012, 0.345 + index * 0.012, sequence);
-        wing.rotation.y = side * (1.12 - deployed * 1.02);
-        leaves.forEach(({hinge, row}) => {
-          hinge.rotation.x = row * (1 - deployed) * 1.42;
-        });
-      });
-      const irisOpen = smooth(0.315, 0.36, sequence);
-      station.iris.forEach(({group, angle}) => {
-        group.position.set(Math.cos(angle) * irisOpen * 0.34, Math.sin(angle) * irisOpen * 0.34, 1.23);
-        group.rotation.z = angle + irisOpen * 0.1;
-      });
+      poseStation(station, progress);
       if (stage) {
         const dockProgress = Math.min(progress, 0.56);
         interpolatePose(dockProgress, 'position', dockCamera.position);

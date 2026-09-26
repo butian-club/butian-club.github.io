@@ -5,9 +5,17 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 export type StationModel = {
   group: THREE.Group;
   ring: THREE.Group;
+  pressureHull: THREE.Mesh;
+  shellFaces: [THREE.BufferGeometry, THREE.BufferGeometry];
+  outerWall: THREE.BufferGeometry;
   pods: Array<{group: THREE.Group; angle: number; slides: THREE.Mesh[]; collars: THREE.Group}>;
-  solar: Array<{wing: THREE.Group; leaves: Array<{hinge: THREE.Group; row: number}>; side: number}>;
-  iris: Array<{group: THREE.Group; angle: number}>;
+  solar: Array<{
+    wing: THREE.Group;
+    leaves: Array<{hinge: THREE.Group; row: number; socket: THREE.Mesh}>;
+    braces: Array<{mesh: THREE.Mesh; row: number}>;
+    side: number;
+  }>;
+  dockingLocks: Array<{group: THREE.Group; angle: number}>;
   textures: THREE.Texture[];
 };
 
@@ -89,7 +97,7 @@ function solarCellTexture(): THREE.CanvasTexture {
   return texture;
 }
 
-function habitatSegmentGeometry(count: number): THREE.ExtrudeGeometry {
+function habitatFaceGeometry(count: number, z: number): THREE.ExtrudeGeometry {
   const half = Math.PI / count;
   const gap = 0.023;
   const outer = 3.58;
@@ -100,15 +108,15 @@ function habitatSegmentGeometry(count: number): THREE.ExtrudeGeometry {
   shape.absarc(0, 0, inner, half - gap, -half + gap, true);
   shape.closePath();
   const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: 0.7,
+    depth: 0.055,
     steps: 1,
     bevelEnabled: true,
-    bevelThickness: 0.035,
-    bevelSize: 0.025,
+    bevelThickness: 0.007,
+    bevelSize: 0.01,
     bevelSegments: 2,
     curveSegments: 6,
   });
-  geometry.translate(0, 0, -0.35);
+  geometry.translate(0, 0, z - 0.0275);
   return geometry;
 }
 
@@ -156,17 +164,14 @@ export function createStation(): StationModel {
 
   const ring = new THREE.Group();
   group.add(ring);
-  // The pressure tube sits inside the armor sectors and is visible at their seams.
-  // Edge rails overlap the shell so their full circumference stays mounted.
+  // The pressurized tube is continuous; removable cladding is a thin shell
+  // outside it, so the two solids never sweep through one another.
   const pressureHull = new THREE.Mesh(new THREE.TorusGeometry(3.29, 0.27, 14, 160), pressureMetal);
   pressureHull.position.z = -0.1;
   ring.add(pressureHull);
   for (const [radius, tube, z, material] of [
-    [3.61, 0.06, 0.36, titanium],
-    [3.61, 0.06, -0.36, titanium],
     [2.95, 0.06, 0.35, titanium],
-    [2.95, 0.06, -0.35, copper],
-    [3.66, 0.009, 0.385, copper],
+    [2.95, 0.06, -0.45, copper],
     [2.92, 0.009, 0.385, light],
   ] as Array<[number, number, number, THREE.Material]>) {
     const rail = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 10, 144), material);
@@ -183,7 +188,18 @@ export function createStation(): StationModel {
     ring.add(clamp);
   }
 
-  const podGeometry = habitatSegmentGeometry(16);
+  const podFrontGeometry = habitatFaceGeometry(16, 0.345);
+  const podRearGeometry = habitatFaceGeometry(16, -0.445);
+  // CylinderGeometry's local azimuth of +90° points along the pod's +X axis
+  // after its axis is turned toward Z.
+  const podOuterWallGeometry = new THREE.CylinderGeometry(
+    3.59, 3.59, 0.79, 16, 1, true,
+    Math.PI / 2 - Math.PI / 16 + 0.023,
+    Math.PI / 8 - 0.046,
+  );
+  podOuterWallGeometry.rotateX(Math.PI / 2);
+  podOuterWallGeometry.translate(0, 0, -0.05);
+  const podRailGeometry = new THREE.TorusGeometry(3.61, 0.044, 8, 12, Math.PI / 8 - 0.046);
   const frontPanel = new RoundedBoxGeometry(0.28, 0.77, 0.055, 2, 0.025);
   const panelBezel = new RoundedBoxGeometry(0.36, 0.84, 0.025, 2, 0.024);
   const windowFrame = new RoundedBoxGeometry(0.22, 0.16, 0.032, 2, 0.023);
@@ -206,10 +222,21 @@ export function createStation(): StationModel {
     const angle = (index / 16) * Math.PI * 2;
     const pod = new THREE.Group();
     pod.rotation.z = angle;
-    pod.add(new THREE.Mesh(podGeometry, index % 8 === 0 ? titanium : ceramic));
+    const shellMaterial = index % 8 === 0 ? titanium : ceramic;
+    pod.add(
+      new THREE.Mesh(podFrontGeometry, shellMaterial),
+      new THREE.Mesh(podRearGeometry, shellMaterial),
+      new THREE.Mesh(podOuterWallGeometry, shellMaterial),
+    );
+    for (const z of [0.365, -0.445]) {
+      const rail = new THREE.Mesh(podRailGeometry, titanium);
+      rail.rotation.z = -Math.PI / 16 + 0.023;
+      rail.position.z = z;
+      pod.add(rail);
+    }
 
     const bezel = new THREE.Mesh(panelBezel, titanium);
-    bezel.position.set(3.29, 0, 0.395);
+    bezel.position.set(3.29, 0, 0.39);
     pod.add(bezel);
     const inset = new THREE.Mesh(frontPanel, carbon);
     inset.position.set(3.29, 0, 0.429);
@@ -252,13 +279,13 @@ export function createStation(): StationModel {
       ));
     }
     const aftFrame = new THREE.Mesh(aftFrameGeometry, titanium);
-    aftFrame.position.set(3.2, 0, -0.395);
+    aftFrame.position.set(3.2, 0, -0.49);
     const aftInset = new THREE.Mesh(aftInsetGeometry, carbon);
-    aftInset.position.set(3.2, 0, -0.415);
+    aftInset.position.set(3.2, 0, -0.512);
     pod.add(aftFrame, aftInset);
     for (const offset of [-0.23, -0.11, 0.01, 0.13, 0.25]) {
       const louver = new THREE.Mesh(aftLouverGeometry, index % 4 === 0 && offset === 0.01 ? light : copper);
-      louver.position.set(3.2, offset, -0.435);
+      louver.position.set(3.2, offset, -0.529);
       pod.add(louver);
     }
     for (const side of [-1, 1]) {
@@ -266,26 +293,28 @@ export function createStation(): StationModel {
         serviceRibGeometry,
         index % 4 === 0 ? copper : titanium,
       );
-      serviceRib.position.set(3.52, side * 0.23, -0.393);
+      serviceRib.position.set(3.52, side * 0.23, -0.49);
       pod.add(serviceRib);
     }
     const vent = new THREE.Mesh(ventGeometry, carbon);
-    vent.position.set(3.48, 0, -0.393);
+    vent.position.set(3.48, 0, -0.49);
     pod.add(vent);
     for (const offset of [-0.12, -0.06, 0, 0.06, 0.12]) {
       const slat = new THREE.Mesh(ventSlat, titanium);
-      slat.position.set(3.48, offset, -0.417);
+      slat.position.set(3.48, offset, -0.513);
       pod.add(slat);
     }
     consolidatePod(pod);
     ring.add(pod);
 
-    // The removable armor cassette rides on two visible radial slides. These
-    // remain attached to the pressure hull when the cassette is opened.
+    // Both slides run outside the pressure envelope and end at visible
+    // brackets on the front and rear cladding faces.
     const slideMount = new THREE.Group();
     slideMount.rotation.z = angle;
     const slides: THREE.Mesh[] = [];
-    for (const z of [-0.24, 0.24]) {
+    const collars = new THREE.Group();
+    const collarGeometry = new THREE.CylinderGeometry(0.067, 0.067, 0.062, 12);
+    for (const [z, faceZ] of [[-0.53, -0.445], [0.25, 0.345]]) {
       const sleeve = new THREE.Mesh(beamGeometry, carbon);
       sleeve.rotation.z = -Math.PI / 2;
       sleeve.position.set(2.97, 0, z);
@@ -294,12 +323,21 @@ export function createStation(): StationModel {
       const slide = new THREE.Mesh(beamGeometry, titanium);
       slide.rotation.z = -Math.PI / 2;
       slide.position.z = z;
+      slide.scale.set(0.027, 0.29, 0.027);
       slideMount.add(slide);
       slides.push(slide);
-    }
-    const collars = new THREE.Group();
-    const collarGeometry = new THREE.CylinderGeometry(0.067, 0.067, 0.062, 12);
-    for (const z of [-0.24, 0.24]) {
+      slideMount.add(beam(
+        new THREE.Vector3(2.96, 0, z),
+        new THREE.Vector3(2.96, 0, faceZ),
+        0.052,
+        titanium,
+      ));
+      collars.add(beam(
+        new THREE.Vector3(0, 0, z),
+        new THREE.Vector3(0, 0, faceZ),
+        0.045,
+        titanium,
+      ));
       const collar = new THREE.Mesh(collarGeometry, index % 4 === 0 ? copper : titanium);
       collar.rotation.z = -Math.PI / 2;
       collar.position.z = z;
@@ -309,16 +347,16 @@ export function createStation(): StationModel {
     ring.add(slideMount);
     pods.push({group: pod, angle, slides, collars});
 
-    const jointAngle = angle + Math.PI / 16;
+    const jointAngle = Math.PI / 16;
     const joint = new THREE.Group();
-    joint.position.set(Math.cos(jointAngle) * 3.6, Math.sin(jointAngle) * 3.6, 0.4);
+    joint.position.set(Math.cos(jointAngle) * 3.6, Math.sin(jointAngle) * 3.6, 0.42);
     const jointBase = new THREE.Mesh(boundaryGeometry, carbon);
     jointBase.rotation.x = Math.PI / 2;
     const jointCap = new THREE.Mesh(boundaryCapGeometry, index % 4 === 0 ? light : copper);
     jointCap.rotation.x = Math.PI / 2;
     jointCap.position.z = 0.04;
     joint.add(jointBase, jointCap);
-    ring.add(joint);
+    pod.add(joint);
   }
 
   for (let index = 0; index < 8; index += 1) {
@@ -329,6 +367,7 @@ export function createStation(): StationModel {
     const adjacent = (distance: number, z: number) =>
       new THREE.Vector3(Math.cos(nextAngle) * distance, Math.sin(nextAngle) * distance, z);
     ring.add(
+      beam(radial(0.82, 0), radial(3.29, -0.1), 0.054, index % 4 === 0 ? copper : titanium),
       beam(radial(0.83, 0.22), radial(2.88, 0.4), 0.041, index % 4 === 0 ? copper : titanium),
       beam(radial(0.83, -0.22), radial(2.88, -0.41), 0.034, titanium),
       beam(radial(1.65, 0.25), adjacent(2.79, 0.39), 0.014, titanium),
@@ -337,11 +376,10 @@ export function createStation(): StationModel {
     );
   }
 
-  // A recessed maintenance race adds axial depth and closes the load path
-  // between the rear spoke junctions. It stays clear of the solar truss.
+  // Keep the rear race forward of the fixed solar truss's swept plane.
   for (const [radius, tube, z, material] of [
-    [2.43, 0.046, -1.32, titanium],
-    [2.43, 0.014, -1.39, copper],
+    [2.43, 0.046, -0.66, titanium],
+    [2.43, 0.014, -0.714, copper],
   ] as Array<[number, number, number, THREE.Material]>) {
     const race = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 10, 120), material);
     race.position.z = z;
@@ -354,16 +392,16 @@ export function createStation(): StationModel {
     const y = Math.sin(angle) * 2.43;
     ring.add(beam(
       new THREE.Vector3(x, y, -0.36),
-      new THREE.Vector3(x, y, -1.32),
+      new THREE.Vector3(x, y, -0.66),
       0.031,
       titanium,
     ));
     const node = new THREE.Mesh(serviceNodeGeometry, index % 2 === 0 ? copper : carbon);
-    node.position.set(x, y, -1.34);
+    node.position.set(x, y, -0.68);
     node.rotation.z = angle;
     ring.add(node);
     const marker = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 6), light);
-    marker.position.set(x, y, -1.43);
+    marker.position.set(x, y, -0.77);
     ring.add(marker);
   }
 
@@ -416,33 +454,26 @@ export function createStation(): StationModel {
   const dockingBezel = new THREE.Mesh(new THREE.TorusGeometry(0.51, 0.075, 12, 64), light);
   dockingBezel.position.z = 1.26;
   hub.add(dockingBezel);
-  const irisTrackRing = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.025, 8, 64), pressureMetal);
-  irisTrackRing.position.z = 1.19;
-  hub.add(irisTrackRing);
-  const iris: StationModel['iris'] = [];
-  const bladeShape = new THREE.Shape();
-  const bladeHalfAngle = Math.PI / 8 - 0.012;
-  bladeShape.moveTo(Math.cos(-bladeHalfAngle) * 0.11, Math.sin(-bladeHalfAngle) * 0.11);
-  bladeShape.absarc(0, 0, 0.46, -bladeHalfAngle, bladeHalfAngle, false);
-  bladeShape.lineTo(Math.cos(bladeHalfAngle) * 0.11, Math.sin(bladeHalfAngle) * 0.11);
-  bladeShape.absarc(0, 0, 0.11, bladeHalfAngle, -bladeHalfAngle, true);
-  bladeShape.closePath();
-  const bladeGeometry = new THREE.ExtrudeGeometry(bladeShape, {
-    depth: 0.025, bevelEnabled: false, curveSegments: 5,
-  });
-  bladeGeometry.translate(0, 0, -0.0125);
+  const lockTrackRing = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.025, 8, 64), pressureMetal);
+  lockTrackRing.position.z = 1.33;
+  hub.add(lockTrackRing);
+  const dockingLocks: StationModel['dockingLocks'] = [];
+  const lockGeometry = new RoundedBoxGeometry(0.15, 0.075, 0.075, 2, 0.018);
   for (let index = 0; index < 8; index += 1) {
     const angle = index * Math.PI / 4;
-    const guide = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.028, 0.03), titanium);
-    guide.position.set(Math.cos(angle) * 0.51, Math.sin(angle) * 0.51, 1.206);
+    const guide = new THREE.Mesh(new RoundedBoxGeometry(0.1, 0.19, 0.025, 2, 0.012), carbon);
+    guide.position.set(Math.cos(angle) * 0.66, Math.sin(angle) * 0.66, 1.338);
     guide.rotation.z = angle;
     hub.add(guide);
-    const blade = new THREE.Group();
-    blade.rotation.z = angle;
-    blade.position.z = 1.23;
-    blade.add(new THREE.Mesh(bladeGeometry, index % 2 ? titanium : carbon));
-    hub.add(blade);
-    iris.push({group: blade, angle});
+    const lock = new THREE.Group();
+    lock.rotation.z = angle;
+    lock.position.set(Math.cos(angle) * 0.66, Math.sin(angle) * 0.66, 1.372);
+    lock.add(new THREE.Mesh(lockGeometry, index % 2 ? titanium : copper));
+    const lockMark = new THREE.Mesh(new THREE.BoxGeometry(0.052, 0.012, 0.009), light);
+    lockMark.position.z = 0.043;
+    lock.add(lockMark);
+    hub.add(lock);
+    dockingLocks.push({group: lock, angle});
   }
   for (const z of [0.96, 0.55, 0.12, -0.35]) {
     const baffle = new THREE.Mesh(new THREE.TorusGeometry(0.49, 0.018, 8, 48), copper);
@@ -529,12 +560,8 @@ export function createStation(): StationModel {
     const hingeCap = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.105, 0.44, 20), copper);
     wing.add(hingeCap);
 
-    wing.add(
-      beam(new THREE.Vector3(0, 0, -0.08), new THREE.Vector3(side * 0.69, 1.24, -0.018), 0.024, titanium),
-      beam(new THREE.Vector3(0, 0, -0.08), new THREE.Vector3(side * 0.69, -1.24, -0.018), 0.024, titanium),
-    );
-
     const leaves: StationModel['solar'][number]['leaves'] = [];
+    const braces: StationModel['solar'][number]['braces'] = [];
     for (const row of [-1, 1]) {
       const hinge = new THREE.Group();
       hinge.position.set(side * 0.81, row * 0.09, 0);
@@ -569,15 +596,23 @@ export function createStation(): StationModel {
         rearRib.position.set(0, y, -0.036);
         panel.add(rearRib);
       }
+      const socket = new THREE.Mesh(new THREE.SphereGeometry(0.058, 12, 8), titanium);
+      socket.position.set(-side * 0.12, row * 1.225, -0.04);
+      hinge.add(socket);
+      const brace = new THREE.Mesh(beamGeometry, titanium);
+      brace.scale.set(0.024, 1, 0.024);
+      wing.add(brace);
+      braces.push({mesh: brace, row});
       hinge.add(panel);
       wing.add(hinge);
-      leaves.push({hinge, row});
+      leaves.push({hinge, row, socket});
     }
-    solar.push({wing, leaves, side});
+    solar.push({wing, leaves, braces, side});
   }
 
   const antenna = new THREE.Group();
-  antenna.position.set(0.22, 3.59, -0.24);
+  antenna.position.set(3.59, -0.22, -0.24);
+  antenna.rotation.z = -Math.PI / 2;
   const antennaSaddle = new THREE.Mesh(new RoundedBoxGeometry(0.38, 0.15, 0.3, 2, 0.035), carbon);
   antenna.add(antennaSaddle);
   for (const x of [-0.16, 0.16]) {
@@ -616,7 +651,64 @@ export function createStation(): StationModel {
   const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.044, 12, 12), light);
   beacon.position.set(0, 1.27, 0);
   antenna.add(beacon);
-  ring.add(antenna);
+  pods[4].group.add(antenna);
 
-  return {group, ring, pods, solar, iris, textures: [solarTexture]};
+  return {
+    group, ring, pressureHull,
+    shellFaces: [podFrontGeometry, podRearGeometry],
+    outerWall: podOuterWallGeometry,
+    pods, solar, dockingLocks, textures: [solarTexture],
+  };
+}
+
+function motionEase(start: number, end: number, value: number): number {
+  const t = Math.min(1, Math.max(0, (value - start) / (end - start)));
+  return t * t * (3 - 2 * t);
+}
+
+const braceAxis = new THREE.Vector3(0, 1, 0);
+const braceDirection = new THREE.Vector3();
+
+export function poseStation(station: StationModel, progress: number): void {
+  const sequence = Math.min(progress, 0.5);
+  station.group.rotation.y = -0.68 + motionEase(0.11, 0.29, sequence) * 0.38
+    + motionEase(0.29, 0.37, sequence) * 0.45;
+  station.group.rotation.x = 0.2 + motionEase(0.19, 0.34, sequence) * 0.14;
+  station.ring.rotation.z = -0.08 + motionEase(0.12, 0.36, sequence) * 1.15;
+
+  station.pods.forEach(({group, angle, slides, collars}, index) => {
+    const stagger = index * 0.0018;
+    const extension = 0.46 * motionEase(0.19 + stagger, 0.255 + stagger, sequence)
+      * (1 - motionEase(0.295 + stagger, 0.365 + stagger, sequence));
+    group.position.set(Math.cos(angle) * extension, Math.sin(angle) * extension, 0);
+    for (const slide of slides) {
+      slide.position.set(3.015 + extension / 2, 0, slide.position.z);
+      slide.scale.y = 0.29 + extension;
+    }
+    collars.position.x = 3.16 + extension;
+  });
+
+  station.solar.forEach(({wing, leaves, braces, side}, index) => {
+    const deployed = motionEase(0.225 + index * 0.012, 0.345 + index * 0.012, sequence);
+    wing.rotation.y = side * (1.12 - deployed * 1.02);
+    leaves.forEach(({hinge, row}) => {
+      hinge.rotation.x = row * (1 - deployed) * 1.42;
+    });
+    braces.forEach(({mesh, row}) => {
+      const fold = (1 - deployed) * 1.42;
+      const tipX = side * 0.69;
+      const tipY = row * (0.09 + 1.225 * Math.cos(fold) + 0.04 * Math.sin(fold));
+      const tipZ = 1.225 * Math.sin(fold) - 0.04 * Math.cos(fold);
+      braceDirection.set(tipX, tipY, tipZ + 0.08);
+      mesh.position.set(tipX / 2, tipY / 2, (tipZ - 0.08) / 2);
+      mesh.scale.set(0.024, braceDirection.length(), 0.024);
+      mesh.quaternion.setFromUnitVectors(braceAxis, braceDirection.normalize());
+    });
+  });
+  const locksReleased = motionEase(0.315, 0.36, sequence);
+  station.dockingLocks.forEach(({group, angle}) => {
+    const position = angle + locksReleased * 0.075;
+    group.position.set(Math.cos(position) * 0.66, Math.sin(position) * 0.66, 1.372);
+    group.rotation.z = position;
+  });
 }
