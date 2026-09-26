@@ -1,4 +1,4 @@
-import React, {type ReactNode, useRef, useState} from 'react';
+import React, {type ReactNode, useRef} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useBrokenLinks from '@docusaurus/useBrokenLinks';
@@ -43,10 +43,8 @@ export default function CinematicHome(): ReactNode {
   const progressRef = useRef(0);
   const ascentRef = useRef(0);
   const activeStopRef = useRef(0);
-  const [activeStop, setActiveStop] = useState(0);
-  const activeMissionRef = useRef(0);
-  const [activeMission, setActiveMission] = useState(0);
-  const mission = milestones[activeMission];
+  const progressLabelRef = useRef<HTMLSpanElement>(null);
+  const progressNameRef = useRef<HTMLSpanElement>(null);
 
   useGSAP(() => {
     const root = rootRef.current;
@@ -64,7 +62,7 @@ export default function CinematicHome(): ReactNode {
         start: 'top top',
         end: () => '+=' + Math.round(window.innerHeight * journeyScreens),
         pin: stage,
-        scrub: 0.3,
+        scrub: 0.42,
         anticipatePin: 1,
         refreshPriority: 10,
         invalidateOnRefresh: true,
@@ -81,21 +79,21 @@ export default function CinematicHome(): ReactNode {
         const index = stops.reduce((current, stop, position) => storyTime >= stop.at ? position : current, 0);
         if (activeStopRef.current !== index) {
           activeStopRef.current = index;
-          setActiveStop(index);
-        }
-        const missionIndex = Math.max(0, Math.min(milestones.length - 1, Math.floor((storyTime - launchDuration - 77) / 11.5)));
-        if (activeMissionRef.current !== missionIndex) {
-          activeMissionRef.current = missionIndex;
-          setActiveMission(missionIndex);
+          if (progressLabelRef.current) progressLabelRef.current.textContent = `${String(index + 1).padStart(3, '0')} / 009`;
+          if (progressNameRef.current) progressNameRef.current.textContent = t(stops[index].zh, stops[index].en);
         }
         stage.style.setProperty('--journey-progress', String(driver.p));
       },
     }, 0);
 
     timeline
-      .to(target('launch-copy'), {autoAlpha: 0, y: -40, duration: 4}, 3)
+      .to(target('launch-copy'), {autoAlpha: 0, y: -40, duration: 4, ease: 'power2.inOut'}, 3)
       .to(target('campus-credit'), {autoAlpha: 0, duration: 3}, 4)
       .to(target('launch-vignette'), {autoAlpha: 0, duration: 5}, 5)
+      .fromTo(target('cloud-copy'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 2.8, ease: 'power2.out'}, 7)
+      .to(target('cloud-copy'), {autoAlpha: 0, y: -27, duration: 2.8, ease: 'power2.in'}, 14)
+      .fromTo(target('edge-copy'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 2.8, ease: 'power2.out'}, 16)
+      .to(target('edge-copy'), {autoAlpha: 0, y: -28, duration: 3, ease: 'power2.in'}, 20)
       .fromTo(target('space-veil'), {autoAlpha: 0}, {autoAlpha: 1, duration: 9}, 24)
       .fromTo(target('reticle'), {autoAlpha: 0}, {autoAlpha: .34, duration: 6}, 23)
       .fromTo(target('orbit-line'), {autoAlpha: 0}, {autoAlpha: 1, duration: 6}, 23);
@@ -103,13 +101,13 @@ export default function CinematicHome(): ReactNode {
     const spaceTimeline = gsap.timeline({defaults: {ease: 'none'}});
     spaceTimeline
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
-      .fromTo(target('hero'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4}, 0)
-      .to(target('hero'), {autoAlpha: 0, y: '-=85', scale: 0.92, duration: 7}, 7)
-      .fromTo(target('brief'), {autoAlpha: 0, x: 72}, {autoAlpha: 1, x: 0, duration: 5}, 14)
+      .fromTo(target('hero'), {autoAlpha: 0, y: 30}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 0)
+      .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.94, duration: 6, ease: 'power2.in'}, 8)
+      .fromTo(target('brief'), {autoAlpha: 0, x: 64, y: 16}, {autoAlpha: 1, x: 0, y: 0, duration: 5, ease: 'power2.out'}, 14)
       .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 9}, 12)
       .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 23)
       .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 5}, 23)
-      .fromTo(target('assembly'), {autoAlpha: 0, y: 34}, {autoAlpha: 1, y: 0, duration: 4}, 25)
+      .fromTo(target('assembly'), {autoAlpha: 0, y: 38, scale: .985}, {autoAlpha: 1, y: 0, scale: 1, duration: 4.5, ease: 'power2.out'}, 25)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
       .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 19}, 26)
       .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 46)
@@ -121,55 +119,63 @@ export default function CinematicHome(): ReactNode {
       .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 4}, 48)
       .to(target('callout-3'), {autoAlpha: 0, y: -28, duration: 4}, 49)
       .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
-        autoAlpha: 1, '--portal-radius': '145%', duration: 16,
+        autoAlpha: 1, '--portal-radius': '145%', duration: 16, ease: 'power2.inOut',
       }, 47)
-      .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 18}, 47)
-      .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 4}, 56)
+      .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 18, ease: 'power1.out'}, 47)
+      .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 56)
       .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 3}, 63)
-      .fromTo(target('reality'), {autoAlpha: 1, clipPath: 'circle(0% at 51% 50%)'}, {
-        autoAlpha: 1, clipPath: 'circle(100% at 51% 50%)', duration: 9,
-      }, 64)
-      .fromTo(target('reality-image'), {scale: 1.28}, {scale: 1, duration: 18}, 64)
+      .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5, ease: 'power2.inOut'}, 64)
+      .to(target('portal'), {autoAlpha: 0, duration: 5, ease: 'power2.inOut'}, 64)
+      .fromTo(target('reality-image'), {scale: 1.18}, {scale: 1, duration: 18, ease: 'power1.out'}, 64)
       .fromTo(target('reality-frame'), {autoAlpha: 0, x: 80, scale: 0.9}, {
-        autoAlpha: 1, x: 0, scale: 1, duration: 7,
+        autoAlpha: 1, x: 0, scale: 1, duration: 7, ease: 'power2.out',
       }, 66)
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
-      .to(target('portal'), {autoAlpha: 0, duration: 1}, 74)
-      .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 4}, 68)
+      .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 68)
       .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 74)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 75)
       .to(target('reality'), {autoAlpha: 0, duration: 3}, 75)
-      .fromTo(target('archive-visual'), {autoAlpha: 0, scale: 1.08, x: 80}, {
-        autoAlpha: 1, scale: 1, x: 0, duration: 2,
-      }, 76)
-      .to(target('archive-visual'), {x: -18, y: -9, rotation: -1.5, duration: 5}, 88.5)
-      .to(target('archive-visual'), {x: 12, y: 8, rotation: 1.2, duration: 5}, 100)
-      .fromTo(target('archive-photo-0'), {xPercent: -9, yPercent: 8}, {
-        xPercent: 0, yPercent: 0, duration: 36,
-      }, 76)
-      .fromTo(target('archive-photo-1'), {xPercent: 12, yPercent: -8}, {
-        xPercent: 0, yPercent: 0, duration: 36,
-      }, 76)
-      .fromTo(target('archive-photo-2'), {xPercent: 9, yPercent: 12}, {
-        xPercent: 0, yPercent: 0, duration: 36,
-      }, 76)
-      .to(target('archive-visual'), {autoAlpha: 0, scale: .92, x: -55, duration: 2.5}, 117.5)
       .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 117.5)
       .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
         autoAlpha: 1, scale: 1, rotation: 0, duration: 3,
       }, 117.5)
       .to(target('record'), {autoAlpha: 0, duration: 2.2}, 123.8)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
-        autoAlpha: 1, y: 0, scale: 1, duration: 4,
+        autoAlpha: 1, y: 0, scale: 1, duration: 4, ease: 'power2.out',
       }, 124.8);
+
+    const headingReveals: Array<[string, number, number]> = [
+      ['hero', 0.5, 3.8],
+      ['brief', 14.4, 4.3],
+      ['assembly', 25.4, 4.1],
+      ['habitat-caption', 56.4, 3.4],
+      ['team-caption', 68.4, 3.3],
+      ['end', 125.2, 3.8],
+    ];
+    headingReveals.forEach(([name, at, duration]) => {
+      const heading = target(name).querySelector('h2');
+      if (heading) spaceTimeline.fromTo(heading, {autoAlpha: 0, y: 30}, {
+        autoAlpha: 1, y: 0, duration, ease: 'power2.out',
+      }, at);
+    });
 
     milestones.forEach((_, index) => {
       const at = 77 + index * 11.5;
+      const entrance = index === 0 ? at - 1 : at - 2;
+      const archive = target('archive-visual-' + index);
+      spaceTimeline.fromTo(archive, {autoAlpha: 0, x: 54, y: 16, scale: 1.045}, {
+        autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 2, ease: 'power2.out',
+      }, entrance);
+      spaceTimeline.fromTo(archive.querySelectorAll('img'), {scale: 1.08, yPercent: 3}, {
+        scale: 1, yPercent: 0, duration: 11.5, ease: 'none',
+      }, entrance);
+      spaceTimeline.to(archive, {autoAlpha: 0, x: -38, y: -9, scale: .98, duration: 2, ease: 'power2.out'},
+        index < milestones.length - 1 ? at + 9.5 : 117.5);
       spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: 80}, {
-        autoAlpha: 1, x: 0, duration: 1.6,
-      }, at);
+        autoAlpha: 1, x: 0, duration: 2, ease: 'power2.out',
+      }, index === 0 ? at : entrance);
       if (index < milestones.length - 1) {
-        spaceTimeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: 1.2}, at + 9.5);
+        spaceTimeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: 2, ease: 'power2.out'}, at + 9.5);
       }
     });
     timeline.add(spaceTimeline, launchDuration);
@@ -221,6 +227,17 @@ export default function CinematicHome(): ReactNode {
               </div>
             </div>
             <p className={styles.campusCredit} data-motion="campus-credit">{t('实景影像 / 杭州二中', 'ACTUAL CAMPUS / HANGZHOU NO.2 HIGH SCHOOL')}</p>
+
+            <div className={styles.ascentCaption} data-motion="cloud-copy">
+              <span className={styles.phaseIndex}>FLIGHT / ABOVE THE CLOUDS</span>
+              <h2>{t('视野越开阔，', 'A wider horizon.')}<br /><em>{t('问题越具体。', 'Sharper questions.')}</em></h2>
+              <p>{t('从好奇出发，向更远处寻找工程的答案。', 'Curiosity leads us toward questions we can solve together.')}</p>
+            </div>
+            <div className={styles.ascentCaption} data-motion="edge-copy">
+              <span className={styles.phaseIndex}>FLIGHT / INTO ORBIT</span>
+              <h2>{t('越过云层，', 'Beyond the clouds.')}<br /><em>{t('抵达新的视角。', 'A new perspective.')}</em></h2>
+              <p>{t('下一站，是把想象变成可以推敲的设计。', 'The next step is turning imagination into a design we can test.')}</p>
+            </div>
 
             <div className={styles.heroCopy} data-motion="hero">
               <p className={styles.eyebrow}>{t('杭州第二中学 · 求是创新学院 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</p>
@@ -312,18 +329,16 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.record} data-motion="record">
               <div className={styles.recordFutureBackdrop} data-motion="record-future-backdrop" aria-hidden="true" />
               <p className={styles.recordEyebrow}>06 / FLIGHT RECORD</p>
-              <div className={styles.archiveVisual} data-motion="archive-visual" aria-hidden="true">
-                <div className={styles.archivePhoto} data-motion="archive-photo-0" data-label={`${mission.year} / 01`}>
-                  <img key={`${mission.id}-0`} src={mission.archivePhotos?.[0]} alt="" />
+              {milestones.map((project, index) => (
+                <div className={styles.archiveVisual} data-motion={`archive-visual-${index}`} aria-hidden="true" key={project.id}>
+                  {project.archivePhotos?.map((photo, photoIndex) => (
+                    <div className={styles.archivePhoto} data-label={`${project.year} / 0${photoIndex + 1}`} key={photo}>
+                      <img src={photo} alt="" />
+                    </div>
+                  ))}
+                  <span>{t(`影像档案 / ${project.year} GFSSM`, `PHOTO ARCHIVE / GFSSM ${project.year}`)}</span>
                 </div>
-                <div className={styles.archivePhoto} data-motion="archive-photo-1" data-label={`${mission.year} / 02`}>
-                  <img key={`${mission.id}-1`} src={mission.archivePhotos?.[1]} alt="" />
-                </div>
-                <div className={styles.archivePhoto} data-motion="archive-photo-2" data-label={`${mission.year} / 03`}>
-                  <img key={`${mission.id}-2`} src={mission.archivePhotos?.[2]} alt="" />
-                </div>
-                <span>{t(`影像档案 / ${mission.year} GFSSM`, `PHOTO ARCHIVE / GFSSM ${mission.year}`)}</span>
-              </div>
+              ))}
               <div className={styles.recordFuture} data-motion="record-future" aria-hidden="true">
                 <i /><i />
                 <span>SCENARIO / 2115</span>
@@ -356,9 +371,9 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.progressRail} aria-label={t('航程进度', 'Journey progress')}>
-              <span className={styles.progressLabel}>{String(activeStop + 1).padStart(3, '0')} / 009</span>
+              <span className={styles.progressLabel} ref={progressLabelRef}>001 / 009</span>
               <div className={styles.progressTrack}><i /></div>
-              <span className={styles.progressName}>{t(stops[activeStop].zh, stops[activeStop].en)}</span>
+              <span className={styles.progressName} ref={progressNameRef}>{t(stops[0].zh, stops[0].en)}</span>
             </div>
           </div>
         </section>

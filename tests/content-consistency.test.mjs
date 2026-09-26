@@ -117,7 +117,8 @@ test('the four-year archive uses year-matched images and describes both 2024 bri
       `missing English report for ${year}`);
   }
 
-  assert.match(home, /mission\.archivePhotos/);
+  assert.match(home, /project\.archivePhotos\?\.map/);
+  assert.match(home, /archive-visual-\$\{index\}/);
   assert.match(report2024, /资格轮[\s\S]*金星轨道/);
   assert.match(report2024, /现场决赛[\s\S]*金星大气/);
   assert.match(report2026, /这张图属于资格轮方案，不是灵神星决赛/);

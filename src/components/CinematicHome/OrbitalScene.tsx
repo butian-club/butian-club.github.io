@@ -14,13 +14,16 @@ type Pose = FlightPose;
 
 const cameraPath: Pose[] = [
   orbitEntryPose,
+  {at: 0.015, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 0.09, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
   {at: 0.2, position: [8.4, 2.7, 14], target: [3.9, 0, -4]},
   {at: 0.285, position: [8.6, 1.8, 12.8], target: [4, 0, -4]},
   {at: 0.34, position: [8.2, 1.1, 11.2], target: [4.3, 0, -4]},
   // The camera approaches only after the large headline leaves the frame.
   {at: 0.39, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
-  {at: 0.75, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
+  {at: 0.52, position: [7, 1, 8], target: [5.75, 0, -4]},
+  {at: 0.64, position: [7.2, 1.1, 8.3], target: [5.8, 0, -4]},
+  {at: 0.75, position: [7.35, 1.18, 8.6], target: [5.9, 0, -4]},
   {at: 0.91, position: [6.8, 1, 11], target: [5.8, 0, -4]},
   {at: 0.98, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 1, position: [0, 0.5, 19], target: [1.5, 0, -4]},
@@ -209,19 +212,25 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
 
     let lastProgress = -1;
     let lastAscent = -1;
+    let lastStationSequence = -1;
     const lookTarget = new THREE.Vector3();
     const dockLookTarget = new THREE.Vector3();
     const dockPoint = new THREE.Vector3();
+    const flightArrival = new THREE.Vector3(...flightPath[flightPath.length - 1].position);
+    const flightArrivalTarget = new THREE.Vector3(...flightPath[flightPath.length - 1].target);
     renderer.setAnimationLoop(() => {
       if (document.hidden || !visible) return;
       const progress = progressRef.current;
       const ascent = ascentRef.current;
+      if (!needsRender && Math.abs(progress - lastProgress) < 0.00001 && Math.abs(ascent - lastAscent) < 0.00001) return;
       const escape = 80 * smooth(0, 0.16, progress);
       orbitGroup.position.set(orbitOrigin.x, orbitOrigin.y + escape, orbitOrigin.z);
-      if (!needsRender && Math.abs(progress - lastProgress) < 0.00001 && Math.abs(ascent - lastAscent) < 0.00001) return;
       if (ascent < 1) {
         interpolatePose(ascent, 'position', camera.position, flightPath);
         interpolatePose(ascent, 'target', lookTarget, flightPath);
+        const arrival = smooth(0.88, 1, ascent);
+        camera.position.lerp(flightArrival, arrival);
+        lookTarget.lerp(flightArrivalTarget, arrival);
       } else {
         interpolatePose(progress, 'position', camera.position);
         interpolatePose(progress, 'target', lookTarget);
@@ -250,16 +259,19 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
       camera.lookAt(lookTarget);
       ascentWorld.update(ascent, progress, camera, isMobile);
 
-      poseStation(station, progress);
+      const stationSequence = Math.min(progress, 0.5);
+      if (Math.abs(stationSequence - lastStationSequence) > 0.00001) {
+        poseStation(station, progress);
+        lastStationSequence = stationSequence;
+      }
       orbitGroup.visible = ascent > 0.78;
       marsMaterial.opacity = smooth(0.085, 0.16, progress);
       mars.visible = marsMaterial.opacity > 0.005;
       aura.visible = mars.visible;
       (stars.material as THREE.PointsMaterial).opacity = 0.88 * smooth(0.74, 1, ascent);
-      if (stage) {
-        const dockProgress = Math.min(progress, 0.56);
-        interpolatePose(dockProgress, 'position', dockCamera.position);
-        interpolatePose(dockProgress, 'target', dockLookTarget);
+      if (stage && progress >= 0.3 && progress <= 0.5) {
+        interpolatePose(progress, 'position', dockCamera.position);
+        interpolatePose(progress, 'target', dockLookTarget);
         dockCamera.position.add(orbitOrigin);
         dockCamera.position.y += escape;
         dockLookTarget.add(orbitOrigin);

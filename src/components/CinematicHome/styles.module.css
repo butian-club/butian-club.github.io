@@ -30,15 +30,6 @@
   opacity: 1;
   will-change: transform, opacity;
 }
-.spaceBackdrop::after {
-  content: 'BINJIANG CAMPUS / HANGZHOU';
-  position: absolute;
-  right: clamp(24px, 4.4vw, 78px);
-  bottom: 57px;
-  color: rgba(229, 246, 242, .55);
-  font: 500 8px var(--font-mono);
-  letter-spacing: .16em;
-}
 .stage:not([data-webgl='ready']) .spaceBackdrop {
   opacity: 1 !important;
   visibility: visible !important;
@@ -169,7 +160,12 @@
 .hudBottom { position: absolute; bottom: 28px; left: clamp(24px, 4.4vw, 78px); right: clamp(24px, 4.4vw, 78px); display: flex; justify-content: space-between; }
 .phaseIndex, .eyebrow, .signal, .scrollCue, .recordEyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .18em; }
 .phaseIndex, .eyebrow { color: var(--ice); }
-.launchCopy, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy { position: absolute; z-index: 12; }
+.launchCopy, .ascentCaption, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy { position: absolute; z-index: 12; }
+.ascentCaption { left: clamp(28px, 8vw, 150px); bottom: 14%; width: min(48vw, 630px); opacity: 0; visibility: hidden; text-shadow: 0 3px 28px rgba(0, 8, 17, .94); }
+.ascentCaption::before { content: ''; position: absolute; z-index: -1; inset: -70px -110px -70px -95px; pointer-events: none; background: linear-gradient(90deg, rgba(2, 13, 24, .78), rgba(2, 13, 24, .36) 64%, transparent); mask-image: linear-gradient(0deg, transparent, #000 25%, #000 78%, transparent); }
+.ascentCaption h2 { margin: 20px 0 17px; font-size: clamp(2.8rem, 5vw, 5.3rem); line-height: 1.12; letter-spacing: -.06em; }
+.ascentCaption h2 em { font-style: normal; color: var(--ice); }
+.ascentCaption p:last-child { max-width: 460px; margin: 0; color: rgba(239, 250, 250, .88); font-size: clamp(14px, 1.2vw, 17px); line-height: 1.75; }
 .heroCopy, .briefCopy, .wordmarkGhost, .assemblyCopy, .calloutLeft, .calloutRight, .calloutBottom,
 .habitatCaption, .teamCaption, .record, .recordEntry, .endCopy {
   opacity: 0;
@@ -246,8 +242,8 @@
 .calloutNumber { color: var(--amber); font: 600 10px var(--font-mono); letter-spacing: .18em; }
 .calloutLeft b, .calloutRight b, .calloutBottom b { color: #f6fbfa; font-size: 16px; letter-spacing: -.02em; }
 .calloutLeft small, .calloutRight small, .calloutBottom small { color: rgba(225, 243, 242, .8); font: 500 10px var(--font-mono); letter-spacing: .12em; }
-.portal, .reality { position: absolute; inset: 0; z-index: 8; visibility: hidden; opacity: 0; will-change: clip-path; }
-.portal { --portal-radius: 0%; clip-path: circle(var(--portal-radius) at var(--dock-x, 60%) var(--dock-y, 56%)); }
+.portal, .reality { position: absolute; inset: 0; z-index: 8; visibility: hidden; opacity: 0; }
+.portal { --portal-radius: 0%; clip-path: circle(var(--portal-radius) at var(--dock-x, 60%) var(--dock-y, 56%)); will-change: clip-path, opacity; }
 .portalImage, .realityImage { position: absolute; inset: 0; background-position: center; background-size: cover; will-change: transform; }
 .portalImage { background-image: url('/img/life-support-concept.jpg'); }
 .portalTint { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0, 8, 13, .96), rgba(0, 8, 13, .65) 21%, transparent 64%, rgba(0, 12, 15, .18)); }
@@ -255,9 +251,9 @@
 .habitatCaption { left: clamp(36px, 8vw, 140px); bottom: 11%; width: min(46vw, 600px); text-shadow: 0 2px 18px #000; }
 .habitatCaption h2 { font-size: clamp(2.4rem, 4.7vw, 5.7rem); }
 .habitatCaption small, .teamCaption small { display: block; margin-top: 23px; color: rgba(232, 246, 242, .78); font: 500 10px var(--font-mono); letter-spacing: .16em; }
-.reality { z-index: 10; }
-.realityImage { background-image: url('/img/archive/2026/final-stage.webp'); background-position: center 44%; filter: blur(28px) saturate(.38) brightness(.48); }
-.realityTint { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1, 12, 16, .48), rgba(1, 12, 16, .88) 69%, rgba(1, 12, 16, .95)), linear-gradient(0deg, rgba(1, 12, 16, .86), transparent 60%); }
+.reality { z-index: 10; will-change: opacity; }
+.realityImage { background-image: url('/img/archive/2026/final-stage.webp'); background-position: center 44%; filter: blur(22px) saturate(.6) brightness(.72); }
+.realityTint { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1, 12, 16, .35), rgba(1, 12, 16, .72) 69%, rgba(1, 12, 16, .84)), linear-gradient(0deg, rgba(1, 12, 16, .72), transparent 60%); }
 .realityFrame { position: absolute; top: 19%; left: 6%; width: min(48vw, 700px); aspect-ratio: 700 / 469; overflow: hidden; visibility: hidden; opacity: 0; box-shadow: 0 0 0 1px rgba(201, 237, 233, .5), 0 32px 100px rgba(0, 0, 0, .5); will-change: transform, opacity; }
 .realityFrame img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .realityFrame::after { content: '2026 / GFSSM FINAL'; position: absolute; right: 0; bottom: 0; padding: 8px 11px; color: #eef8f5; background: rgba(1, 10, 16, .85); font: 600 9px var(--font-mono); letter-spacing: .15em; }
@@ -269,14 +265,12 @@
 .recordFutureBackdrop::before { content: ''; position: absolute; top: 5%; right: 7%; width: min(52vw, 730px); aspect-ratio: 1; clip-path: polygon(16% 6%, 38% 0, 59% 5%, 81% 13%, 96% 31%, 100% 55%, 88% 79%, 70% 95%, 42% 100%, 21% 91%, 4% 71%, 0 45%, 6% 22%); background: radial-gradient(circle at 36% 32%, rgba(255,255,255,.13) 0 2%, transparent 3% 9%, rgba(1,12,21,.33) 10%, transparent 16%), radial-gradient(circle at 76% 62%, rgba(2,12,21,.45) 0 7%, rgba(172,204,207,.08) 9%, transparent 18%), radial-gradient(circle at 42% 60%, #788a88 0, #4b6267 22%, #263d48 53%, #071722 78%); box-shadow: inset -6vw -5vw 9vw #030b13; filter: saturate(.66); opacity: .68; transform: rotate(-19deg); }
 .recordFutureBackdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #020a11 0%, rgba(2,10,17,.92) 35%, rgba(2,10,17,.45) 70%, rgba(2,10,17,.2)); }
 .recordEyebrow { position: relative; z-index: 2; margin: 0; color: var(--ice); }
-.archiveVisual { position: absolute; top: 15%; right: 6%; width: min(41vw, 560px); height: 66%; opacity: 0; visibility: hidden; pointer-events: none; }
+.archiveVisual { position: absolute; top: 15%; right: 6%; width: min(41vw, 560px); height: 66%; opacity: 0; visibility: hidden; pointer-events: none; will-change: transform, opacity; }
 .archiveVisual::before { content: ''; position: absolute; inset: -18px -16px; border: 1px solid rgba(185, 244, 237, .2); clip-path: polygon(0 0, 23% 0, 23% 1px, 100% 1px, 100% 77%, 99% 77%, 99% 100%, 0 100%); }
 .archivePhoto { position: absolute; overflow: hidden; background: #0b1b22; border: 1px solid rgba(195, 233, 229, .55); box-shadow: 0 24px 70px rgba(0, 0, 0, .38); }
 .archivePhoto::after { position: absolute; left: 9px; bottom: 9px; padding: 4px 6px; color: #f1faf7; background: rgba(1, 11, 17, .8); font: 600 9px var(--font-mono); letter-spacing: .14em; }
 .archivePhoto::after { content: attr(data-label); }
 .archivePhoto img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.66) contrast(1.06) brightness(.91); }
-.archivePhoto img { animation: archiveImageArrival .75s ease both; }
-@keyframes archiveImageArrival { from { opacity: .3; transform: scale(1.06); } to { opacity: 1; transform: scale(1); } }
 .archivePhoto:nth-child(1) { top: 8%; left: 0; width: 65%; height: 47%; }
 .archivePhoto:nth-child(2) { top: 0; right: 0; width: 42%; height: 37%; }
 .archivePhoto:nth-child(3) { right: 3%; bottom: 5%; width: 61%; height: 40%; }
@@ -323,6 +317,7 @@
 @media (max-width: 900px) {
   .hudCoordinates { display: none; }
   .launchCopy, .heroCopy { left: 6%; width: 82%; }
+  .ascentCaption { left: 6%; width: 75%; }
   .launchCopy h1, .heroCopy h2 { font-size: clamp(3.5rem, 9vw, 6rem); }
   .briefCopy { left: 8%; width: 55%; }
   .assemblyCopy { width: 55%; }
@@ -342,6 +337,10 @@
   .hudBottom span:last-child { display: none; }
   .reticle { width: 56vw; left: 60%; }
   .launchCopy, .heroCopy { left: 7%; top: calc(42% + 1.75rem); width: 84%; }
+  .ascentCaption { left: 7%; bottom: 19%; width: 86%; }
+  .ascentCaption::before { inset: -36px -20px -42px -27px; }
+  .ascentCaption h2 { font-size: clamp(2.2rem, 9vw, 3.3rem); }
+  .ascentCaption p:last-child { max-width: 290px; font-size: 13px; }
   .launchCopy h1, .heroCopy h2 { font-size: clamp(2.6rem, 11vw, 4.4rem); text-wrap: nowrap; }
   .launchCopy h1 { font-size: clamp(2.5rem, 9.8vw, 4rem); }
   :global(html[lang='en']) .launchCopy h1 { font-size: clamp(2rem, 7.2vw, 3rem); }
@@ -360,7 +359,7 @@
   .calloutBottom { left: 9%; right: auto; bottom: 15%; }
   .calloutLeft b, .calloutRight b, .calloutBottom b { font-size: 13px; }
   .portalImage { background-position: 51% center; }
-  .realityImage { filter: blur(24px) saturate(.35) brightness(.38); }
+  .realityImage { filter: blur(20px) saturate(.55) brightness(.63); }
   .realityFrame { display: block; top: 10%; left: 8%; right: auto; width: 84%; }
   .habitatCaption, .teamCaption { left: 8%; bottom: 15%; width: 83%; }
   .teamCaption { top: auto; right: auto; bottom: 11%; }
@@ -418,7 +417,7 @@
   .spaceVeil { display: none; }
   .launchVignette { display: none; }
   .spaceBackdrop { position: relative; height: min(60vw, 480px); margin: -120px -8vw 80px; background-position: center 80%; }
-  .launchCopy, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
+  .launchCopy, .ascentCaption, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
     position: relative;
     inset: auto;
     z-index: 12;

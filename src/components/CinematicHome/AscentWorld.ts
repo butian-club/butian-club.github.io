@@ -20,8 +20,8 @@ export const flightPath: FlightPose[] = [
   {at: 0.12, position: [0, 4, 18], target: [0, 8, -20]},
   {at: 0.29, position: [0, 18, 14], target: [0, 31, -34]},
   {at: 0.51, position: [0, 37, 5], target: [0, 55, -63]},
-  {at: 0.73, position: [0, 59, -14], target: [0, 77, -94]},
-  {at: 0.9, position: [0, 70, -38], target: [0, 73, -91]},
+  {at: 0.73, position: [0.5, 61, -22], target: [0.2, 77, -94]},
+  {at: 0.9, position: [0.2, 70, -45], target: [0.8, 73, -91]},
   {
     at: 1,
     position: orbitEntryPose.position.map((value, axis) => value + orbitOrigin.getComponent(axis)) as FlightPose['position'],
@@ -190,11 +190,15 @@ export function createAscentWorld(scene: THREE.Scene, loader: THREE.TextureLoade
       atmosphereMaterial.uniforms.uOpacity.value = earthVisibility * 0.7;
       atmosphere.visible = earth.visible;
       earth.rotation.y = 2.15 + flight * 0.05;
-      const cloudVisibility = smooth(0.18, 0.36, flight) * (1 - smooth(0.79, 0.99, flight));
       clouds.forEach((cloud, index) => {
+        const passAt = 0.3 + index * 0.13;
+        const passage = smooth(passAt - 0.18, passAt - 0.05, flight)
+          * (1 - smooth(passAt + 0.06, passAt + 0.2, flight));
+        cloud.position.x = cloudSpecs[index][0] + (flight - passAt) * (index % 2 ? -2.6 : 2.6);
+        cloud.scale.setScalar(1 + 0.035 * (1 - Math.min(1, Math.abs(flight - passAt) / 0.2)));
         cloud.quaternion.copy(camera.quaternion);
         cloud.rotateZ((index - 2) * 0.08);
-        cloudMaterials[index].opacity = cloudVisibility * (index % 2 ? 0.75 : 0.9);
+        cloudMaterials[index].opacity = passage * (index % 2 ? 0.75 : 0.9);
         cloud.visible = cloudMaterials[index].opacity > 0.005;
       });
     },
