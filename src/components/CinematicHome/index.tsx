@@ -1,59 +1,38 @@
-import React, {type MouseEvent, type ReactNode, useEffect, useRef, useState} from 'react';
+import React, {type ReactNode, useRef, useState} from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import {useT} from '@site/src/lib/i18n';
 import {projects} from '@site/src/data/projects';
 import {useGSAP} from '@gsap/react';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import OrbitalScene from './OrbitalScene';
-import ClubProfile from '@site/src/components/ClubProfile';
 import styles from './styles.module.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const stops = [
   {at: 0, zh: '离开地球', en: 'Departure'},
-  {at: 17, zh: '认识步天', en: 'Who we are'},
-  {at: 28, zh: '协作成形', en: 'How we work'},
-  {at: 65, zh: '验证想象', en: 'Grounded ideas'},
-  {at: 79, zh: '一起完成', en: 'The people'},
-  {at: 87, zh: '留下航迹', en: 'Our record'},
-  {at: 98, zh: '继续出发', en: 'What comes next'},
+  {at: 17, zh: '接住问题', en: 'The brief'},
+  {at: 28, zh: '协作设计', en: 'One team'},
+  {at: 65, zh: '经得起推敲', en: 'Test the idea'},
+  {at: 79, zh: '真实的同伴', en: 'The people'},
+  {at: 87, zh: '做过的方案', en: 'Our work'},
+  {at: 98, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars']
   .map((id) => projects.find((project) => project.id === id))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
 
-function scrollToClubProfile(): void {
-  const profile = document.getElementById('club-profile');
-  if (!profile) return;
-  window.scrollTo({top: window.scrollY + profile.getBoundingClientRect().top, behavior: 'instant'});
-}
-
 export default function CinematicHome(): ReactNode {
   const t = useT();
+  useBrokenLinks().collectAnchor('club-profile');
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const [activeStop, setActiveStop] = useState(0);
-
-  useEffect(() => {
-    if (window.location.hash !== '#club-profile') return;
-    const timer = window.setTimeout(() => {
-      ScrollTrigger.refresh();
-      scrollToClubProfile();
-    }, 120);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  const openClubProfile = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    window.history.pushState(null, '', '#club-profile');
-    ScrollTrigger.refresh();
-    scrollToClubProfile();
-  };
 
   useGSAP(() => {
     const root = rootRef.current;
@@ -164,7 +143,7 @@ export default function CinematicHome(): ReactNode {
         'Butian Engineering Club at Hangzhou No.2 High School: exploring an off-world future through engineering, collaboration and communication.',
       )}>
       <main id="cinematic-home" className={styles.home}>
-        <section className={styles.journey} ref={rootRef} aria-label={t('步天工程社的航程', 'The Butian journey')}>
+        <section id="club-profile" className={styles.journey} ref={rootRef} aria-label={t('步天工程社的航程', 'The Butian journey')}>
           <div className={styles.stage} ref={stageRef}>
             <div className={styles.spaceBackdrop} data-motion="backdrop" aria-hidden="true" />
             <div className={styles.orbitalShell} data-motion="orbital">
@@ -190,8 +169,8 @@ export default function CinematicHome(): ReactNode {
               <p className={styles.eyebrow}>{t('杭州第二中学 · 求是创新学院 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</p>
               <h1>{t('把未来，', 'Build the future')}<br /><em>{t('建在星辰之间。', 'beyond Earth.')}</em></h1>
               <p className={styles.heroLead}>{t(
-                '我们是杭州第二中学求是创新学院的学生社团。用太空城市与基地设计组织学习，也把工程实践与航天科普带到真实世界。',
-                'We are a student club at Hangzhou No.2 High School’s Qiushi Innovation Academy. We learn through space-settlement design, engineering practice and space-science outreach.',
+                '我们是杭州第二中学求是创新学院的学生社团。以太空城市与基地设计为主线，把航天兴趣变成有依据的工程方案。',
+                'We are a student club at Hangzhou No.2 High School’s Qiushi Innovation Academy. Space-settlement design turns our interest in space into evidence-based engineering proposals.',
               )}</p>
               <div className={styles.scrollCue}>
                 <span className={styles.scrollGlyph} aria-hidden="true">
@@ -204,38 +183,38 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.briefCopy} data-motion="brief">
-              <div className={styles.signal}><span /> {t('步天工程社 · 我们做什么', 'BUTIAN · WHAT WE DO')}</div>
+              <div className={styles.signal}><span /> {t('步天工程社 · 从哪里开始', 'BUTIAN · WHERE WE BEGIN')}</div>
               <p className={styles.phaseIndex}>02 / FROM BRIEF TO PROPOSAL</p>
-              <h2>{t('从一份任务书，', 'From a brief')}<br />{t('走向一座太空城。', 'to a place to live.')}</h2>
+              <h2>{t('先接住问题，', 'First, understand')}<br />{t('再提出未来。', 'the challenge.')}</h2>
               <p>{t(
-                '我们从赛事任务书出发，分工研究结构、人居、运营与基础设施，最后把想象汇成有依据的提案，并用英文答辩。',
-                'Starting with a competition brief, we research structure, habitat, operations and infrastructure, then turn our ideas into an evidence-based proposal and defend it in English.',
+                '从赛事任务书出发，拆解需求、查找证据、分工设计，最后以一份提案和英文答辩回应约束。',
+                'We begin with a competition brief: break down requirements, find evidence, design together, then respond with a proposal and an English defense.',
               )}</p>
             </div>
             <div className={styles.wordmarkGhost} data-motion="wordmark" aria-hidden="true">{t('步天', 'BUTIAN')}</div>
 
             <div className={styles.assemblyCopy} data-motion="assembly">
               <span className={styles.phaseIndex}>03 / SYSTEMS THINKING</span>
-              <h2>{t('一座基地，', 'A settlement takes')}<br /><em>{t('需要一支队伍。', 'a whole team.')}</em></h2>
+              <h2>{t('五种专长，', 'Five disciplines.')}<br /><em>{t('同一座城市。', 'One shared city.')}</em></h2>
               <p>{t(
-                '管理、结构、人居、运营与基础设施各有分工，也必须彼此衔接。',
-                'Management, structure, habitat, operations and infrastructure each have a role. The design only works when they connect.',
+                '像一家虚拟航天公司：管理、结构、人居、运营和基础设施各有分工；方案必须在彼此的约束中成立。',
+                'Organized like a virtual aerospace company, we connect management, structure, habitat, operations and infrastructure. Every decision has to work with the others.',
               )}</p>
               <small className={styles.conceptNote}>{t('概念视觉 · 非实际方案模型', 'CONCEPT VISUAL · NOT A PROJECT MODEL')}</small>
             </div>
             <div className={styles.calloutLeft} data-motion="callout-1">
               <span className={styles.calloutNumber}>01 / 03</span>
-              <b>{t('先把问题查清楚', 'RESEARCH FIRST')}</b>
+              <b>{t('把问题查清楚', 'RESEARCH FIRST')}</b>
               <small>{t('文献 · 数据 · 依据', 'EVIDENCE · DATA · REASONING')}</small>
             </div>
             <div className={styles.calloutRight} data-motion="callout-2">
               <span className={styles.calloutNumber}>02 / 03</span>
-              <b>{t('在约束中做设计', 'DESIGN WITH CONSTRAINTS')}</b>
+              <b>{t('在约束中设计', 'DESIGN WITH CONSTRAINTS')}</b>
               <small>{t('结构 · 人居 · 运营', 'STRUCTURE · HABITAT · OPERATIONS')}</small>
             </div>
             <div className={styles.calloutBottom} data-motion="callout-3">
               <span className={styles.calloutNumber}>03 / 03</span>
-              <b>{t('让不同的人互相补位', 'BUILD IT TOGETHER')}</b>
+              <b>{t('互相补位，完成答辩', 'DEFEND IT TOGETHER')}</b>
               <small>{t('协作 · 表达 · 复盘', 'TEAMWORK · DEFENSE · REVIEW')}</small>
             </div>
 
@@ -249,8 +228,8 @@ export default function CinematicHome(): ReactNode {
               <span className={styles.phaseIndex}>04 / INSIDE THE HABITAT</span>
               <h2>{t('想象必须，', 'Imagination needs')}<br />{t('经得起推敲。', 'to stand up to scrutiny.')}</h2>
               <p>{t(
-                '从文献检索、方案讨论到模拟答辩，空气、食物与循环都要成为可以计算和讨论的问题。',
-                'From research and design reviews to mock defenses, air, food and life-support cycles must become questions we can calculate and debate.',
+                '空气、食物、循环与低重力环境，最终都要成为能计算、能讨论、能验证的设计条件。',
+                'Air, food, life-support cycles and low gravity become design conditions we can calculate, debate and test.',
               )}</p>
               <small>{t('概念视觉 · 非实际社团项目渲染', 'CONCEPT VISUAL · NOT A PROJECT RENDER')}</small>
             </div>
@@ -265,10 +244,10 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.teamCaption} data-motion="team-caption">
               <img className={styles.stillImage} src="/img/projects/2024-gfssm/team.jpg" alt={t('2024 GFSSM 中国站合影', 'Team at GFSSM China 2024')} />
               <span className={styles.phaseIndex}>05 / BACK ON EARTH</span>
-              <h2>{t('没有人，', 'No one builds')}<br />{t('能独自建造未来。', 'the future alone.')}</h2>
+              <h2>{t('图纸背后，', 'Behind the drawings')}<br />{t('是并肩的人。', 'are people together.')}</h2>
               <p>{t(
-                '不同方向的同伴彼此补位。图纸背后，是一次次讨论、分工与现场 24 小时协作。',
-                'Members with different strengths cover for each other. Behind every plan are debates, shared work and a 24-hour on-site design sprint.',
+                '2024 年的现场 24 小时挑战里，代表队边讨论边修改方案。不同方向的同伴，正是在这里互相补位。',
+                'In the 2024 on-site 24-hour challenge, our teams debated and revised as they worked. Different strengths became one proposal.',
               )}</p>
               <small>{t('真实影像 · 2024 GFSSM 中国站', 'ARCHIVE PHOTO · GFSSM CHINA 2024')}</small>
             </div>
@@ -291,7 +270,7 @@ export default function CinematicHome(): ReactNode {
                 <div className={styles.recordEntry} data-motion={'record-' + index} key={project.id}>
                   <span>{2023 + index}</span>
                   <h2>{t(project.titleZh, project.titleEn)}</h2>
-                  <p>{t(project.summaryZh, project.summaryEn)}</p>
+                  <p>{t(project.homeSummaryZh ?? project.summaryZh, project.homeSummaryEn ?? project.summaryEn)}</p>
                   {project.detailUrl && <Link to={project.detailUrl}>{t('查看这段航程 ↗', 'Explore this mission ↗')}</Link>}
                 </div>
               ))}
@@ -299,15 +278,15 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.endCopy} data-motion="end">
-              <p className={styles.phaseIndex}>07 / NEXT ORBIT</p>
-              <h2>{t('未来还没写完。', 'The future is')}<br /><em>{t('一起动手建造。', 'still being built.')}</em></h2>
+              <p className={styles.phaseIndex}>07 / PASS IT FORWARD</p>
+              <h2>{t('把做过的事，', 'Pass what we learn')}<br /><em>{t('交给下一程。', 'to the next crew.')}</em></h2>
               <p>{t(
-                '好奇工程与航天，愿意查资料、动手，并把想法讲清楚？下一段航程，期待你的加入。做过的方案和复盘，也会留给后来的人。',
-                'Curious about engineering and space? Ready to research, build and explain your ideas? Join the next mission. We keep our proposals and lessons for those who come after us.',
+                '提案与复盘写进知识库，航天科普也走出赛场。下一次出发，欢迎愿意查证、动手、协作并把想法讲清楚的你。',
+                'Proposals and lessons enter our knowledge base; space-science outreach carries the work beyond competitions. If you are ready to research, build, collaborate and explain, join the next crew.',
               )}</p>
               <div className={styles.endActions}>
-                <Link className={styles.primaryLink} to="/#club-profile" onClick={openClubProfile}>{t('继续认识步天', 'Meet the club')} <span>↓</span></Link>
-                <Link className={styles.secondaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
+                <Link className={styles.primaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
+                <Link className={styles.secondaryLink} to="/docs/intro">{t('打开知识库', 'Open the knowledge base')} <span>↗</span></Link>
               </div>
             </div>
 
@@ -318,7 +297,6 @@ export default function CinematicHome(): ReactNode {
             </div>
           </div>
         </section>
-        <ClubProfile />
         <div className={styles.afterword}>
           <span>END OF TRANSMISSION · BUTIAN ENGINEERING CLUB</span>
           <Link to="/blog">{t('阅读活动记录 ↗', 'EXPLORE THE ACTIVITY LOG ↗')}</Link>

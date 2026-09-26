@@ -275,6 +275,8 @@
 .recordTicks { position: absolute; right: 7%; bottom: 16%; display: flex; gap: 9px; }
 .recordTicks i { display: block; width: 38px; height: 2px; background: rgba(185, 244, 237, .48); }
 .endCopy { z-index: 16; top: 24%; left: clamp(30px, 8vw, 140px); width: min(76vw, 950px); }
+.endCopy::before { content: ''; position: absolute; z-index: 0; inset: -3rem -2rem -3rem -4rem; pointer-events: none; background: linear-gradient(90deg, rgba(2, 10, 17, .7), rgba(2, 10, 17, .4) 63%, transparent); mask-image: linear-gradient(0deg, transparent, #000 20%, #000 80%, transparent); }
+.endCopy > * { position: relative; z-index: 1; }
 .endCopy h2 { font-size: clamp(3.5rem, 6.1vw, 7.5rem); text-shadow: 0 2px 22px rgba(1, 7, 12, .95), 0 8px 62px #01070c; }
 .endCopy > p:not(.phaseIndex) { max-width: 540px; }
 .endActions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 38px; }
@@ -348,7 +350,9 @@
   .recordEntry a { min-height: 44px; align-items: center; padding: 10px 0; margin-top: 4px; }
   .recordTicks { bottom: 12%; }
   .endCopy { top: 16%; left: 8%; width: 83%; }
+  .endCopy::before { inset: -3rem -1.5rem -3rem -8vw; background: linear-gradient(90deg, rgba(2, 10, 17, .94), rgba(2, 10, 17, .76) 68%, rgba(2, 10, 17, .36)); }
   .endCopy h2 { font-size: clamp(2.9rem, 10vw, 3.6rem); text-wrap: wrap; }
+  .endCopy > p:not(.phaseIndex) { max-width: 17.5rem; }
   .endActions { gap: 9px; margin-top: 22px; }
   .endActions a { width: 100%; min-width: 0; padding: 12px 15px; }
   .progressRail { top: auto; right: 24px; bottom: 23px; transform: none; }
