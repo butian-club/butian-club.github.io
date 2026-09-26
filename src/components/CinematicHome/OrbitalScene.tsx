@@ -207,18 +207,10 @@ export default function OrbitalScene({progressRef, className}: Props): React.Rea
       station.solar.forEach((wing, index) => {
         wing.rotation.y = (index ? 1 : -1) * smooth(0.19, 0.42, sequence) * 0.42;
       });
-      station.pods.forEach(({group, angle}, index) => {
-        const offset = index * 0.0017;
-        const explode = smooth(0.24 + offset, 0.335 + offset, sequence)
-          * (1 - smooth(0.415 + offset, 0.505 + offset, sequence));
-        const distance = explode * (1.1 + (index % 3) * 0.2);
-        group.position.set(Math.cos(angle) * distance, Math.sin(angle) * distance, explode * (index % 2 ? 0.36 : -0.36));
-        group.rotation.y = explode * (index % 2 ? 0.19 : -0.19);
-      });
       const irisOpen = smooth(0.455, 0.53, sequence);
-      station.iris.forEach(({group, angle}, index) => {
-        group.position.set(Math.cos(angle) * irisOpen * 0.48, Math.sin(angle) * irisOpen * 0.48, 1.23 - irisOpen * 0.08);
-        group.rotation.z = angle + irisOpen * (index % 2 ? 0.12 : -0.12);
+      station.iris.forEach(({group, angle}) => {
+        group.position.set(Math.cos(angle) * irisOpen * 0.18, Math.sin(angle) * irisOpen * 0.18, 1.23);
+        group.rotation.z = angle;
       });
       if (stage) {
         const dockProgress = Math.min(progress, 0.56);
