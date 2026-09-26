@@ -18,11 +18,9 @@ const cameraPath: Pose[] = [
   {at: 0, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 0.09, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
   {at: 0.2, position: [7.5, 2.2, 12.4], target: [3.6, 0, -4]},
-  {at: 0.31, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
-  {at: 0.37, position: [6, 0, 0.2], target: [6, 0, -13]},
-  {at: 0.46, position: [6, 0, -8], target: [6, 0, -20]},
-  {at: 0.55, position: [6, 0, -8], target: [6, 0, -20]},
-  {at: 0.75, position: [6, 0, -8], target: [6, 0, -20]},
+  // Hold outside the docking face while the habitat image opens over the station.
+  {at: 0.34, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
+  {at: 0.75, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
   {at: 0.91, position: [6.8, 1, 11], target: [5.8, 0, -4]},
   {at: 0.98, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 1, position: [0, 0.5, 19], target: [1.5, 0, -4]},
@@ -37,12 +35,22 @@ function smooth(a: number, b: number, value: number): number {
   return x * x * (3 - 2 * x);
 }
 
+function samePose(first: Pose['position'], second: Pose['position']): boolean {
+  return first[0] === second[0] && first[1] === second[1] && first[2] === second[2];
+}
+
 function interpolatePose(progress: number, field: 'position' | 'target', output: THREE.Vector3): void {
   const right = Math.max(1, cameraPath.findIndex((pose) => pose.at >= progress));
   const a = cameraPath[right - 1];
   const b = cameraPath[right];
+  if (samePose(a[field], b[field])) {
+    output.set(...a[field]);
+    return;
+  }
   const previous = cameraPath[Math.max(0, right - 2)];
   const next = cameraPath[Math.min(cameraPath.length - 1, right + 1)];
+  const enteringHold = samePose(previous[field], a[field]);
+  const leavingHold = samePose(b[field], next[field]);
   const span = b.at - a.at;
   const t = clamp((progress - a.at) / span);
   const t2 = t * t;
@@ -53,8 +61,8 @@ function interpolatePose(progress: number, field: 'position' | 'target', output:
   const h11 = t3 - t2;
   const result: number[] = [];
   for (let axis = 0; axis < 3; axis += 1) {
-    const entrySlope = (b[field][axis] - previous[field][axis]) / (b.at - previous.at);
-    const exitSlope = (next[field][axis] - a[field][axis]) / (next.at - a.at);
+    const entrySlope = enteringHold ? 0 : (b[field][axis] - previous[field][axis]) / (b.at - previous.at);
+    const exitSlope = leavingHold ? 0 : (next[field][axis] - a[field][axis]) / (next.at - a.at);
     result[axis] = h00 * a[field][axis] + h10 * span * entrySlope
       + h01 * b[field][axis] + h11 * span * exitSlope;
   }
