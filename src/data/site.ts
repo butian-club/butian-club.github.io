@@ -17,11 +17,11 @@ export interface Direction {
 
 // GFSSM-style settlement proposals bring these five specialties into one design.
 export const competitionRoles = [
-  {id: 'management', nameZh: '管理', nameEn: 'Management'},
-  {id: 'structure', nameZh: '结构', nameEn: 'Structure'},
-  {id: 'habitat', nameZh: '人居', nameEn: 'Habitat'},
-  {id: 'operations', nameZh: '运营', nameEn: 'Operations'},
-  {id: 'infrastructure', nameZh: '基础设施', nameEn: 'Infrastructure'},
+  {id: 'management', nameZh: '管理', nameEn: 'Management', shortEn: 'Mgmt'},
+  {id: 'structure', nameZh: '结构', nameEn: 'Structure', shortEn: 'Struct'},
+  {id: 'habitat', nameZh: '人居', nameEn: 'Habitat', shortEn: 'Habitat'},
+  {id: 'operations', nameZh: '运营', nameEn: 'Operations', shortEn: 'Ops'},
+  {id: 'infrastructure', nameZh: '基础设施', nameEn: 'Infrastructure', shortEn: 'Infra'},
 ] as const;
 
 // 核心方向对应步天工程社在太空城市/基地设计赛事中的真实系统分工

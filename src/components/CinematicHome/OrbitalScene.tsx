@@ -111,7 +111,7 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
     } catch {
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 600 ? 1.3 : 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth <= 600 ? 1.3 : 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
@@ -197,7 +197,7 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
       const width = Math.max(1, mount.clientWidth);
       const height = Math.max(1, mount.clientHeight);
       renderer.setSize(width, height, false);
-      camera.fov = width < 600 ? 60 : 39;
+      camera.fov = width <= 600 ? 60 : width < 900 && height > width ? 55 : 39;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       dockCamera.fov = camera.fov;
@@ -244,7 +244,10 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
         lookTarget.add(orbitOrigin);
         lookTarget.y += escape;
       }
-      const isMobile = mount.clientWidth < 600;
+      const isMobile = mount.clientWidth <= 600;
+      const shortMobile = isMobile && mount.clientHeight < 700;
+      const portraitTablet = !isMobile && mount.clientWidth < 900 && mount.clientHeight > mount.clientWidth;
+      const compactLandscape = !isMobile && mount.clientHeight < 700;
       const mobileLift = isMobile && ascent >= 1 ? 2.8 * smooth(0.08, 0.2, progress) : 0;
       const mobileReveal = isMobile && ascent >= 1
         ? smooth(0.24, 0.31, progress) * (1 - smooth(0.345, 0.41, progress))
@@ -254,10 +257,17 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
       const mobileBriefPan = isMobile && ascent >= 1
         ? smooth(0.055, 0.095, progress) * (1 - smooth(0.2, 0.245, progress))
         : 0;
-      const mobilePan = 4 * mobileReveal - 3.2 * mobileBriefPan;
+      const tabletPan = portraitTablet && ascent >= 1
+        ? -3.2 * smooth(0.14, 0.2, progress) * (1 - smooth(0.43, 0.5, progress))
+        : 0;
+      const finalFraming = ascent >= 1 ? smooth(0.83, 0.91, progress) : 0;
+      const finalPan = (portraitTablet ? -2.5 : compactLandscape ? -2.2 : shortMobile ? -2 : 0) * finalFraming;
+      const mobilePan = (shortMobile ? 0.9 : 4) * mobileReveal - 3.2 * mobileBriefPan + tabletPan + finalPan;
       const fieldOfView = ascent < 1
-        ? (isMobile ? 72 - 12 * ascent : 48 - 9 * ascent)
-        : (isMobile ? 60 + 12 * mobileReveal : 39);
+        ? (isMobile ? 72 - 12 * ascent : portraitTablet ? 60 - 5 * ascent : 48 - 9 * ascent)
+        : (isMobile
+          ? 60 + 12 * mobileReveal + (shortMobile ? 10 + 6 * finalFraming : 0)
+          : portraitTablet ? 55 + 6 * finalFraming : compactLandscape ? 39 + 10 * finalFraming : 39);
       if (Math.abs(camera.fov - fieldOfView) > 0.01) {
         camera.fov = fieldOfView;
         camera.updateProjectionMatrix();

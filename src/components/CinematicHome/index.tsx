@@ -362,7 +362,7 @@ export default function CinematicHome(): ReactNode {
                 {competitionRoles.map((role, index) => (
                   <div className={styles.systemsNode} data-motion={`system-node-${index}`} key={role.id}>
                     <small>{String(index + 1).padStart(2, '0')}</small>
-                    <strong>{t(role.nameZh, role.nameEn)}</strong>
+                    <strong><span className={styles.roleFull}>{t(role.nameZh, role.nameEn)}</span><span className={styles.roleCompact}>{t(role.nameZh, role.shortEn)}</span></strong>
                   </div>
                 ))}
               </div>

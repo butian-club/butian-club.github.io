@@ -247,6 +247,7 @@
 .systemsNode::before { content: ''; position: absolute; top: -3px; left: 0; width: 5px; height: 5px; border: 1px solid currentColor; background: #071821; transform: rotate(45deg); }
 .systemsNode small { color: var(--amber); font: 600 9px var(--font-mono); letter-spacing: .08em; }
 .systemsNode strong { font-size: clamp(11px, 1.12vw, 16px); font-weight: 600; letter-spacing: -.02em; }
+.roleCompact { display: none; }
 .portal, .reality { position: absolute; inset: 0; z-index: 8; visibility: hidden; opacity: 0; }
 .portal { --portal-radius: 0%; clip-path: circle(var(--portal-radius) at var(--dock-x, 60%) var(--dock-y, 56%)); will-change: clip-path, opacity; }
 .portalImage, .realityImage { position: absolute; inset: 0; background-position: center; background-size: cover; will-change: transform; }
@@ -361,7 +362,7 @@
   .briefCopy h2 { font-size: 2.7rem; }
   .wordmarkGhost { left: 0; bottom: 6%; font-size: 42vw; }
   .assemblyCopy { top: 14%; left: 7%; width: 85%; }
-  .assemblyCopy h2 { font-size: 3.1rem; }
+  .assemblyCopy h2 { font-size: clamp(2.25rem, 10vw, 3.1rem); }
   .assemblyCopy p { max-width: 240px; }
   .systemsRail { left: 7%; right: 7%; bottom: 11%; padding-top: 16px; }
   .systemsHeading { font-size: 7px; letter-spacing: .13em; margin-bottom: 9px; }
@@ -395,21 +396,30 @@
   .chronologyYears { margin-top: 8px; }
   .chronologyYears span::before { top: -11px; }
   .endCopy { top: 16%; left: 8%; width: 83%; }
-  .endCopy::before { inset: -3rem -1.5rem -3rem -8vw; background: linear-gradient(90deg, rgba(2, 10, 17, .94), rgba(2, 10, 17, .76) 68%, rgba(2, 10, 17, .36)); }
+  .endCopy::before { inset: -3rem -1.5rem -3rem -8vw; background: linear-gradient(90deg, rgba(2, 10, 17, .98), rgba(2, 10, 17, .86) 68%, rgba(2, 10, 17, .52)); }
   .endCopy h2 { font-size: clamp(2.9rem, 10vw, 3.6rem); text-wrap: wrap; }
-  .endCopy > p:not(.phaseIndex) { max-width: 17.5rem; }
+  .endCopy > p:not(.phaseIndex) { max-width: 17.5rem; color: rgba(246, 253, 251, .92); }
   .endActions { gap: 9px; margin-top: 22px; }
   .endActions a { width: 100%; min-width: 0; padding: 12px 15px; }
   .progressRail { top: auto; right: 24px; bottom: 23px; transform: none; }
   .progressTrack, .progressName { display: none; }
   .afterword { flex-direction: column; align-items: flex-start; font-size: 8px; }
 }
+@media (min-width: 601px) and (max-width: 900px) and (orientation: portrait) {
+  .briefCopy, .assemblyCopy { width: 47%; }
+  .endCopy { width: min(52vw, 400px); }
+  .endCopy > p:not(.phaseIndex) { max-width: 345px; }
+  .endActions { flex-direction: column; align-items: flex-start; }
+  .endActions a { width: min(100%, 260px); }
+}
 @media (max-width: 360px) {
   .heroCopy h2 { font-size: 10vw; }
   .launchCopy h1 { font-size: 9.3vw; }
   .hudBrand { letter-spacing: .09em; }
+  :global(html[lang='en']) .roleFull { display: none; }
+  :global(html[lang='en']) .roleCompact { display: inline; }
 }
-@media (min-width: 601px) and (max-height: 520px) {
+@media (min-width: 601px) and (max-height: 650px) {
   .hudBrand, .hudCoordinates, .hudBottom { display: none; }
   .launchCopy, .heroCopy { top: calc(50% + .5rem); width: min(68vw, 600px); }
   .launchCopy h1, .heroCopy h2 { margin: 8px 0 10px; font-size: clamp(2.5rem, 6vw, 3.5rem); line-height: 1.04; }
@@ -417,8 +427,24 @@
   .heroLead { max-width: 460px; font-size: 13px; line-height: 1.45; }
   .scrollCue { margin-top: 14px; font-size: 9px; }
   .scrollGlyph { flex-basis: 28px; width: 28px; height: 34px; }
+  .recordEntry { top: 26%; }
+  .endCopy { top: 11%; width: min(56vw, 600px); }
+  .endCopy h2 { margin: 8px 0 10px; font-size: clamp(2.5rem, 6vw, 3.6rem); line-height: 1.05; }
+  .endCopy > p:not(.phaseIndex) { max-width: 440px; font-size: 13px; line-height: 1.5; }
+  .endActions { margin-top: 14px; }
+  .endActions a { padding: 10px 15px; }
 }
 @media (max-width: 600px) and (max-height: 700px) {
+  .hudBrand { display: none; }
+  .assemblyCopy { top: 12%; }
+  .assemblyCopy h2 { margin: 9px 0 12px; }
+  .assemblyCopy p { font-size: 13px; line-height: 1.5; }
+  .conceptNote { margin-top: 9px; }
+  .endCopy { top: 12%; }
+  .endCopy h2 { margin: 9px 0 10px; font-size: clamp(2.5rem, 8.5vw, 3.1rem); line-height: 1.06; }
+  .endCopy > p:not(.phaseIndex) { font-size: 12px; line-height: 1.48; }
+  .endActions { gap: 7px; margin-top: 14px; }
+  .endActions a { min-height: 44px; padding: 10px 14px; }
   .realityFrame { top: 6%; left: 14%; width: 72%; }
   .teamCaption { bottom: 7%; }
 }
