@@ -29,7 +29,7 @@ const stops = [
   {at: launchDuration + 54.5, zh: '经得起推敲', en: 'Test the idea'},
   {at: launchDuration + 66, zh: '真实的同伴', en: 'The people'},
   {at: launchDuration + 75.5, zh: '做过的方案', en: 'Our work'},
-  {at: launchDuration + 131, zh: '传给下一程', en: 'Pass it on'},
+  {at: launchDuration + 132, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
@@ -62,6 +62,7 @@ export default function CinematicHome(): ReactNode {
     const select = (name: string) => stage.querySelector<HTMLElement>('[data-motion="' + name + '"]');
     const target = (name: string) => select(name)!;
     const travel = (desktop: number, mobile: number) => () => window.innerWidth <= 600 ? mobile : desktop;
+    const compactLandscape = () => window.innerWidth > 600 && window.innerHeight <= 450;
     const driver = {p: 0};
 
     const timeline = gsap.timeline({
@@ -164,9 +165,20 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
         autoAlpha: 1, scale: 1, rotation: 0, duration: 3,
       }, 123)
-      .to(target('record'), {autoAlpha: 0, duration: 2.2}, 129.3)
-      .fromTo(target('end'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 130.3)
-      .fromTo(target('end'), {y: 35, scale: .98}, {y: -20, scale: 1, duration: 12.7, ease: 'none'}, 130.3);
+      .to(target('record-3'), {autoAlpha: 0, duration: 1.8, ease: 'power1.inOut'}, 122.5)
+      .to(target('record-eyebrow'), {autoAlpha: 0, duration: 1.5}, 123)
+      .to(target('record-chronology'), {autoAlpha: 0, duration: 1.5}, 123)
+      .fromTo(target('record-future-copy'), {autoAlpha: 0, y: 20}, {
+        autoAlpha: 1, y: 0, duration: 2.2, ease: 'power2.out',
+      }, 124)
+      .to(target('record-future-copy'), {autoAlpha: 0, duration: 1.5}, 128)
+      .to(target('record-future'), {autoAlpha: 0, duration: 1.5}, 128)
+      .to(target('record-future-backdrop'), {autoAlpha: 0, duration: 1.5}, 128)
+      .to(target('record'), {autoAlpha: 0, duration: 2.2}, 130)
+      .fromTo(target('end'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 132)
+      .fromTo(target('end'), {y: () => compactLandscape() ? 0 : 35, scale: .98}, {
+        y: () => compactLandscape() ? 0 : -20, scale: 1, duration: 11, ease: 'none',
+      }, 132);
 
     competitionRoles.forEach((_, index) => {
       const node = target(`system-node-${index}`);
@@ -190,7 +202,7 @@ export default function CinematicHome(): ReactNode {
       ['assembly', 23.8, 3.5],
       ['habitat-caption', 53.9, 3.4],
       ['team-caption', 64.8, 2.2],
-      ['end', 130.7, 3.8],
+      ['end', 132.2, 3.8],
     ];
     headingReveals.forEach(([name, at, duration]) => revealHeading(name, at, duration, spaceTimeline));
 
@@ -410,7 +422,7 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.record} data-motion="record">
               <div className={styles.recordFutureBackdrop} data-motion="record-future-backdrop" aria-hidden="true" />
-              <p className={styles.recordEyebrow}>FLIGHT RECORD</p>
+              <p className={styles.recordEyebrow} data-motion="record-eyebrow">FLIGHT RECORD</p>
               {milestones.map((project, index) => (
                 <div className={styles.archiveVisual} data-motion={`archive-visual-${index}`} aria-hidden="true" key={project.id}>
                   {project.archivePhotos?.map((photo, photoIndex) => (
@@ -435,7 +447,15 @@ export default function CinematicHome(): ReactNode {
                   {project.sourceUrl && <a className={styles.sourceLink} href={project.sourceUrl} target="_blank" rel="noopener noreferrer">{t('原始报道 ↗', 'Original report ↗')}</a>}
                 </div>
               ))}
-              <div className={styles.recordChronology} aria-hidden="true">
+              <div className={styles.recordFutureCopy} data-motion="record-future-copy">
+                <p className={styles.phaseIndex}>FUTURE BRIEF / 2115</p>
+                <StoryHeading first={t('在灵神星，', 'On Psyche,')} second={t('设想一座城。', 'imagine a city.')} accent />
+                <p>{t(
+                  '2026 年决赛将任务设在 2115 年：设计一座服务太空采矿的城市。',
+                  'The 2026 final placed its brief in 2115: design a city on Psyche to support space mining.',
+                )}</p>
+              </div>
+              <div className={styles.recordChronology} data-motion="record-chronology" aria-hidden="true">
                 <div className={styles.chronologyHeading}><span>{t('步天航程档案', 'BUTIAN FLIGHT ARCHIVE')}</span><span>GFSSM / 2023—2026</span></div>
                 <div className={styles.chronologyTrack}><i data-motion="archive-progress" /></div>
                 <div className={styles.chronologyYears}>{milestones.map((project, index) => (

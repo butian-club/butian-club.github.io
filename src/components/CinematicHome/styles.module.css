@@ -290,6 +290,9 @@
 .recordFuture span { font: 650 11px var(--font-mono); letter-spacing: .26em; }
 .recordFuture strong { font-size: clamp(6rem, 13vw, 12rem); font-weight: 620; line-height: 1; letter-spacing: -.095em; -webkit-text-stroke: 1px var(--ice); color: transparent; text-shadow: 0 0 45px rgba(185, 244, 237, .2); }
 .recordFuture small { color: rgba(233, 249, 247, .8); font: 600 10px var(--font-mono); letter-spacing: .18em; }
+.recordFutureCopy { position: absolute; z-index: 2; top: 32%; left: clamp(36px, 8vw, 140px); width: min(40vw, 570px); visibility: hidden; opacity: 0; text-shadow: 0 3px 24px #02080d; }
+.recordFutureCopy h2 { margin: 14px 0 18px; font-size: clamp(2.8rem, 4.5vw, 5.4rem); line-height: 1.12; letter-spacing: -.06em; }
+.recordFutureCopy p:last-child { max-width: 450px; color: rgba(238, 249, 249, .82); font-size: clamp(14px, 1.25vw, 18px); line-height: 1.65; }
 .recordEntry { position: absolute; z-index: 2; top: 33%; left: clamp(36px, 8vw, 140px); width: min(42vw, 620px); text-shadow: 0 2px 22px #02080d; }
 .recordEntry > span { display: block; color: var(--amber); font-size: clamp(6rem, 15vw, 15rem); font-weight: 650; line-height: .8; letter-spacing: -.11em; }
 .recordEntry h2 { margin: 20px 0 15px; font-size: clamp(1.7rem, 3vw, 3.7rem); line-height: 1.2; letter-spacing: -.055em; }
@@ -385,10 +388,13 @@
   .archiveVisual::before, .archivePhoto:nth-child(2), .archivePhoto:nth-child(3) { display: none; }
   .archivePhoto:nth-child(1) { top: 0; left: 0; width: 100%; height: 100%; }
   .recordEntry .sourceLink { margin-left: 14px; }
-  .recordFuture { top: 9%; right: 7%; width: 39vw; height: 17svh; gap: .1rem; }
+  .recordFuture { top: 16%; right: 5%; width: 48vw; height: 24svh; gap: .1rem; }
   .recordFuture span { font-size: 6px; letter-spacing: .1em; }
-  .recordFuture strong { font-size: clamp(2.4rem, 10vw, 4rem); }
+  .recordFuture strong { font-size: clamp(3rem, 13vw, 5rem); }
   .recordFuture small { font-size: 6px; letter-spacing: .04em; }
+  .recordFutureCopy { top: 46%; left: 8%; width: 84%; }
+  .recordFutureCopy h2 { font-size: clamp(2.45rem, 9vw, 3.2rem); }
+  .recordFutureCopy p:last-child { max-width: 330px; font-size: 13px; line-height: 1.6; }
   .recordEntry > span { font-size: clamp(4.7rem, 20vw, 7rem); }
   .recordEntry h2 { font-size: clamp(1.4rem, 6vw, 1.75rem); }
   .recordEntry p { font-size: clamp(12px, 2.7vw, 13px); line-height: 1.55; }
@@ -410,6 +416,11 @@
 @media (min-width: 601px) and (max-width: 900px) and (orientation: portrait) {
   .briefCopy, .assemblyCopy { width: 47%; }
   .heroLead { max-width: min(52vw, 420px); }
+  .realityFrame { top: 13%; left: calc(50% - min(37vw, 280px)); width: min(74vw, 560px); }
+  .teamCaption { top: auto; right: auto; bottom: 13%; left: 10%; width: 80%; }
+  .teamCaption h2 { font-size: clamp(3rem, 6vw, 4rem); }
+  .teamCaption p { max-width: 600px; font-size: clamp(15px, 2vw, 17px); line-height: 1.6; }
+  .teamCaption small { margin-top: 16px; }
   .endCopy { width: min(52vw, 400px); }
   .endCopy > p:not(.phaseIndex) { max-width: 345px; }
   .endActions { flex-direction: column; align-items: flex-start; }
@@ -474,9 +485,12 @@
   .recordEntry h2 { margin: 8px 0; font-size: 1.4rem; line-height: 1.1; }
   .recordEntry p { font-size: 12px; line-height: 1.4; }
   .recordEntry a { min-height: 44px; align-items: center; margin-top: 4px; padding-bottom: 0; font-size: 11px; }
+  .recordFutureCopy { top: 28%; }
+  .recordFutureCopy h2 { margin: 7px 0 8px; font-size: clamp(2rem, 3.8vw, 2.7rem); }
+  .recordFutureCopy p:last-child { font-size: 12px; line-height: 1.45; }
   .progressRail { top: auto; right: 8px; bottom: 8px; transform: none; }
   .progressTrack, .progressName { display: none; }
-  .endCopy { top: 20%; }
+  .endCopy { top: 17%; }
   .endCopy .phaseIndex { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -487,7 +501,7 @@
   .spaceVeil { display: none; }
   .launchVignette { display: none; }
   .spaceBackdrop { position: relative; height: min(60vw, 480px); margin: -120px -8vw 80px; background-position: center 80%; }
-  .launchCopy, .ascentCaption, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry {
+  .launchCopy, .ascentCaption, .heroCopy, .briefCopy, .assemblyCopy, .habitatCaption, .teamCaption, .endCopy, .record, .recordEntry, .recordFutureCopy {
     position: relative;
     inset: auto;
     z-index: 12;
