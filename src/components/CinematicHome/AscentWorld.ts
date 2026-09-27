@@ -90,7 +90,31 @@ export function createAscentWorld(scene: THREE.Scene, loader: THREE.TextureLoade
   add(new THREE.Mesh(skyGeometry, skyMaterial));
 
   const campusGeometry = new THREE.PlaneGeometry(44, 24.75);
-  const campusMaterial = new THREE.MeshBasicMaterial({transparent: true, opacity: 1, depthWrite: false, toneMapped: false});
+  const campusMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    toneMapped: false,
+    uniforms: {uMap: {value: null}, uOpacity: {value: 1}},
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D uMap;
+      uniform float uOpacity;
+      varying vec2 vUv;
+      void main() {
+        vec4 image = texture2D(uMap, vUv);
+        float horizontal = smoothstep(0.0, 0.09, vUv.x) * smoothstep(0.0, 0.09, 1.0 - vUv.x);
+        float vertical = smoothstep(0.0, 0.14, vUv.y) * smoothstep(0.0, 0.14, 1.0 - vUv.y);
+        gl_FragColor = vec4(image.rgb, image.a * uOpacity * horizontal * vertical);
+        #include <colorspace_fragment>
+      }
+    `,
+  });
   const campus = new THREE.Mesh(campusGeometry, campusMaterial);
   campus.position.set(0, 0, -5);
   campus.renderOrder = 3;
@@ -98,8 +122,7 @@ export function createAscentWorld(scene: THREE.Scene, loader: THREE.TextureLoade
   materials.push(campusMaterial);
   add(campus);
   load('/img/journey/hangzhou-no2-campus.webp', (texture) => {
-    campusMaterial.map = texture;
-    campusMaterial.needsUpdate = true;
+    campusMaterial.uniforms.uMap.value = texture;
   });
 
   const earthGeometry = new THREE.SphereGeometry(110, 72, 48);
@@ -181,10 +204,11 @@ export function createAscentWorld(scene: THREE.Scene, loader: THREE.TextureLoade
       const flight = clamp(flightProgress);
       const earthVisibility = smooth(0.46, 0.83, flight) * (1 - smooth(0.18, 0.28, spaceProgress));
       skyMaterial.uniforms.uFlight.value = flight;
-      campusMaterial.opacity = 1 - smooth(0.07, 0.35, flight);
+      const campusOpacity = 1 - smooth(0.07, 0.35, flight);
+      campusMaterial.uniforms.uOpacity.value = campusOpacity;
       campus.scale.setScalar(isMobile ? 1.6 : 1);
       campus.position.y = isMobile ? 5.3 : 0;
-      campus.visible = campusMaterial.opacity > 0.005;
+      campus.visible = campusOpacity > 0.005;
       earthMaterial.opacity = earthVisibility;
       earth.visible = earthVisibility > 0.005;
       atmosphereMaterial.uniforms.uOpacity.value = earthVisibility * 0.7;

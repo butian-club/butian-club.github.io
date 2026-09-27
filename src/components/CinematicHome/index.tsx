@@ -29,7 +29,7 @@ const stops = [
   {at: launchDuration + 54.5, zh: '经得起推敲', en: 'Test the idea'},
   {at: launchDuration + 66, zh: '真实的同伴', en: 'The people'},
   {at: launchDuration + 75.5, zh: '做过的方案', en: 'Our work'},
-  {at: launchDuration + 132, zh: '传给下一程', en: 'Pass it on'},
+  {at: launchDuration + 129.6, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
@@ -146,17 +146,20 @@ export default function CinematicHome(): ReactNode {
       }, 48.5)
       .fromTo(target('habitat-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 51)
       .fromTo(target('habitat-caption'), {y: 35}, {y: -32, duration: 11, ease: 'none'}, 51)
-      .to(target('habitat-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 61.5)
-      .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5, ease: 'power2.inOut'}, 63)
-      .to(target('portal'), {autoAlpha: 0, duration: 5, ease: 'power2.inOut'}, 63)
+      .fromTo(target('habitat-detail'), {autoAlpha: 0, y: 10}, {autoAlpha: 1, y: 0, duration: 1.5, ease: 'power2.out'}, 53.5)
+      .fromTo(target('habitat-note'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.2}, 54)
+      .to(target('habitat-caption'), {autoAlpha: 0, duration: 2.5, ease: 'power1.inOut'}, 61)
+      .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.8, ease: 'power2.inOut'}, 63.5)
+      .to(target('portal'), {autoAlpha: 0, duration: 2.8, ease: 'power2.inOut'}, 63.5)
       .fromTo(target('reality-image'), {scale: 1.18}, {scale: 1, duration: 18, ease: 'power1.out'}, 63)
       .fromTo(target('reality-frame'), {autoAlpha: 0, x: 80, scale: 0.9}, {
-        autoAlpha: 1, x: 0, scale: 1, duration: 7, ease: 'power2.out',
+        autoAlpha: 1, x: 0, scale: 1, duration: 4.5, ease: 'power2.out',
       }, 64)
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
-      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 65)
+      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.4, ease: 'power2.out'}, 64.5)
       .fromTo(target('team-caption'), {y: 26}, {y: -25, duration: 12, ease: 'none'}, 65)
-      .fromTo(target('team-detail'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.7, ease: 'power1.inOut'}, 66.9)
+      .fromTo(target('team-detail'), {autoAlpha: 0, y: 10}, {autoAlpha: 1, y: 0, duration: 1.5, ease: 'power2.out'}, 67.2)
+      .fromTo(target('team-credit'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.1}, 67.8)
       .to(target('team-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 74)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 74)
       .to(target('reality'), {autoAlpha: 0, duration: 3}, 74)
@@ -171,14 +174,14 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('record-future-copy'), {autoAlpha: 0, y: 20}, {
         autoAlpha: 1, y: 0, duration: 2.2, ease: 'power2.out',
       }, 124)
-      .to(target('record-future-copy'), {autoAlpha: 0, duration: 1.5}, 128)
-      .to(target('record-future'), {autoAlpha: 0, duration: 1.5}, 128)
-      .to(target('record-future-backdrop'), {autoAlpha: 0, duration: 1.5}, 128)
-      .to(target('record'), {autoAlpha: 0, duration: 2.2}, 130)
-      .fromTo(target('end'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 132)
+      .to(target('record-future-copy'), {autoAlpha: 0, duration: .5}, 128.8)
+      .to(target('record'), {autoAlpha: 0, duration: 1.2, ease: 'power2.inOut'}, 129.5)
+      .fromTo(target('end'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.5, ease: 'power2.out'}, 129.5)
       .fromTo(target('end'), {y: () => compactLandscape() ? 0 : 35, scale: .98}, {
         y: () => compactLandscape() ? 0 : -20, scale: 1, duration: 11, ease: 'none',
-      }, 132);
+      }, 129.5)
+      .fromTo(target('end-detail'), {autoAlpha: 0, y: 12}, {autoAlpha: 1, y: 0, duration: 1.5, ease: 'power2.out'}, 132.2)
+      .fromTo(target('end-actions'), {autoAlpha: 0, y: 12}, {autoAlpha: 1, y: 0, duration: 1.6, ease: 'power2.out'}, 133.3);
 
     competitionRoles.forEach((_, index) => {
       const node = target(`system-node-${index}`);
@@ -202,7 +205,7 @@ export default function CinematicHome(): ReactNode {
       ['assembly', 23.8, 3.5],
       ['habitat-caption', 51.2, 2.6],
       ['team-caption', 64.8, 2.2],
-      ['end', 132.2, 3.8],
+      ['end', 129.6, 1.7],
     ];
     headingReveals.forEach(([name, at, duration]) => revealHeading(name, at, duration, spaceTimeline));
 
@@ -394,11 +397,11 @@ export default function CinematicHome(): ReactNode {
               <img className={styles.stillImage} src="/img/life-support-concept.jpg" alt={t('地外生命保障空间概念视觉', 'Concept visual of an off-world life-support habitat')} />
               <span className={styles.phaseIndex}>INSIDE THE HABITAT</span>
               <StoryHeading first={t('想象必须，', 'Imagination needs')} second={t('经得起推敲。', 'to stand up to scrutiny.')} />
-              <p>{t(
+              <p data-motion="habitat-detail">{t(
                 '空气、食物、循环与低重力环境，最终都要成为能计算、能讨论、能验证的设计条件。',
                 'Air, food, life-support cycles and low gravity become design conditions we can calculate, debate and test.',
               )}</p>
-              <small>{t('概念视觉 · 非实际社团项目渲染', 'CONCEPT VISUAL · NOT A PROJECT RENDER')}</small>
+              <small data-motion="habitat-note">{t('概念视觉 · 非实际社团项目渲染', 'CONCEPT VISUAL · NOT A PROJECT RENDER')}</small>
             </div>
 
             <div className={styles.reality} data-motion="reality" aria-hidden="true">
@@ -416,7 +419,7 @@ export default function CinematicHome(): ReactNode {
                 '2026 年的 24 小时挑战里，两支代表队与来自各地的伙伴反复讨论、修改方案。不同专长，最终汇入同一份提案。',
                 'In the 2026 24-hour challenge, our teams revised a shared proposal with students worldwide. Different strengths shaped one design.',
               )}</p>
-              <small>{t('真实影像 · 2026 GFSSM 决赛', 'ARCHIVE PHOTO · GFSSM 2026 FINAL')}</small>
+              <small data-motion="team-credit">{t('真实影像 · 2026 GFSSM 决赛', 'ARCHIVE PHOTO · GFSSM 2026 FINAL')}</small>
             </div>
 
             <div className={styles.record} data-motion="record">
@@ -466,11 +469,11 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.endCopy} data-motion="end">
               <p className={styles.phaseIndex}>PASS IT FORWARD</p>
               <StoryHeading first={t('把做过的事，', 'Pass what we learn')} second={t('交给下一程。', 'to the next crew.')} accent />
-              <p>{t(
+              <p data-motion="end-detail">{t(
                 '提案与复盘写进知识库，航天科普走出赛场；天文周、纸飞机比赛也曾让更多同学走近工程。下一次出发，欢迎愿意查证、动手、协作并把想法讲清楚的你。',
                 'Proposals and lessons enter our knowledge base. Outreach, Astronomy Week and paper-plane activities have brought more students close to engineering. If you are ready to research, build, collaborate and explain, join the next crew.',
               )}</p>
-              <div className={styles.endActions}>
+              <div className={styles.endActions} data-motion="end-actions">
                 <Link className={styles.primaryLink} to="/join">{t('了解如何加入', 'How to join')} <span>↗</span></Link>
                 <Link className={styles.secondaryLink} to="/docs/intro">{t('打开知识库', 'Open the knowledge base')} <span>↗</span></Link>
               </div>

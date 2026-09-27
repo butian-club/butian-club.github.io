@@ -277,7 +277,6 @@
 .recordFutureBackdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #020a11 0%, rgba(2,10,17,.92) 35%, rgba(2,10,17,.45) 70%, rgba(2,10,17,.2)); }
 .recordEyebrow { position: relative; z-index: 2; margin: 0; color: var(--ice); }
 .archiveVisual { position: absolute; top: 15%; right: 6%; width: min(41vw, 560px); height: 66%; opacity: 0; visibility: hidden; pointer-events: none; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; }
-.archiveVisual::before { content: ''; position: absolute; inset: -18px -16px; border: 1px solid rgba(185, 244, 237, .2); clip-path: polygon(0 0, 23% 0, 23% 1px, 100% 1px, 100% 77%, 99% 77%, 99% 100%, 0 100%); }
 .archivePhoto { position: absolute; overflow: hidden; background: #0b1b22; border: 1px solid var(--photo-outline); box-shadow: 0 20px 64px rgba(0, 0, 0, .3); }
 .archivePhoto::after { position: absolute; left: 9px; bottom: 9px; padding: 4px 6px; color: #f1faf7; background: rgba(1, 11, 17, .8); font: 600 9px var(--font-mono); letter-spacing: .14em; }
 .archivePhoto::after { content: attr(data-label); }
@@ -390,7 +389,7 @@
   .record { padding: 22vh 8%; }
   .recordEntry { top: 28%; left: 8%; width: 80%; }
   .archiveVisual { top: 10%; right: 5%; width: 43vw; height: clamp(95px, 17svh, 140px); }
-  .archiveVisual::before, .archivePhoto:nth-child(2), .archivePhoto:nth-child(3) { display: none; }
+  .archivePhoto:nth-child(2), .archivePhoto:nth-child(3) { display: none; }
   .archivePhoto:nth-child(1) { top: 0; left: 0; width: 100%; height: 100%; }
   .recordEntry .sourceLink { margin-left: 14px; }
   .recordFuture { top: 16%; right: 5%; width: 48vw; height: 24svh; gap: .1rem; }
