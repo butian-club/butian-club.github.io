@@ -97,8 +97,10 @@ export default function CinematicHome(): ReactNode {
       },
     }, 0);
 
+    // GSAP owns these transforms after mount, so preserve percentage centering
+    // inside the tweens instead of relying on the CSS transform alone.
     timeline
-      .fromTo(target('launch-copy'), {y: 0}, {y: -52, duration: 7, ease: 'none'}, 0)
+      .fromTo(target('launch-copy'), {yPercent: -50, y: 0}, {yPercent: -50, y: -52, duration: 7, ease: 'none'}, 0)
       .to(target('launch-copy'), {autoAlpha: 0, duration: 4, ease: 'power1.inOut'}, 3)
       .to(target('campus-credit'), {autoAlpha: 0, duration: 3}, 4)
       .to(target('launch-vignette'), {autoAlpha: 0, duration: 5}, 5)
@@ -116,7 +118,7 @@ export default function CinematicHome(): ReactNode {
     spaceTimeline
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
       .fromTo(target('hero'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 0)
-      .fromTo(target('hero'), {y: 26}, {y: -83, duration: 14, ease: 'none'}, 0)
+      .fromTo(target('hero'), {yPercent: -50, y: 26}, {yPercent: -50, y: -83, duration: 14, ease: 'none'}, 0)
       .to(target('hero'), {autoAlpha: 0, scale: 0.96, duration: 4, ease: 'power1.inOut'}, 8)
       .fromTo(target('brief'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 10)
       .fromTo(target('brief'), {x: 56, y: 16}, {x: -42, y: -20, duration: 16, ease: 'none'}, 10)
