@@ -94,4 +94,12 @@ test('station shell and mechanisms keep their clearance throughout the scroll', 
   const ringBounds = new THREE.Box3().setFromObject(station.ring);
   assert.ok(ringBounds.min.z > -0.87,
     `rotating rear structure clears the fixed solar truss (rear extent ${ringBounds.min.z})`);
+
+  const turns = [0.5, 0.6, 0.7, 0.8, 0.9].map((progress) => {
+    poseStation(station, progress);
+    return station.ring.rotation.z;
+  });
+  const steps = turns.slice(1).map((angle, index) => angle - turns[index]);
+  assert.ok(Math.max(...steps) - Math.min(...steps) < 1e-10,
+    'deployed habitat rotates at an even rate through the archive');
 });
