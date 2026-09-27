@@ -133,19 +133,19 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('assembly-note'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.8, ease: 'power1.inOut'}, 27.6)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
       .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 19}, 26)
-      .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 46)
+      .to(target('system-grid'), {autoAlpha: 0, duration: 3}, 45)
       .fromTo(target('systems-rail'), {autoAlpha: 0, y: 24}, {autoAlpha: 1, y: 0, duration: 3, ease: 'power2.out'}, 27)
-      .fromTo(target('systems-fill'), {scaleX: 0}, {scaleX: 1, duration: 22, ease: 'none'}, 27)
-      .to(target('systems-rail'), {autoAlpha: 0, y: -16, duration: 2, ease: 'power2.in'}, 48)
-      .to(target('assembly'), {autoAlpha: 0, duration: 4, ease: 'power1.inOut'}, 48)
+      .fromTo(target('systems-fill'), {scaleX: 0}, {scaleX: 1, duration: 19, ease: 'none'}, 27)
+      .to(target('systems-rail'), {autoAlpha: 0, y: -16, duration: 2, ease: 'power2.in'}, 46.5)
+      .to(target('assembly'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 46)
       .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
         autoAlpha: 1, '--portal-radius': '145%', duration: 16, ease: 'power1.out',
-      }, 47)
+      }, 48.5)
       .fromTo(target('portal-image'), {scale: 1.45, xPercent: -2, yPercent: 2}, {
         scale: 1.05, xPercent: 1, yPercent: -1, duration: 18, ease: 'none',
-      }, 47)
-      .fromTo(target('habitat-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 53.5)
-      .fromTo(target('habitat-caption'), {y: 35}, {y: -32, duration: 11, ease: 'none'}, 53.5)
+      }, 48.5)
+      .fromTo(target('habitat-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 51)
+      .fromTo(target('habitat-caption'), {y: 35}, {y: -32, duration: 11, ease: 'none'}, 51)
       .to(target('habitat-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 61.5)
       .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5, ease: 'power2.inOut'}, 63)
       .to(target('portal'), {autoAlpha: 0, duration: 5, ease: 'power2.inOut'}, 63)
@@ -182,9 +182,9 @@ export default function CinematicHome(): ReactNode {
 
     competitionRoles.forEach((_, index) => {
       const node = target(`system-node-${index}`);
-      const at = 29 + index * 4.2;
-      spaceTimeline.to(node, {autoAlpha: 1, y: -5, duration: 2.1, ease: 'power2.out'}, at);
-      spaceTimeline.to(node, {autoAlpha: .48, y: 0, duration: 1.7, ease: 'power2.inOut'}, at + 3);
+      const at = 29 + index * 3.5;
+      spaceTimeline.to(node, {autoAlpha: 1, duration: 2.1, ease: 'power2.out'}, at);
+      spaceTimeline.to(node, {autoAlpha: .48, duration: 1.7, ease: 'power2.inOut'}, at + 3);
     });
 
     const revealHeading = (name: string, at: number, duration: number, track: gsap.core.Timeline) => {
@@ -200,7 +200,7 @@ export default function CinematicHome(): ReactNode {
       ['hero', 0.5, 3.8],
       ['brief', 10.4, 4],
       ['assembly', 23.8, 3.5],
-      ['habitat-caption', 53.9, 3.4],
+      ['habitat-caption', 51.2, 2.6],
       ['team-caption', 64.8, 2.2],
       ['end', 132.2, 3.8],
     ];
@@ -209,7 +209,7 @@ export default function CinematicHome(): ReactNode {
     milestones.forEach((_, index) => {
       const at = 77 + index * 11.5;
       spaceTimeline.to(target(`archive-node-${index}`), {
-        opacity: 1, y: -5, duration: 1.8, ease: 'power2.out',
+        opacity: 1, duration: 1.8, ease: 'power2.out',
       }, at);
       const entrance = index === 0 ? at - 1.4 : at - 2.2;
       const entranceDuration = index === 0 ? 2.6 : 2;
@@ -298,7 +298,7 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.hud} aria-hidden="true">
-              <div className={styles.hudBrand}><span className={styles.hudDiamond} /> BUTIAN ENGINEERING CLUB</div>
+              <div className={styles.hudBrand}><span className={styles.hudMarker} /> BUTIAN ENGINEERING CLUB</div>
               <div className={styles.hudCoordinates}>30°10′42″ N &nbsp; 120°07′59″ E <span>→</span> DEEP SPACE</div>
               <div className={styles.hudBottom}>
                 <span>HANGZHOU NO.2 HIGH SCHOOL</span>
@@ -373,7 +373,6 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.systemsRail} data-motion="systems-rail" aria-hidden="true">
               <div className={styles.systemsHeading}>
                 <span>{t('协同系统', 'INTERCONNECTED SYSTEMS')}</span>
-                <span>01 — 05</span>
               </div>
               <div className={styles.systemsTrack}><i data-motion="systems-fill" /></div>
               <div className={styles.systemsNodes}>

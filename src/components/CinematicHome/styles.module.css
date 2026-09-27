@@ -1,6 +1,10 @@
 .home {
   --ice: #b9f4ed;
   --amber: #f4b782;
+  --instrument-rule: rgba(185, 244, 237, .28);
+  --instrument-fill: rgba(185, 244, 237, .82);
+  --copy-shadow: 0 2px 20px rgba(0, 8, 15, .72);
+  --photo-outline: rgba(201, 237, 233, .35);
   position: relative;
   margin-top: calc(0px - var(--ifm-navbar-height));
   overflow: clip;
@@ -140,7 +144,7 @@
   bottom: 8%;
   width: 1px;
   background: linear-gradient(transparent, rgba(185, 244, 237, .64) 22%, rgba(185, 244, 237, .78) 76%, transparent);
-  box-shadow: 0 0 24px 2px rgba(94, 210, 215, .19);
+  box-shadow: 0 0 16px rgba(94, 210, 215, .12);
 }
 .hud {
   position: absolute;
@@ -155,7 +159,7 @@
   text-shadow: 0 2px 8px rgba(0, 6, 13, .95), 0 1px 2px rgba(0, 6, 13, .9);
 }
 .hudBrand { position: absolute; top: calc(var(--ifm-navbar-height) + 24px); left: clamp(24px, 4.4vw, 78px); display: flex; align-items: center; gap: 13px; }
-.hudDiamond { width: 8px; height: 8px; border: 1px solid var(--ice); transform: rotate(45deg); box-shadow: 0 0 14px rgba(185, 244, 237, .8); }
+.hudMarker { width: 5px; height: 5px; border-radius: 50%; background: var(--ice); }
 .hudCoordinates { position: absolute; top: calc(var(--ifm-navbar-height) + 24px); right: clamp(24px, 4.4vw, 78px); }
 .hudCoordinates span { color: var(--amber); }
 .hudBottom { position: absolute; bottom: 28px; left: clamp(24px, 4.4vw, 78px); right: clamp(24px, 4.4vw, 78px); display: flex; justify-content: space-between; }
@@ -210,7 +214,7 @@
   line-height: 1.8;
 }
 .signal { display: flex; align-items: center; gap: 10px; color: var(--amber); margin-bottom: 34px; }
-.signal span { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 14px var(--amber); }
+.signal span { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); }
 .wordmarkGhost {
   position: absolute;
   z-index: 4;
@@ -235,19 +239,18 @@
   left: clamp(36px, 8vw, 140px);
   right: clamp(36px, 8vw, 140px);
   bottom: 10%;
-  padding: 28px 0 0;
   color: #effbf9;
-  background: linear-gradient(0deg, rgba(2, 11, 17, .76), rgba(2, 11, 17, .35) 70%, transparent);
   pointer-events: none;
-  text-shadow: 0 2px 14px #01080d;
+  text-shadow: var(--copy-shadow);
 }
-.systemsHeading { display: flex; justify-content: space-between; margin-bottom: 13px; color: var(--ice); font: 600 9px var(--font-mono); letter-spacing: .22em; }
-.systemsTrack { height: 1px; background: rgba(185, 244, 237, .25); }
-.systemsTrack i { display: block; width: 100%; height: 100%; background: var(--ice); box-shadow: 0 0 14px rgba(185, 244, 237, .45); transform: scaleX(0); transform-origin: left; }
-.systemsNodes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-.systemsNode { position: relative; display: flex; align-items: baseline; gap: 9px; padding-top: 15px; opacity: .36; }
-.systemsNode::before { content: ''; position: absolute; top: -3px; left: 0; width: 5px; height: 5px; border: 1px solid currentColor; background: #071821; transform: rotate(45deg); }
-.systemsNode small { color: var(--amber); font: 600 9px var(--font-mono); letter-spacing: .08em; }
+.systemsRail::before { content: ''; position: absolute; z-index: -1; top: -8vh; bottom: -10vh; left: calc(-1 * clamp(36px, 8vw, 140px)); right: calc(-1 * clamp(36px, 8vw, 140px)); background: linear-gradient(180deg, transparent, rgba(2, 10, 17, .46) 68%, rgba(2, 10, 17, .6)); }
+.systemsHeading { margin-bottom: 17px; color: var(--ice); font: 600 9px var(--font-mono); letter-spacing: .18em; }
+.systemsTrack { height: 1px; margin-inline: 10%; background: var(--instrument-rule); }
+.systemsTrack i { display: block; width: 100%; height: 100%; background: var(--instrument-fill); transform: scaleX(0); transform-origin: left; }
+.systemsNodes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.systemsNode { position: relative; display: flex; align-items: baseline; justify-content: center; gap: 8px; padding-top: 15px; opacity: .38; text-align: center; }
+.systemsNode::before { content: ''; position: absolute; top: -2px; left: 50%; width: 4px; height: 4px; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
+.systemsNode small { color: var(--ice); font: 600 9px var(--font-mono); letter-spacing: .04em; }
 .systemsNode strong { font-size: clamp(11px, 1.12vw, 16px); font-weight: 600; letter-spacing: -.02em; }
 .roleCompact { display: none; }
 .portal, .reality { position: absolute; inset: 0; z-index: 8; visibility: hidden; opacity: 0; }
@@ -262,7 +265,7 @@
 .reality { z-index: 10; will-change: opacity; }
 .realityImage { background-image: url('/img/archive/2026/final-stage.webp'); background-position: center 44%; filter: blur(22px) saturate(.6) brightness(.72); }
 .realityTint { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1, 12, 16, .35), rgba(1, 12, 16, .72) 69%, rgba(1, 12, 16, .84)), linear-gradient(0deg, rgba(1, 12, 16, .72), transparent 60%); }
-.realityFrame { position: absolute; top: 19%; left: 6%; width: min(48vw, 700px); aspect-ratio: 700 / 469; overflow: hidden; visibility: hidden; opacity: 0; box-shadow: 0 0 0 1px rgba(201, 237, 233, .5), 0 32px 100px rgba(0, 0, 0, .5); will-change: transform, opacity; }
+.realityFrame { position: absolute; top: 19%; left: 6%; width: min(48vw, 700px); aspect-ratio: 700 / 469; overflow: hidden; visibility: hidden; opacity: 0; box-shadow: 0 0 0 1px var(--photo-outline), 0 20px 64px rgba(0, 0, 0, .3); will-change: transform, opacity; }
 .realityFrame img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .realityFrame::after { content: '2026 / GFSSM FINAL'; position: absolute; right: 0; bottom: 0; padding: 8px 11px; color: #eef8f5; background: rgba(1, 10, 16, .85); font: 600 9px var(--font-mono); letter-spacing: .15em; }
 .teamCaption { z-index: 13; top: 31%; right: 7%; width: min(34vw, 490px); text-shadow: 0 2px 18px #000; }
@@ -275,7 +278,7 @@
 .recordEyebrow { position: relative; z-index: 2; margin: 0; color: var(--ice); }
 .archiveVisual { position: absolute; top: 15%; right: 6%; width: min(41vw, 560px); height: 66%; opacity: 0; visibility: hidden; pointer-events: none; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; }
 .archiveVisual::before { content: ''; position: absolute; inset: -18px -16px; border: 1px solid rgba(185, 244, 237, .2); clip-path: polygon(0 0, 23% 0, 23% 1px, 100% 1px, 100% 77%, 99% 77%, 99% 100%, 0 100%); }
-.archivePhoto { position: absolute; overflow: hidden; background: #0b1b22; border: 1px solid rgba(195, 233, 229, .55); box-shadow: 0 24px 70px rgba(0, 0, 0, .38); }
+.archivePhoto { position: absolute; overflow: hidden; background: #0b1b22; border: 1px solid var(--photo-outline); box-shadow: 0 20px 64px rgba(0, 0, 0, .3); }
 .archivePhoto::after { position: absolute; left: 9px; bottom: 9px; padding: 4px 6px; color: #f1faf7; background: rgba(1, 11, 17, .8); font: 600 9px var(--font-mono); letter-spacing: .14em; }
 .archivePhoto::after { content: attr(data-label); }
 .archivePhoto img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.66) contrast(1.06) brightness(.91); }
@@ -304,11 +307,11 @@
 .recordChronology { position: absolute; z-index: 3; right: 6%; bottom: 12%; width: min(41vw, 560px); color: rgba(221, 244, 241, .82); font: 600 9px var(--font-mono); letter-spacing: .16em; pointer-events: none; }
 .chronologyHeading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
 .chronologyHeading span:first-child { color: var(--ice); }
-.chronologyTrack { height: 1px; background: rgba(185, 244, 237, .27); }
-.chronologyTrack i { display: block; width: 100%; height: 100%; background: var(--ice); box-shadow: 0 0 13px rgba(185, 244, 237, .5); transform: scaleX(0); transform-origin: left; }
-.chronologyYears { display: flex; justify-content: space-between; margin-top: 10px; }
-.chronologyYears span { position: relative; opacity: .42; }
-.chronologyYears span::before { content: ''; position: absolute; top: -13px; left: 0; width: 5px; height: 5px; border: 1px solid var(--ice); background: #071821; transform: rotate(45deg); }
+.chronologyTrack { height: 1px; margin-inline: 12.5%; background: var(--instrument-rule); }
+.chronologyTrack i { display: block; width: 100%; height: 100%; background: var(--instrument-fill); transform: scaleX(0); transform-origin: left; }
+.chronologyYears { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 10px; }
+.chronologyYears span { position: relative; opacity: .42; text-align: center; }
+.chronologyYears span::before { content: ''; position: absolute; top: -12px; left: 50%; width: 4px; height: 4px; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
 .endCopy { z-index: 16; top: 24%; left: clamp(30px, 8vw, 140px); width: min(76vw, 950px); }
 .endCopy::before { content: ''; position: absolute; z-index: 0; inset: -3rem -2rem -3rem -4rem; pointer-events: none; background: linear-gradient(90deg, rgba(2, 10, 17, .7), rgba(2, 10, 17, .4) 63%, transparent); mask-image: linear-gradient(0deg, transparent, #000 20%, #000 80%, transparent); }
 .endCopy > * { position: relative; z-index: 1; }
@@ -323,8 +326,8 @@
 .secondaryLink:hover { color: #fff; background: rgba(185, 244, 237, .14); }
 .progressRail { position: absolute; z-index: 27; right: clamp(20px, 3.5vw, 60px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: 15px; transform: translateY(-50%); color: rgba(228, 247, 247, .9); font: 600 10px var(--font-mono); letter-spacing: .13em; text-shadow: 0 2px 8px rgba(0, 6, 13, .95), 0 1px 2px rgba(0, 6, 13, .9); pointer-events: none; }
 .progressLabel { white-space: nowrap; }
-.progressTrack { position: relative; width: 1px; height: clamp(80px, 22vh, 180px); background: rgba(203, 241, 239, .24); overflow: hidden; }
-.progressTrack i { display: block; width: 100%; height: 100%; background: var(--ice); transform: scaleY(var(--journey-progress)); transform-origin: top; box-shadow: 0 0 12px var(--ice); }
+.progressTrack { position: relative; width: 1px; height: clamp(80px, 22vh, 180px); background: var(--instrument-rule); overflow: hidden; }
+.progressTrack i { display: block; width: 100%; height: 100%; background: var(--instrument-fill); transform: scaleY(var(--journey-progress)); transform-origin: top; }
 .progressName { writing-mode: vertical-rl; white-space: nowrap; }
 .afterword { min-height: 110px; padding: 30px clamp(25px, 6vw, 100px); display: flex; justify-content: space-between; align-items: center; gap: 24px; color: rgba(221, 242, 241, .58); background: #02070c; font: 500 10px var(--font-mono); letter-spacing: .14em; }
 .afterword a { color: var(--ice); text-decoration: none; }
@@ -369,12 +372,14 @@
   .assemblyCopy { top: 14%; left: 7%; width: 85%; }
   .assemblyCopy h2 { font-size: clamp(2.25rem, 10vw, 3.1rem); }
   .assemblyCopy p { max-width: 240px; }
-  .systemsRail { left: 7%; right: 7%; bottom: 11%; padding-top: 16px; }
-  .systemsHeading { font-size: 7px; letter-spacing: .13em; margin-bottom: 9px; }
-  .systemsNodes { gap: 3px; }
-  .systemsNode { display: block; padding-top: 10px; }
-  .systemsNode small { display: block; font-size: 7px; margin-bottom: 3px; }
-  .systemsNode strong { display: block; font-size: 9px; line-height: 1.2; overflow-wrap: anywhere; }
+  .systemsRail { left: 7%; right: 7%; bottom: 11%; }
+  .systemsRail::before { left: -7vw; right: -7vw; bottom: -11vh; }
+  .systemsHeading { font-size: 8px; letter-spacing: .13em; margin-bottom: 12px; }
+  .systemsNode { display: block; padding-top: 11px; }
+  .systemsNode small { display: block; font-size: 8px; margin-bottom: 4px; }
+  .systemsNode strong { display: block; font-size: 10px; line-height: 1.25; overflow-wrap: anywhere; }
+  :global(html[lang='en']) .roleFull { display: none; }
+  :global(html[lang='en']) .roleCompact { display: inline; }
   .portalImage { background-position: 51% center; }
   .realityImage { filter: blur(20px) saturate(.55) brightness(.63); }
   .realityFrame { display: block; top: 14%; left: 8%; right: auto; width: 84%; }
@@ -402,7 +407,7 @@
   .recordChronology { right: 8%; bottom: 10%; width: 84%; font-size: 7px; }
   .chronologyHeading { margin-bottom: 9px; letter-spacing: .08em; }
   .chronologyYears { margin-top: 8px; }
-  .chronologyYears span::before { top: -11px; }
+  .chronologyYears span::before { top: -10px; }
   .endCopy { top: 16%; left: 8%; width: 83%; }
   .endCopy::before { inset: -3rem -1.5rem -3rem -8vw; background: linear-gradient(90deg, rgba(2, 10, 17, .98), rgba(2, 10, 17, .86) 68%, rgba(2, 10, 17, .52)); }
   .endCopy h2 { font-size: clamp(2.9rem, 10vw, 3.6rem); text-wrap: wrap; }
