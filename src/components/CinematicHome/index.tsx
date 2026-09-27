@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import {useT} from '@site/src/lib/i18n';
 import {projects} from '@site/src/data/projects';
+import {competitionRoles} from '@site/src/data/site';
 import {useGSAP} from '@gsap/react';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -34,6 +35,13 @@ const stops = [
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
   .map((id) => projects.find((project) => project.id === id))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
+
+function StoryHeading({first, second, accent = false}: {first: string; second: string; accent?: boolean}): ReactNode {
+  return <h2>
+    <span className={styles.headlineMask}><span>{first}</span></span>
+    <span className={styles.headlineMask}><span>{accent ? <em>{second}</em> : second}</span></span>
+  </h2>;
+}
 
 export default function CinematicHome(): ReactNode {
   const t = useT();
@@ -105,27 +113,30 @@ export default function CinematicHome(): ReactNode {
     spaceTimeline
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
       .fromTo(target('hero'), {autoAlpha: 0, y: 30}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 0)
+      .to(target('hero'), {y: -22, duration: 4, ease: 'none'}, 4)
       .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.94, duration: 6, ease: 'power2.in'}, 8)
       .fromTo(target('brief'), {autoAlpha: 0, x: 64, y: 16}, {autoAlpha: 1, x: 0, y: 0, duration: 5, ease: 'power2.out'}, 14)
+      .to(target('brief'), {x: -20, y: -12, duration: 4, ease: 'none'}, 19)
       .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 9}, 12)
       .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 23)
       .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 5}, 23)
       .fromTo(target('assembly'), {autoAlpha: 0, y: 38, scale: .985}, {autoAlpha: 1, y: 0, scale: 1, duration: 4.5, ease: 'power2.out'}, 25)
+      .to(target('assembly'), {y: -26, duration: 18.5, ease: 'none'}, 29.5)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
       .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 19}, 26)
       .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 46)
-      .fromTo(target('callout-1'), {autoAlpha: 0, x: -40}, {autoAlpha: 1, x: 0, duration: 4}, 29)
-      .to(target('callout-1'), {autoAlpha: 0, x: -35, duration: 4}, 35)
-      .fromTo(target('callout-2'), {autoAlpha: 0, x: 40}, {autoAlpha: 1, x: 0, duration: 4}, 36)
-      .to(target('callout-2'), {autoAlpha: 0, x: 35, duration: 4}, 42)
-      .fromTo(target('callout-3'), {autoAlpha: 0, y: 28}, {autoAlpha: 1, y: 0, duration: 4}, 42)
+      .fromTo(target('systems-rail'), {autoAlpha: 0, y: 24}, {autoAlpha: 1, y: 0, duration: 3, ease: 'power2.out'}, 27)
+      .fromTo(target('systems-fill'), {scaleX: 0}, {scaleX: 1, duration: 22, ease: 'none'}, 27)
+      .to(target('systems-rail'), {autoAlpha: 0, y: -16, duration: 2, ease: 'power2.in'}, 48)
       .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 4}, 48)
-      .to(target('callout-3'), {autoAlpha: 0, y: -28, duration: 4}, 49)
       .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
         autoAlpha: 1, '--portal-radius': '145%', duration: 16, ease: 'power1.out',
       }, 47)
-      .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 18, ease: 'power1.out'}, 47)
+      .fromTo(target('portal-image'), {scale: 1.45, xPercent: -2, yPercent: 2}, {
+        scale: 1.05, xPercent: 1, yPercent: -1, duration: 18, ease: 'none',
+      }, 47)
       .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 56)
+      .to(target('habitat-caption'), {y: -16, duration: 3, ease: 'none'}, 60)
       .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 3}, 63)
       .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5, ease: 'power2.inOut'}, 64)
       .to(target('portal'), {autoAlpha: 0, duration: 5, ease: 'power2.inOut'}, 64)
@@ -135,6 +146,7 @@ export default function CinematicHome(): ReactNode {
       }, 66)
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
       .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 68)
+      .to(target('team-caption'), {y: -12, duration: 2, ease: 'none'}, 72)
       .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 74)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 75)
       .to(target('reality'), {autoAlpha: 0, duration: 3}, 75)
@@ -145,7 +157,24 @@ export default function CinematicHome(): ReactNode {
       .to(target('record'), {autoAlpha: 0, duration: 2.2}, 129.3)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
         autoAlpha: 1, y: 0, scale: 1, duration: 4, ease: 'power2.out',
-      }, 130.3);
+      }, 130.3)
+      .to(target('end'), {y: -18, duration: 8.7, ease: 'none'}, 134.3);
+
+    competitionRoles.forEach((_, index) => {
+      const node = target(`system-node-${index}`);
+      const at = 29 + index * 4.2;
+      spaceTimeline.to(node, {autoAlpha: 1, y: -5, duration: 2.1, ease: 'power2.out'}, at);
+      spaceTimeline.to(node, {autoAlpha: .48, y: 0, duration: 1.7, ease: 'power2.inOut'}, at + 3);
+    });
+
+    const revealHeading = (name: string, at: number, duration: number, track: gsap.core.Timeline) => {
+      const lines = target(name).querySelectorAll<HTMLElement>(`.${styles.headlineMask} > span`);
+      if (lines.length) track.fromTo(lines, {yPercent: 108}, {
+        yPercent: 0, duration, stagger: .55, ease: 'power3.out',
+      }, at);
+    };
+    revealHeading('cloud-copy', 7.2, 2.7, timeline);
+    revealHeading('edge-copy', 16.2, 2.7, timeline);
 
     const headingReveals: Array<[string, number, number]> = [
       ['hero', 0.5, 3.8],
@@ -155,50 +184,65 @@ export default function CinematicHome(): ReactNode {
       ['team-caption', 68.4, 3.3],
       ['end', 130.7, 3.8],
     ];
-    headingReveals.forEach(([name, at, duration]) => {
-      const heading = target(name).querySelector('h2');
-      if (heading) spaceTimeline.fromTo(heading, {autoAlpha: 0, y: 30}, {
-        autoAlpha: 1, y: 0, duration, ease: 'power2.out',
-      }, at);
-    });
+    headingReveals.forEach(([name, at, duration]) => revealHeading(name, at, duration, spaceTimeline));
 
     milestones.forEach((_, index) => {
       const at = 77 + index * 11.5;
-      const entrance = at - 1;
-      const exit = index < milestones.length - 1 ? at + 10.5 : 123;
+      const entrance = index === 0 ? at - 1 : at - 2;
+      const entranceDuration = index === 0 ? 2.6 : 2;
+      const exit = index < milestones.length - 1 ? at + 9.5 : 123;
+      const textEntrance = index === 0 ? at : at - .5;
       const archive = target('archive-visual-' + index);
+      const cards = archive.querySelectorAll(`.${styles.archivePhoto}`);
       const photos = archive.querySelectorAll('img');
-      spaceTimeline.fromTo(archive, {autoAlpha: 0, x: travel(112, 22), y: travel(27, 6), scale: .93}, {
-        autoAlpha: 1, x: travel(20, 5), y: travel(8, 2), scale: 1, duration: 2.6, ease: 'power2.out',
+      spaceTimeline.fromTo(archive, {
+        autoAlpha: 0, x: travel(160, 28), y: travel(33, 7), scale: .84, rotationY: travel(-10, -4),
+      }, {
+        autoAlpha: 1, x: travel(20, 5), y: travel(8, 2), scale: 1, rotationY: 0,
+        duration: entranceDuration, ease: 'power2.out',
+      }, entrance);
+      spaceTimeline.fromTo(cards, {
+        autoAlpha: 0, y: travel(85, 28), rotation: (photo: number) => [-3, 2, -2][photo % 3],
+      }, {
+        autoAlpha: 1, y: 0, rotation: 0, duration: entranceDuration,
+        stagger: .16, ease: 'power2.out',
       }, entrance);
       spaceTimeline.to(archive, {
-        x: travel(-28, -6), y: travel(-12, -3), scale: 1.025,
-        duration: exit - (entrance + 2.6), ease: 'none',
-      }, entrance + 2.6);
+        x: travel(-35, -7), y: travel(-17, -4), scale: 1.055, rotationY: travel(5, 2),
+        duration: exit - (entrance + entranceDuration), ease: 'none',
+      }, entrance + entranceDuration);
       spaceTimeline.fromTo(photos, {
         x: (photo: number) => [22, -24, 28][photo % 3],
         y: (photo: number) => [-18, 20, 15][photo % 3],
-        scale: 1.1,
+        scale: travel(1.12, 1.04),
       }, {
-        x: 0, y: 0, scale: 1, duration: 4, stagger: .14, ease: 'power2.out',
+        x: 0, y: 0, scale: 1, duration: 4, stagger: .18, ease: 'power2.out',
       }, entrance);
       spaceTimeline.to(photos, {
-        yPercent: -3, scale: 1.035, duration: exit - (entrance + 4.3), ease: 'none',
-      }, entrance + 4.3);
+        yPercent: travel(-9, -3), scale: travel(1.08, 1.03),
+        duration: exit - (entrance + 4.4), ease: 'none',
+      }, entrance + 4.4);
       spaceTimeline.to(archive, {
-        autoAlpha: 0, x: travel(-110, -22), y: travel(-25, -7), scale: .96,
-        duration: 2, ease: 'power2.inOut',
+        autoAlpha: 0, x: travel(-140, -25), y: travel(-33, -8),
+        scale: 1.13, rotationY: travel(12, 4),
+        duration: index < milestones.length - 1 ? 1.3 : 2, ease: 'power2.inOut',
       },
         exit);
-      spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: travel(74, 26), y: 18}, {
-        autoAlpha: 1, x: 0, y: 0, duration: 2.4, ease: 'power2.out',
-      }, at);
+      spaceTimeline.to(cards, {
+        autoAlpha: 0, y: travel(-90, -30), rotation: (photo: number) => [-2, 3, -3][photo % 3],
+        duration: index < milestones.length - 1 ? 1.1 : 1.8,
+        stagger: .08, ease: 'power2.in',
+      }, exit);
+      spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: travel(100, 34), y: 28, scale: .96}, {
+        autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 2.4, ease: 'power2.out',
+      }, textEntrance);
       spaceTimeline.to(target('record-' + index), {
-        x: travel(-18, -8), y: -8, duration: exit - (at + 2.4), ease: 'none',
-      }, at + 2.4);
+        x: travel(-22, -8), y: -11, duration: exit - (textEntrance + 2.4), ease: 'none',
+      }, textEntrance + 2.4);
       if (index < milestones.length - 1) {
         spaceTimeline.to(target('record-' + index), {
-          autoAlpha: 0, x: travel(-82, -24), y: -17, duration: 1, ease: 'power2.inOut',
+          autoAlpha: 0, x: travel(-95, -25), y: -22, scale: 1.035,
+          duration: 1.3, ease: 'power2.inOut',
         }, exit);
       }
     });
@@ -254,18 +298,18 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.ascentCaption} data-motion="cloud-copy">
               <span className={styles.phaseIndex}>FLIGHT / ABOVE THE CLOUDS</span>
-              <h2>{t('视野越开阔，', 'A wider horizon.')}<br /><em>{t('问题越具体。', 'Sharper questions.')}</em></h2>
+              <StoryHeading first={t('视野越开阔，', 'A wider horizon.')} second={t('问题越具体。', 'Sharper questions.')} accent />
               <p>{t('从好奇出发，向更远处寻找工程的答案。', 'Curiosity leads us toward questions we can solve together.')}</p>
             </div>
             <div className={styles.ascentCaption} data-motion="edge-copy">
               <span className={styles.phaseIndex}>FLIGHT / INTO ORBIT</span>
-              <h2>{t('越过云层，', 'Beyond the clouds.')}<br /><em>{t('抵达新的视角。', 'A new perspective.')}</em></h2>
+              <StoryHeading first={t('越过云层，', 'Beyond the clouds.')} second={t('抵达新的视角。', 'A new perspective.')} accent />
               <p>{t('下一站，是把想象变成可以推敲的设计。', 'The next step is turning imagination into a design we can test.')}</p>
             </div>
 
             <div className={styles.heroCopy} data-motion="hero">
               <p className={styles.eyebrow}>{t('杭州第二中学 · 求是创新学院 · 步天工程社', 'HANGZHOU NO.2 HIGH SCHOOL · QIUSHI INNOVATION ACADEMY')}</p>
-              <h2>{t('把未来，', 'Build the future')}<br /><em>{t('建在星辰之间。', 'beyond Earth.')}</em></h2>
+              <StoryHeading first={t('把未来，', 'Build the future')} second={t('建在星辰之间。', 'beyond Earth.')} accent />
               <p className={styles.heroLead}>{t(
                 '我们是杭州第二中学求是创新学院的学生社团。以太空城市与基地设计为主线，把航天兴趣变成有依据的工程方案。',
                 'We are a student club at Hangzhou No.2 High School’s Qiushi Innovation Academy. Space-settlement design turns our interest in space into evidence-based engineering proposals.',
@@ -283,7 +327,7 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.briefCopy} data-motion="brief">
               <div className={styles.signal}><span /> {t('步天工程社 · 从哪里开始', 'BUTIAN · WHERE WE BEGIN')}</div>
               <p className={styles.phaseIndex}>02 / FROM BRIEF TO PROPOSAL</p>
-              <h2>{t('先接住问题，', 'First, understand')}<br />{t('再提出未来。', 'the challenge.')}</h2>
+              <StoryHeading first={t('先接住问题，', 'First, understand')} second={t('再提出未来。', 'the challenge.')} />
               <p>{t(
                 '从赛事任务书出发，拆解需求、查找证据、分工设计，最后以一份提案和英文答辩回应约束。',
                 'We begin with a competition brief: break down requirements, find evidence, design together, then respond with a proposal and an English defense.',
@@ -293,27 +337,27 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.assemblyCopy} data-motion="assembly">
               <span className={styles.phaseIndex}>03 / SYSTEMS THINKING</span>
-              <h2>{t('五种专长，', 'Five disciplines.')}<br /><em>{t('同一座城市。', 'One shared city.')}</em></h2>
+              <StoryHeading first={t('五种专长，', 'Five disciplines.')} second={t('同一座城市。', 'One shared city.')} accent />
               <p>{t(
                 '像一家虚拟航天公司：管理、结构、人居、运营和基础设施各有分工；方案必须在彼此的约束中成立。',
                 'Organized like a virtual aerospace company, we connect management, structure, habitat, operations and infrastructure. Every decision has to work with the others.',
               )}</p>
               <small className={styles.conceptNote}>{t('概念视觉 · 非实际方案模型', 'CONCEPT VISUAL · NOT A PROJECT MODEL')}</small>
             </div>
-            <div className={styles.calloutLeft} data-motion="callout-1">
-              <span className={styles.calloutNumber}>01 / 03</span>
-              <b>{t('把问题查清楚', 'RESEARCH FIRST')}</b>
-              <small>{t('文献 · 数据 · 依据', 'EVIDENCE · DATA · REASONING')}</small>
-            </div>
-            <div className={styles.calloutRight} data-motion="callout-2">
-              <span className={styles.calloutNumber}>02 / 03</span>
-              <b>{t('在约束中设计', 'DESIGN WITH CONSTRAINTS')}</b>
-              <small>{t('结构 · 人居 · 运营', 'STRUCTURE · HABITAT · OPERATIONS')}</small>
-            </div>
-            <div className={styles.calloutBottom} data-motion="callout-3">
-              <span className={styles.calloutNumber}>03 / 03</span>
-              <b>{t('互相补位，完成答辩', 'DEFEND IT TOGETHER')}</b>
-              <small>{t('协作 · 表达 · 复盘', 'TEAMWORK · DEFENSE · REVIEW')}</small>
+            <div className={styles.systemsRail} data-motion="systems-rail" aria-hidden="true">
+              <div className={styles.systemsHeading}>
+                <span>{t('协同系统', 'INTERCONNECTED SYSTEMS')}</span>
+                <span>01 — 05</span>
+              </div>
+              <div className={styles.systemsTrack}><i data-motion="systems-fill" /></div>
+              <div className={styles.systemsNodes}>
+                {competitionRoles.map((role, index) => (
+                  <div className={styles.systemsNode} data-motion={`system-node-${index}`} key={role.id}>
+                    <small>{String(index + 1).padStart(2, '0')}</small>
+                    <strong>{t(role.nameZh, role.nameEn)}</strong>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className={styles.portal} data-motion="portal" aria-hidden="true">
@@ -324,7 +368,7 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.habitatCaption} data-motion="habitat-caption">
               <img className={styles.stillImage} src="/img/life-support-concept.jpg" alt={t('地外生命保障空间概念视觉', 'Concept visual of an off-world life-support habitat')} />
               <span className={styles.phaseIndex}>04 / INSIDE THE HABITAT</span>
-              <h2>{t('想象必须，', 'Imagination needs')}<br />{t('经得起推敲。', 'to stand up to scrutiny.')}</h2>
+              <StoryHeading first={t('想象必须，', 'Imagination needs')} second={t('经得起推敲。', 'to stand up to scrutiny.')} />
               <p>{t(
                 '空气、食物、循环与低重力环境，最终都要成为能计算、能讨论、能验证的设计条件。',
                 'Air, food, life-support cycles and low gravity become design conditions we can calculate, debate and test.',
@@ -342,7 +386,7 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.teamCaption} data-motion="team-caption">
               <img className={styles.stillImage} src="/img/archive/2026/final-stage.webp" alt={t('2026 GFSSM 步天两支代表队合影', 'Butian teams at GFSSM 2026')} />
               <span className={styles.phaseIndex}>05 / BACK ON EARTH</span>
-              <h2>{t('图纸背后，', 'Behind the drawings')}<br />{t('是并肩的人。', 'are people together.')}</h2>
+              <StoryHeading first={t('图纸背后，', 'Behind the drawings')} second={t('是并肩的人。', 'are people together.')} />
               <p>{t(
                 '2026 年的 24 小时挑战里，两支代表队与来自各地的伙伴反复讨论、修改方案。不同专长，最终汇入同一份提案。',
                 'In the 2026 24-hour challenge, our teams debated and revised proposals with students from across the world. Different strengths came together in one design.',
@@ -383,7 +427,7 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.endCopy} data-motion="end">
               <p className={styles.phaseIndex}>07 / PASS IT FORWARD</p>
-              <h2>{t('把做过的事，', 'Pass what we learn')}<br /><em>{t('交给下一程。', 'to the next crew.')}</em></h2>
+              <StoryHeading first={t('把做过的事，', 'Pass what we learn')} second={t('交给下一程。', 'to the next crew.')} accent />
               <p>{t(
                 '提案与复盘写进知识库，航天科普走出赛场；天文周、纸飞机比赛也曾让更多同学走近工程。下一次出发，欢迎愿意查证、动手、协作并把想法讲清楚的你。',
                 'Proposals and lessons enter our knowledge base. Outreach, Astronomy Week and paper-plane activities have brought more students close to engineering. If you are ready to research, build, collaborate and explain, join the next crew.',
