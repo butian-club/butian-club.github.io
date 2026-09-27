@@ -148,10 +148,10 @@ export default function CinematicHome(): ReactNode {
       .fromTo(target('reality-image'), {scale: 1.18}, {scale: 1, duration: 18, ease: 'power1.out'}, 63)
       .fromTo(target('reality-frame'), {autoAlpha: 0, x: 80, scale: 0.9}, {
         autoAlpha: 1, x: 0, scale: 1, duration: 7, ease: 'power2.out',
-      }, 66)
+      }, 64)
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
-      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 68)
-      .fromTo(target('team-caption'), {y: 26}, {y: -25, duration: 9, ease: 'none'}, 68)
+      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 66)
+      .fromTo(target('team-caption'), {y: 26}, {y: -25, duration: 11, ease: 'none'}, 66)
       .to(target('team-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 74)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 74)
       .to(target('reality'), {autoAlpha: 0, duration: 3}, 74)

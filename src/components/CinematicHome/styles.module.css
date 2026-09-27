@@ -357,10 +357,11 @@
   :global(html[lang='en']) .launchCopy h1 { font-size: clamp(2rem, 7.2vw, 3rem); }
   .launchLead { max-width: 295px; font-size: 14px; }
   .campusCredit { left: 24px; right: auto; bottom: 53px; font-size: 7px; }
-  .heroLead { max-width: 295px; font-size: 14px; }
+  .heroLead { max-width: min(295px, calc(100vw - 80px)); font-size: 14px; }
   .scrollCue { margin-top: 30px; font-size: 8px; }
   .briefCopy { left: 8%; top: 18%; right: auto; width: 78%; }
   .briefCopy h2 { font-size: 2.7rem; }
+  .briefCopy p:last-child { max-width: 61vw; }
   .wordmarkGhost { left: 0; bottom: 6%; font-size: 42vw; }
   .assemblyCopy { top: 14%; left: 7%; width: 85%; }
   .assemblyCopy h2 { font-size: clamp(2.25rem, 10vw, 3.1rem); }
@@ -408,6 +409,7 @@
 }
 @media (min-width: 601px) and (max-width: 900px) and (orientation: portrait) {
   .briefCopy, .assemblyCopy { width: 47%; }
+  .heroLead { max-width: min(52vw, 420px); }
   .endCopy { width: min(52vw, 400px); }
   .endCopy > p:not(.phaseIndex) { max-width: 345px; }
   .endActions { flex-direction: column; align-items: flex-start; }
@@ -416,6 +418,7 @@
 @media (max-width: 360px) {
   .heroCopy h2 { font-size: 10vw; }
   .launchCopy h1 { font-size: 9.3vw; }
+  .briefCopy { width: 74%; }
   .hudBrand { letter-spacing: .09em; }
   :global(html[lang='en']) .roleFull { display: none; }
   :global(html[lang='en']) .roleCompact { display: inline; }

@@ -252,17 +252,18 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
       const mobileReveal = isMobile && ascent >= 1
         ? smooth(0.24, 0.31, progress) * (1 - smooth(0.345, 0.41, progress))
         : 0;
-      // Keep the station outside the narrower brief text column, then bring
-      // it back across the frame for the systems reveal.
+      // Clear the opening and brief text before the station returns for the
+      // systems reveal.
       const mobileBriefPan = isMobile && ascent >= 1
-        ? smooth(0.055, 0.095, progress) * (1 - smooth(0.2, 0.245, progress))
+        ? smooth(0, 0.025, progress) * (1 - smooth(0.2, 0.245, progress))
         : 0;
       const tabletPan = portraitTablet && ascent >= 1
-        ? -3.2 * smooth(0.14, 0.2, progress) * (1 - smooth(0.43, 0.5, progress))
+        ? -2.7 * smooth(0, 0.025, progress) * (1 - smooth(0.43, 0.5, progress))
         : 0;
       const finalFraming = ascent >= 1 ? smooth(0.83, 0.91, progress) : 0;
       const finalPan = (portraitTablet ? -2.5 : compactLandscape ? -2.2 : shortMobile ? -2 : 0) * finalFraming;
-      const mobilePan = (shortMobile ? 0.9 : 4) * mobileReveal - 3.2 * mobileBriefPan + tabletPan + finalPan;
+      const briefPanDistance = mount.clientWidth <= 360 ? 4.6 : 3.2;
+      const mobilePan = (shortMobile ? 0.9 : 4) * mobileReveal - briefPanDistance * mobileBriefPan + tabletPan + finalPan;
       const fieldOfView = ascent < 1
         ? (isMobile ? 72 - 12 * ascent : portraitTablet ? 60 - 5 * ascent : 48 - 9 * ascent)
         : (isMobile
