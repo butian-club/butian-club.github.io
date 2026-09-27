@@ -23,13 +23,13 @@ const journeyScreens = 20.65;
 const stops = [
   {at: 0, zh: '杭州二中', en: 'Hangzhou No.2 High School'},
   {at: 8, zh: '穿越云层', en: 'Through the clouds'},
-  {at: 19, zh: '进入太空', en: 'Into space'},
-  {at: launchDuration + 16, zh: '接住问题', en: 'The brief'},
-  {at: launchDuration + 29, zh: '协作设计', en: 'One team'},
-  {at: launchDuration + 57, zh: '经得起推敲', en: 'Test the idea'},
-  {at: launchDuration + 69, zh: '真实的同伴', en: 'The people'},
-  {at: launchDuration + 78, zh: '做过的方案', en: 'Our work'},
-  {at: launchDuration + 133, zh: '传给下一程', en: 'Pass it on'},
+  {at: 18, zh: '进入太空', en: 'Into space'},
+  {at: launchDuration + 11, zh: '接住问题', en: 'The brief'},
+  {at: launchDuration + 24.5, zh: '协作设计', en: 'One team'},
+  {at: launchDuration + 54.5, zh: '经得起推敲', en: 'Test the idea'},
+  {at: launchDuration + 66, zh: '真实的同伴', en: 'The people'},
+  {at: launchDuration + 75.5, zh: '做过的方案', en: 'Our work'},
+  {at: launchDuration + 131, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
@@ -122,11 +122,14 @@ export default function CinematicHome(): ReactNode {
       .to(target('hero'), {autoAlpha: 0, scale: 0.96, duration: 4, ease: 'power1.inOut'}, 8)
       .fromTo(target('brief'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 10)
       .fromTo(target('brief'), {x: 56, y: 16}, {x: -42, y: -20, duration: 16, ease: 'none'}, 10)
+      .fromTo(target('brief-detail'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.7, ease: 'power1.inOut'}, 13.3)
       .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 9}, 12)
       .to(target('brief'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 21)
       .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 5}, 23)
-      .fromTo(target('assembly'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 22)
-      .fromTo(target('assembly'), {y: 22, scale: .985}, {y: -40, scale: 1, duration: 30, ease: 'none'}, 22)
+      .fromTo(target('assembly'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 23.5)
+      .fromTo(target('assembly'), {y: 22, scale: .985}, {y: -40, scale: 1, duration: 28.5, ease: 'none'}, 23.5)
+      .fromTo(target('assembly-detail'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.8, ease: 'power1.inOut'}, 26.6)
+      .fromTo(target('assembly-note'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.8, ease: 'power1.inOut'}, 27.6)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
       .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 19}, 26)
       .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 46)
@@ -150,8 +153,9 @@ export default function CinematicHome(): ReactNode {
         autoAlpha: 1, x: 0, scale: 1, duration: 7, ease: 'power2.out',
       }, 64)
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
-      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 66)
-      .fromTo(target('team-caption'), {y: 26}, {y: -25, duration: 11, ease: 'none'}, 66)
+      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 65)
+      .fromTo(target('team-caption'), {y: 26}, {y: -25, duration: 12, ease: 'none'}, 65)
+      .fromTo(target('team-detail'), {autoAlpha: 0}, {autoAlpha: 1, duration: 1.7, ease: 'power1.inOut'}, 66.9)
       .to(target('team-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 74)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 74)
       .to(target('reality'), {autoAlpha: 0, duration: 3}, 74)
@@ -183,9 +187,9 @@ export default function CinematicHome(): ReactNode {
     const headingReveals: Array<[string, number, number]> = [
       ['hero', 0.5, 3.8],
       ['brief', 10.4, 4],
-      ['assembly', 22.3, 3.5],
+      ['assembly', 23.8, 3.5],
       ['habitat-caption', 53.9, 3.4],
-      ['team-caption', 68.4, 3.3],
+      ['team-caption', 64.8, 2.2],
       ['end', 130.7, 3.8],
     ];
     headingReveals.forEach(([name, at, duration]) => revealHeading(name, at, duration, spaceTimeline));
@@ -336,9 +340,9 @@ export default function CinematicHome(): ReactNode {
 
             <div className={styles.briefCopy} data-motion="brief">
               <div className={styles.signal}><span /> {t('步天工程社 · 从哪里开始', 'BUTIAN · WHERE WE BEGIN')}</div>
-              <p className={styles.phaseIndex}>02 / FROM BRIEF TO PROPOSAL</p>
+              <p className={styles.phaseIndex}>FROM BRIEF TO PROPOSAL</p>
               <StoryHeading first={t('先接住问题，', 'First, understand')} second={t('再提出未来。', 'the challenge.')} />
-              <p>{t(
+              <p data-motion="brief-detail">{t(
                 '从赛事任务书出发，拆解需求、查找证据、分工设计，最后以一份提案和英文答辩回应约束。',
                 'We begin with a competition brief: break down requirements, find evidence, design together, then respond with a proposal and an English defense.',
               )}</p>
@@ -346,13 +350,13 @@ export default function CinematicHome(): ReactNode {
             <div className={styles.wordmarkGhost} data-motion="wordmark" aria-hidden="true">{t('步天', 'BUTIAN')}</div>
 
             <div className={styles.assemblyCopy} data-motion="assembly">
-              <span className={styles.phaseIndex}>03 / SYSTEMS THINKING</span>
+              <span className={styles.phaseIndex}>SYSTEMS THINKING</span>
               <StoryHeading first={t('五种专长，', 'Five disciplines.')} second={t('同一座城市。', 'One shared city.')} accent />
-              <p>{t(
+              <p data-motion="assembly-detail">{t(
                 '像一家虚拟航天公司：管理、结构、人居、运营和基础设施各有分工；方案必须在彼此的约束中成立。',
                 'Organized like a virtual aerospace company, we connect management, structure, habitat, operations and infrastructure. Every decision has to work with the others.',
               )}</p>
-              <small className={styles.conceptNote}>{t('概念视觉 · 非实际方案模型', 'CONCEPT VISUAL · NOT A PROJECT MODEL')}</small>
+              <small className={styles.conceptNote} data-motion="assembly-note">{t('概念视觉 · 非实际方案模型', 'CONCEPT VISUAL · NOT A PROJECT MODEL')}</small>
             </div>
             <div className={styles.systemsRail} data-motion="systems-rail" aria-hidden="true">
               <div className={styles.systemsHeading}>
@@ -377,7 +381,7 @@ export default function CinematicHome(): ReactNode {
             </div>
             <div className={styles.habitatCaption} data-motion="habitat-caption">
               <img className={styles.stillImage} src="/img/life-support-concept.jpg" alt={t('地外生命保障空间概念视觉', 'Concept visual of an off-world life-support habitat')} />
-              <span className={styles.phaseIndex}>04 / INSIDE THE HABITAT</span>
+              <span className={styles.phaseIndex}>INSIDE THE HABITAT</span>
               <StoryHeading first={t('想象必须，', 'Imagination needs')} second={t('经得起推敲。', 'to stand up to scrutiny.')} />
               <p>{t(
                 '空气、食物、循环与低重力环境，最终都要成为能计算、能讨论、能验证的设计条件。',
@@ -395,18 +399,18 @@ export default function CinematicHome(): ReactNode {
             </div>
             <div className={styles.teamCaption} data-motion="team-caption">
               <img className={styles.stillImage} src="/img/archive/2026/final-stage.webp" alt={t('2026 GFSSM 步天两支代表队合影', 'Butian teams at GFSSM 2026')} />
-              <span className={styles.phaseIndex}>05 / BACK ON EARTH</span>
-              <StoryHeading first={t('图纸背后，', 'Behind the drawings')} second={t('是并肩的人。', 'are people together.')} />
-              <p>{t(
+              <span className={styles.phaseIndex}>BACK ON EARTH</span>
+              <StoryHeading first={t('图纸背后，', 'Behind every plan,')} second={t('是并肩的人。', 'a team.')} />
+              <p data-motion="team-detail">{t(
                 '2026 年的 24 小时挑战里，两支代表队与来自各地的伙伴反复讨论、修改方案。不同专长，最终汇入同一份提案。',
-                'In the 2026 24-hour challenge, our teams debated and revised proposals with students from across the world. Different strengths came together in one design.',
+                'In the 2026 24-hour challenge, our teams revised a shared proposal with students worldwide. Different strengths shaped one design.',
               )}</p>
               <small>{t('真实影像 · 2026 GFSSM 决赛', 'ARCHIVE PHOTO · GFSSM 2026 FINAL')}</small>
             </div>
 
             <div className={styles.record} data-motion="record">
               <div className={styles.recordFutureBackdrop} data-motion="record-future-backdrop" aria-hidden="true" />
-              <p className={styles.recordEyebrow}>06 / FLIGHT RECORD</p>
+              <p className={styles.recordEyebrow}>FLIGHT RECORD</p>
               {milestones.map((project, index) => (
                 <div className={styles.archiveVisual} data-motion={`archive-visual-${index}`} aria-hidden="true" key={project.id}>
                   {project.archivePhotos?.map((photo, photoIndex) => (
@@ -441,7 +445,7 @@ export default function CinematicHome(): ReactNode {
             </div>
 
             <div className={styles.endCopy} data-motion="end">
-              <p className={styles.phaseIndex}>07 / PASS IT FORWARD</p>
+              <p className={styles.phaseIndex}>PASS IT FORWARD</p>
               <StoryHeading first={t('把做过的事，', 'Pass what we learn')} second={t('交给下一程。', 'to the next crew.')} accent />
               <p>{t(
                 '提案与复盘写进知识库，航天科普走出赛场；天文周、纸飞机比赛也曾让更多同学走近工程。下一次出发，欢迎愿意查证、动手、协作并把想法讲清楚的你。',

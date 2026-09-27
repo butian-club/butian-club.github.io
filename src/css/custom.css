@@ -656,10 +656,13 @@ body:has(#cinematic-home) .navbar {
   .navbar .navbar__items--right > .dropdown { display: block; }
   .navbar .navbar__items--right > [class*='navbarSearchContainer'] {
     position: static;
-    flex: 0 0 134px;
-    width: 134px;
+    flex: 0 0 160px;
+    width: 160px;
   }
-  .navbar .navbar__search-input { width: 134px; }
+  .navbar .navbar__search-input { width: 160px; }
+}
+@media (max-width: 360px) {
+  html[lang='en'] .navbar__title { font-size: .9rem; letter-spacing: 0; }
 }
 @media (min-width: 800px) and (max-width: 1120px) {
   .navbar .nav-platform-link,
