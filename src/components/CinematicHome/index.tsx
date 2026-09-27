@@ -98,13 +98,16 @@ export default function CinematicHome(): ReactNode {
     }, 0);
 
     timeline
-      .to(target('launch-copy'), {autoAlpha: 0, y: -40, duration: 4, ease: 'power2.inOut'}, 3)
+      .fromTo(target('launch-copy'), {y: 0}, {y: -52, duration: 7, ease: 'none'}, 0)
+      .to(target('launch-copy'), {autoAlpha: 0, duration: 4, ease: 'power1.inOut'}, 3)
       .to(target('campus-credit'), {autoAlpha: 0, duration: 3}, 4)
       .to(target('launch-vignette'), {autoAlpha: 0, duration: 5}, 5)
-      .fromTo(target('cloud-copy'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 2.8, ease: 'power2.out'}, 7)
-      .to(target('cloud-copy'), {autoAlpha: 0, y: -27, duration: 2.8, ease: 'power2.in'}, 14)
-      .fromTo(target('edge-copy'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 2.8, ease: 'power2.out'}, 16)
-      .to(target('edge-copy'), {autoAlpha: 0, y: -28, duration: 3, ease: 'power2.in'}, 20)
+      .fromTo(target('cloud-copy'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.8, ease: 'power1.inOut'}, 7)
+      .fromTo(target('cloud-copy'), {y: 28}, {y: -38, duration: 9.8, ease: 'none'}, 7)
+      .to(target('cloud-copy'), {autoAlpha: 0, duration: 2.8, ease: 'power1.inOut'}, 14)
+      .fromTo(target('edge-copy'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.8, ease: 'power1.inOut'}, 16)
+      .fromTo(target('edge-copy'), {y: 28}, {y: -38, duration: 7, ease: 'none'}, 16)
+      .to(target('edge-copy'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 20)
       .fromTo(target('space-veil'), {autoAlpha: 0}, {autoAlpha: 1, duration: 9}, 24)
       .fromTo(target('reticle'), {autoAlpha: 0}, {autoAlpha: .34, duration: 6}, 23)
       .fromTo(target('orbit-line'), {autoAlpha: 0}, {autoAlpha: 1, duration: 6}, 23);
@@ -112,53 +115,52 @@ export default function CinematicHome(): ReactNode {
     const spaceTimeline = gsap.timeline({defaults: {ease: 'none'}});
     spaceTimeline
       .to(target('backdrop'), {scale: 1.1, autoAlpha: 0, duration: 2}, 22)
-      .fromTo(target('hero'), {autoAlpha: 0, y: 30}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 0)
-      .to(target('hero'), {y: -22, duration: 4, ease: 'none'}, 4)
-      .to(target('hero'), {autoAlpha: 0, y: -85, scale: 0.94, duration: 6, ease: 'power2.in'}, 8)
-      .fromTo(target('brief'), {autoAlpha: 0, x: 64, y: 16}, {autoAlpha: 1, x: 0, y: 0, duration: 5, ease: 'power2.out'}, 14)
-      .to(target('brief'), {x: -20, y: -12, duration: 4, ease: 'none'}, 19)
+      .fromTo(target('hero'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 0)
+      .fromTo(target('hero'), {y: 26}, {y: -83, duration: 14, ease: 'none'}, 0)
+      .to(target('hero'), {autoAlpha: 0, scale: 0.96, duration: 4, ease: 'power1.inOut'}, 8)
+      .fromTo(target('brief'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 10)
+      .fromTo(target('brief'), {x: 56, y: 16}, {x: -42, y: -20, duration: 16, ease: 'none'}, 10)
       .fromTo(target('wordmark'), {autoAlpha: 0, scale: 1.4, x: 80}, {autoAlpha: 0.75, scale: 1, x: 0, duration: 9}, 12)
-      .to(target('brief'), {autoAlpha: 0, x: -36, duration: 3}, 23)
+      .to(target('brief'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 21)
       .to(target('wordmark'), {autoAlpha: 0, scale: 0.75, duration: 5}, 23)
-      .fromTo(target('assembly'), {autoAlpha: 0, y: 38, scale: .985}, {autoAlpha: 1, y: 0, scale: 1, duration: 4.5, ease: 'power2.out'}, 25)
-      .to(target('assembly'), {y: -26, duration: 18.5, ease: 'none'}, 29.5)
+      .fromTo(target('assembly'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3, ease: 'power1.inOut'}, 22)
+      .fromTo(target('assembly'), {y: 22, scale: .985}, {y: -40, scale: 1, duration: 30, ease: 'none'}, 22)
       .fromTo(target('system-grid'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 27)
       .fromTo(target('scan-line'), {x: 0}, {x: () => window.innerWidth * 0.8, duration: 19}, 26)
       .to(target('system-grid'), {autoAlpha: 0, duration: 4}, 46)
       .fromTo(target('systems-rail'), {autoAlpha: 0, y: 24}, {autoAlpha: 1, y: 0, duration: 3, ease: 'power2.out'}, 27)
       .fromTo(target('systems-fill'), {scaleX: 0}, {scaleX: 1, duration: 22, ease: 'none'}, 27)
       .to(target('systems-rail'), {autoAlpha: 0, y: -16, duration: 2, ease: 'power2.in'}, 48)
-      .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 4}, 48)
+      .to(target('assembly'), {autoAlpha: 0, duration: 4, ease: 'power1.inOut'}, 48)
       .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
         autoAlpha: 1, '--portal-radius': '145%', duration: 16, ease: 'power1.out',
       }, 47)
       .fromTo(target('portal-image'), {scale: 1.45, xPercent: -2, yPercent: 2}, {
         scale: 1.05, xPercent: 1, yPercent: -1, duration: 18, ease: 'none',
       }, 47)
-      .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 56)
-      .to(target('habitat-caption'), {y: -16, duration: 3, ease: 'none'}, 60)
-      .to(target('habitat-caption'), {autoAlpha: 0, y: -32, duration: 3}, 63)
-      .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5, ease: 'power2.inOut'}, 64)
-      .to(target('portal'), {autoAlpha: 0, duration: 5, ease: 'power2.inOut'}, 64)
-      .fromTo(target('reality-image'), {scale: 1.18}, {scale: 1, duration: 18, ease: 'power1.out'}, 64)
+      .fromTo(target('habitat-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 53.5)
+      .fromTo(target('habitat-caption'), {y: 35}, {y: -32, duration: 11, ease: 'none'}, 53.5)
+      .to(target('habitat-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 61.5)
+      .fromTo(target('reality'), {autoAlpha: 0}, {autoAlpha: 1, duration: 5, ease: 'power2.inOut'}, 63)
+      .to(target('portal'), {autoAlpha: 0, duration: 5, ease: 'power2.inOut'}, 63)
+      .fromTo(target('reality-image'), {scale: 1.18}, {scale: 1, duration: 18, ease: 'power1.out'}, 63)
       .fromTo(target('reality-frame'), {autoAlpha: 0, x: 80, scale: 0.9}, {
         autoAlpha: 1, x: 0, scale: 1, duration: 7, ease: 'power2.out',
       }, 66)
       .to(target('reality-frame'), {x: -24, y: -14, duration: 8}, 72)
-      .fromTo(target('team-caption'), {autoAlpha: 0, y: 35}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 68)
-      .to(target('team-caption'), {y: -12, duration: 2, ease: 'none'}, 72)
-      .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 74)
-      .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 75)
-      .to(target('reality'), {autoAlpha: 0, duration: 3}, 75)
+      .fromTo(target('team-caption'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 68)
+      .fromTo(target('team-caption'), {y: 26}, {y: -25, duration: 9, ease: 'none'}, 68)
+      .to(target('team-caption'), {autoAlpha: 0, duration: 3, ease: 'power1.inOut'}, 74)
+      .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 74)
+      .to(target('reality'), {autoAlpha: 0, duration: 3}, 74)
+      .fromTo(target('archive-progress'), {scaleX: 0}, {scaleX: 1, duration: 34.5, ease: 'none'}, 77)
       .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 123)
       .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
         autoAlpha: 1, scale: 1, rotation: 0, duration: 3,
       }, 123)
       .to(target('record'), {autoAlpha: 0, duration: 2.2}, 129.3)
-      .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
-        autoAlpha: 1, y: 0, scale: 1, duration: 4, ease: 'power2.out',
-      }, 130.3)
-      .to(target('end'), {y: -18, duration: 8.7, ease: 'none'}, 134.3);
+      .fromTo(target('end'), {autoAlpha: 0}, {autoAlpha: 1, duration: 4, ease: 'power1.inOut'}, 130.3)
+      .fromTo(target('end'), {y: 35, scale: .98}, {y: -20, scale: 1, duration: 12.7, ease: 'none'}, 130.3);
 
     competitionRoles.forEach((_, index) => {
       const node = target(`system-node-${index}`);
@@ -178,9 +180,9 @@ export default function CinematicHome(): ReactNode {
 
     const headingReveals: Array<[string, number, number]> = [
       ['hero', 0.5, 3.8],
-      ['brief', 14.4, 4.3],
-      ['assembly', 25.4, 4.1],
-      ['habitat-caption', 56.4, 3.4],
+      ['brief', 10.4, 4],
+      ['assembly', 22.3, 3.5],
+      ['habitat-caption', 53.9, 3.4],
       ['team-caption', 68.4, 3.3],
       ['end', 130.7, 3.8],
     ];
@@ -188,17 +190,22 @@ export default function CinematicHome(): ReactNode {
 
     milestones.forEach((_, index) => {
       const at = 77 + index * 11.5;
-      const entrance = index === 0 ? at - 1 : at - 2;
+      spaceTimeline.to(target(`archive-node-${index}`), {
+        opacity: 1, y: -5, duration: 1.8, ease: 'power2.out',
+      }, at);
+      const entrance = index === 0 ? at - 1.4 : at - 2.2;
       const entranceDuration = index === 0 ? 2.6 : 2;
-      const exit = index < milestones.length - 1 ? at + 9.5 : 123;
-      const textEntrance = index === 0 ? at : at - .5;
+      const exit = index < milestones.length - 1 ? at + 9.3 : 123;
+      const textEntrance = index === 0 ? at - .8 : at - 1.3;
       const archive = target('archive-visual-' + index);
       const cards = archive.querySelectorAll(`.${styles.archivePhoto}`);
       const photos = archive.querySelectorAll('img');
       spaceTimeline.fromTo(archive, {
-        autoAlpha: 0, x: travel(160, 28), y: travel(33, 7), scale: .84, rotationY: travel(-10, -4),
+        autoAlpha: 0, x: travel(125, 24), y: travel(24, 5), z: travel(-360, -70),
+        scale: .92, rotationY: travel(-14, -4),
       }, {
-        autoAlpha: 1, x: travel(20, 5), y: travel(8, 2), scale: 1, rotationY: 0,
+        autoAlpha: 1, x: travel(20, 5), y: travel(8, 2), z: 0,
+        scale: 1, rotationY: 0,
         duration: entranceDuration, ease: 'power2.out',
       }, entrance);
       spaceTimeline.fromTo(cards, {
@@ -208,7 +215,8 @@ export default function CinematicHome(): ReactNode {
         stagger: .16, ease: 'power2.out',
       }, entrance);
       spaceTimeline.to(archive, {
-        x: travel(-35, -7), y: travel(-17, -4), scale: 1.055, rotationY: travel(5, 2),
+        x: travel(-35, -7), y: travel(-17, -4), z: travel(75, 10),
+        scale: 1.02, rotationY: travel(4, 2),
         duration: exit - (entrance + entranceDuration), ease: 'none',
       }, entrance + entranceDuration);
       spaceTimeline.fromTo(photos, {
@@ -223,14 +231,14 @@ export default function CinematicHome(): ReactNode {
         duration: exit - (entrance + 4.4), ease: 'none',
       }, entrance + 4.4);
       spaceTimeline.to(archive, {
-        autoAlpha: 0, x: travel(-140, -25), y: travel(-33, -8),
-        scale: 1.13, rotationY: travel(12, 4),
-        duration: index < milestones.length - 1 ? 1.3 : 2, ease: 'power2.inOut',
+        autoAlpha: 0, x: travel(-125, -25), y: travel(-30, -8), z: travel(260, 60),
+        scale: 1.1, rotationY: travel(12, 4),
+        duration: index < milestones.length - 1 ? .85 : 2, ease: 'power2.in',
       },
         exit);
       spaceTimeline.to(cards, {
         autoAlpha: 0, y: travel(-90, -30), rotation: (photo: number) => [-2, 3, -3][photo % 3],
-        duration: index < milestones.length - 1 ? 1.1 : 1.8,
+        duration: index < milestones.length - 1 ? .7 : 1.8,
         stagger: .08, ease: 'power2.in',
       }, exit);
       spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: travel(100, 34), y: 28, scale: .96}, {
@@ -242,7 +250,7 @@ export default function CinematicHome(): ReactNode {
       if (index < milestones.length - 1) {
         spaceTimeline.to(target('record-' + index), {
           autoAlpha: 0, x: travel(-95, -25), y: -22, scale: 1.035,
-          duration: 1.3, ease: 'power2.inOut',
+          duration: 1.1, ease: 'power2.inOut',
         }, exit);
       }
     });
@@ -404,7 +412,6 @@ export default function CinematicHome(): ReactNode {
                       <img src={photo} alt="" />
                     </div>
                   ))}
-                  <span>{t(`影像档案 / ${project.year} GFSSM`, `PHOTO ARCHIVE / GFSSM ${project.year}`)}</span>
                 </div>
               ))}
               <div className={styles.recordFuture} data-motion="record-future" aria-hidden="true">
@@ -422,7 +429,13 @@ export default function CinematicHome(): ReactNode {
                   {project.sourceUrl && <a className={styles.sourceLink} href={project.sourceUrl} target="_blank" rel="noopener noreferrer">{t('原始报道 ↗', 'Original report ↗')}</a>}
                 </div>
               ))}
-              <div className={styles.recordTicks} aria-hidden="true">{milestones.map((project) => <i key={project.id} />)}</div>
+              <div className={styles.recordChronology} aria-hidden="true">
+                <div className={styles.chronologyHeading}><span>{t('步天航程档案', 'BUTIAN FLIGHT ARCHIVE')}</span><span>GFSSM / 2023—2026</span></div>
+                <div className={styles.chronologyTrack}><i data-motion="archive-progress" /></div>
+                <div className={styles.chronologyYears}>{milestones.map((project, index) => (
+                  <span data-motion={`archive-node-${index}`} key={project.id}>{project.year}</span>
+                ))}</div>
+              </div>
             </div>
 
             <div className={styles.endCopy} data-motion="end">

@@ -102,4 +102,14 @@ test('station shell and mechanisms keep their clearance throughout the scroll', 
   const steps = turns.slice(1).map((angle, index) => angle - turns[index]);
   assert.ok(Math.max(...steps) - Math.min(...steps) < 1e-10,
     'deployed habitat rotates at an even rate through the archive');
+
+  const angleAt = (progress) => {
+    poseStation(station, progress);
+    return station.ring.rotation.z;
+  };
+  const interval = 0.0005;
+  const beforeDeployment = (angleAt(0.36) - angleAt(0.36 - interval)) / interval;
+  const afterDeployment = (angleAt(0.36 + interval) - angleAt(0.36)) / interval;
+  assert.ok(beforeDeployment > 0 && Math.abs(beforeDeployment - afterDeployment) < 0.05,
+    'habitat keeps its angular velocity when deployment becomes continuous rotation');
 });

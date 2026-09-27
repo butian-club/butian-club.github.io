@@ -17,11 +17,13 @@ const cameraPath: Pose[] = [
   {at: 0.015, position: [0, 0.5, 19], target: [1.5, 0, -4]},
   {at: 0.09, position: [1.1, 0.8, 14.4], target: [2.2, 0, -4]},
   {at: 0.2, position: [8.4, 2.7, 14], target: [3.9, 0, -4]},
-  {at: 0.265, position: [10, 2.35, 12.9], target: [5.2, 0, -4]},
-  {at: 0.315, position: [9.2, 1.55, 11.5], target: [5.05, 0, -4]},
-  {at: 0.35, position: [7.6, 1, 9.8], target: [4.6, 0, -4]},
+  // Space these waypoints by travel distance so the orbit does not rush past
+  // the station just as the systems are deploying.
+  {at: 0.255, position: [10, 2.35, 12.9], target: [5.2, 0, -4]},
+  {at: 0.305, position: [9.2, 1.55, 11.5], target: [5.05, 0, -4]},
+  {at: 0.355, position: [7.6, 1, 9.8], target: [4.6, 0, -4]},
   // The camera approaches only after the large headline leaves the frame.
-  {at: 0.39, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
+  {at: 0.405, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
   // One slow arc continues behind the archive; the camera never stops while
   // the years change, then withdraws gradually for the final invitation.
   {at: 0.52, position: [8.8, 1.55, 8.9], target: [5.85, 0, -4]},
@@ -247,7 +249,12 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
       const mobileReveal = isMobile && ascent >= 1
         ? smooth(0.24, 0.31, progress) * (1 - smooth(0.345, 0.41, progress))
         : 0;
-      const mobilePan = 4 * mobileReveal;
+      // Keep the station outside the narrower brief text column, then bring
+      // it back across the frame for the systems reveal.
+      const mobileBriefPan = isMobile && ascent >= 1
+        ? smooth(0.055, 0.095, progress) * (1 - smooth(0.2, 0.245, progress))
+        : 0;
+      const mobilePan = 4 * mobileReveal - 3.2 * mobileBriefPan;
       const fieldOfView = ascent < 1
         ? (isMobile ? 72 - 12 * ascent : 48 - 9 * ascent)
         : (isMobile ? 60 + 12 * mobileReveal : 39);

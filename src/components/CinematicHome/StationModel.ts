@@ -666,18 +666,26 @@ function motionEase(start: number, end: number, value: number): number {
   return t * t * (3 - 2 * t);
 }
 
+// Integrate a smooth velocity ramp, then keep the same angular velocity. A
+// separate eased deployment followed by a linear spin creates a visible stop
+// and restart exactly when the habitat is largest on screen.
+function rampedTurn(start: number, end: number, value: number, speed: number): number {
+  const elapsed = Math.max(0, value - start);
+  const rampLength = end - start;
+  const ramp = Math.min(elapsed, rampLength);
+  const t = ramp / rampLength;
+  return speed * (rampLength * (t ** 3 - 0.5 * t ** 4) + Math.max(0, elapsed - rampLength));
+}
+
 const braceAxis = new THREE.Vector3(0, 1, 0);
 const braceDirection = new THREE.Vector3();
 
 export function poseStation(station: StationModel, progress: number): void {
   const sequence = Math.min(progress, 0.5);
-  station.group.rotation.y = -0.68 + motionEase(0.11, 0.29, sequence) * 0.38
-    + motionEase(0.29, 0.37, sequence) * 0.45
+  station.group.rotation.y = -0.68 + motionEase(0.11, 0.37, sequence) * 0.83
     + motionEase(0.5, 1, progress) * 0.12;
   station.group.rotation.x = 0.2 + motionEase(0.19, 0.34, sequence) * 0.14;
-  station.ring.rotation.z = -0.08 + motionEase(0.12, 0.36, sequence) * 1.15
-    // The habitat keeps turning at a steady scroll-linked rate after deployment.
-    + Math.min(1, Math.max(0, (progress - 0.37) / 0.63)) * Math.PI * 2;
+  station.ring.rotation.z = -0.08 + rampedTurn(0.12, 0.36, progress, Math.PI * 2 / 0.64);
 
   station.pods.forEach(({group, angle, slides, collars}, index) => {
     const stagger = index * 0.0018;
