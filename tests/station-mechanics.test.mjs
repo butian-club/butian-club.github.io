@@ -48,7 +48,7 @@ test('station shell and mechanisms keep their clearance throughout the scroll', 
   assert.ok(nearestWallRadius - 3.56 > 0.02, 'outer wall clears the pressure hull');
 
   let minimumLeafGap = Infinity;
-  for (let step = 0; step <= 100; step += 1) {
+  for (let step = 0; step <= 200; step += 1) {
     poseStation(station, step / 200);
     // Remove the rigid camera-facing pose; clearance is measured in station space.
     station.group.rotation.set(0, 0, 0);

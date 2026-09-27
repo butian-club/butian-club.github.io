@@ -15,9 +15,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // One story unit has the same scroll distance throughout the pinned journey.
 // The archive and final invitation need enough distance to read while scrolling continuously.
 const launchDuration = 22;
-const spaceDuration = 137;
+const spaceDuration = 143;
 const journeyDuration = launchDuration + spaceDuration;
-const journeyScreens = 19.9;
+const journeyScreens = 20.65;
 
 const stops = [
   {at: 0, zh: '杭州二中', en: 'Hangzhou No.2 High School'},
@@ -28,7 +28,7 @@ const stops = [
   {at: launchDuration + 57, zh: '经得起推敲', en: 'Test the idea'},
   {at: launchDuration + 69, zh: '真实的同伴', en: 'The people'},
   {at: launchDuration + 78, zh: '做过的方案', en: 'Our work'},
-  {at: launchDuration + 127, zh: '传给下一程', en: 'Pass it on'},
+  {at: launchDuration + 133, zh: '传给下一程', en: 'Pass it on'},
 ];
 
 const milestones = ['gfssm-2023', 'gfssm-2024-venus', 'gfssm-2025-mars', 'gfssm-2026-psyche']
@@ -53,6 +53,7 @@ export default function CinematicHome(): ReactNode {
 
     const select = (name: string) => stage.querySelector<HTMLElement>('[data-motion="' + name + '"]');
     const target = (name: string) => select(name)!;
+    const travel = (desktop: number, mobile: number) => () => window.innerWidth <= 600 ? mobile : desktop;
     const driver = {p: 0};
 
     const timeline = gsap.timeline({
@@ -62,7 +63,9 @@ export default function CinematicHome(): ReactNode {
         start: 'top top',
         end: () => '+=' + Math.round(window.innerHeight * journeyScreens),
         pin: stage,
-        scrub: 0.42,
+        // Keep the image close to wheel and keyboard input; a long scrub makes
+        // the pinned scene feel as if it is catching up after the user stops.
+        scrub: 0.22,
         anticipatePin: 1,
         refreshPriority: 10,
         invalidateOnRefresh: true,
@@ -119,7 +122,7 @@ export default function CinematicHome(): ReactNode {
       .to(target('assembly'), {autoAlpha: 0, y: -38, duration: 4}, 48)
       .to(target('callout-3'), {autoAlpha: 0, y: -28, duration: 4}, 49)
       .fromTo(target('portal'), {autoAlpha: 1, '--portal-radius': '0%'}, {
-        autoAlpha: 1, '--portal-radius': '145%', duration: 16, ease: 'power2.inOut',
+        autoAlpha: 1, '--portal-radius': '145%', duration: 16, ease: 'power1.out',
       }, 47)
       .fromTo(target('portal-image'), {scale: 1.45}, {scale: 1.05, duration: 18, ease: 'power1.out'}, 47)
       .fromTo(target('habitat-caption'), {autoAlpha: 0, y: 50}, {autoAlpha: 1, y: 0, duration: 4, ease: 'power2.out'}, 56)
@@ -135,14 +138,14 @@ export default function CinematicHome(): ReactNode {
       .to(target('team-caption'), {autoAlpha: 0, y: -25, duration: 3}, 74)
       .fromTo(target('record'), {autoAlpha: 0}, {autoAlpha: 1, duration: 3}, 75)
       .to(target('reality'), {autoAlpha: 0, duration: 3}, 75)
-      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 117.5)
+      .fromTo(target('record-future-backdrop'), {autoAlpha: 0}, {autoAlpha: 1, duration: 2.5}, 123)
       .fromTo(target('record-future'), {autoAlpha: 0, scale: .8, rotation: -15}, {
         autoAlpha: 1, scale: 1, rotation: 0, duration: 3,
-      }, 117.5)
-      .to(target('record'), {autoAlpha: 0, duration: 2.2}, 123.8)
+      }, 123)
+      .to(target('record'), {autoAlpha: 0, duration: 2.2}, 129.3)
       .fromTo(target('end'), {autoAlpha: 0, y: 70, scale: 0.92}, {
         autoAlpha: 1, y: 0, scale: 1, duration: 4, ease: 'power2.out',
-      }, 124.8);
+      }, 130.3);
 
     const headingReveals: Array<[string, number, number]> = [
       ['hero', 0.5, 3.8],
@@ -150,7 +153,7 @@ export default function CinematicHome(): ReactNode {
       ['assembly', 25.4, 4.1],
       ['habitat-caption', 56.4, 3.4],
       ['team-caption', 68.4, 3.3],
-      ['end', 125.2, 3.8],
+      ['end', 130.7, 3.8],
     ];
     headingReveals.forEach(([name, at, duration]) => {
       const heading = target(name).querySelector('h2');
@@ -161,21 +164,42 @@ export default function CinematicHome(): ReactNode {
 
     milestones.forEach((_, index) => {
       const at = 77 + index * 11.5;
-      const entrance = index === 0 ? at - 1 : at - 2;
+      const entrance = at - 1;
+      const exit = index < milestones.length - 1 ? at + 10.5 : 123;
       const archive = target('archive-visual-' + index);
-      spaceTimeline.fromTo(archive, {autoAlpha: 0, x: 54, y: 16, scale: 1.045}, {
-        autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 2, ease: 'power2.out',
+      const photos = archive.querySelectorAll('img');
+      spaceTimeline.fromTo(archive, {autoAlpha: 0, x: travel(112, 22), y: travel(27, 6), scale: .93}, {
+        autoAlpha: 1, x: travel(20, 5), y: travel(8, 2), scale: 1, duration: 2.6, ease: 'power2.out',
       }, entrance);
-      spaceTimeline.fromTo(archive.querySelectorAll('img'), {scale: 1.08, yPercent: 3}, {
-        scale: 1, yPercent: 0, duration: 11.5, ease: 'none',
+      spaceTimeline.to(archive, {
+        x: travel(-28, -6), y: travel(-12, -3), scale: 1.025,
+        duration: exit - (entrance + 2.6), ease: 'none',
+      }, entrance + 2.6);
+      spaceTimeline.fromTo(photos, {
+        x: (photo: number) => [22, -24, 28][photo % 3],
+        y: (photo: number) => [-18, 20, 15][photo % 3],
+        scale: 1.1,
+      }, {
+        x: 0, y: 0, scale: 1, duration: 4, stagger: .14, ease: 'power2.out',
       }, entrance);
-      spaceTimeline.to(archive, {autoAlpha: 0, x: -38, y: -9, scale: .98, duration: 2, ease: 'power2.out'},
-        index < milestones.length - 1 ? at + 9.5 : 117.5);
-      spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: 80}, {
-        autoAlpha: 1, x: 0, duration: 2, ease: 'power2.out',
-      }, index === 0 ? at : entrance);
+      spaceTimeline.to(photos, {
+        yPercent: -3, scale: 1.035, duration: exit - (entrance + 4.3), ease: 'none',
+      }, entrance + 4.3);
+      spaceTimeline.to(archive, {
+        autoAlpha: 0, x: travel(-110, -22), y: travel(-25, -7), scale: .96,
+        duration: 2, ease: 'power2.inOut',
+      },
+        exit);
+      spaceTimeline.fromTo(target('record-' + index), {autoAlpha: 0, x: travel(74, 26), y: 18}, {
+        autoAlpha: 1, x: 0, y: 0, duration: 2.4, ease: 'power2.out',
+      }, at);
+      spaceTimeline.to(target('record-' + index), {
+        x: travel(-18, -8), y: -8, duration: exit - (at + 2.4), ease: 'none',
+      }, at + 2.4);
       if (index < milestones.length - 1) {
-        spaceTimeline.to(target('record-' + index), {autoAlpha: 0, x: -70, duration: 2, ease: 'power2.out'}, at + 9.5);
+        spaceTimeline.to(target('record-' + index), {
+          autoAlpha: 0, x: travel(-82, -24), y: -17, duration: 1, ease: 'power2.inOut',
+        }, exit);
       }
     });
     timeline.add(spaceTimeline, launchDuration);

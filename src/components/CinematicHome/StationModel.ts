@@ -672,9 +672,11 @@ const braceDirection = new THREE.Vector3();
 export function poseStation(station: StationModel, progress: number): void {
   const sequence = Math.min(progress, 0.5);
   station.group.rotation.y = -0.68 + motionEase(0.11, 0.29, sequence) * 0.38
-    + motionEase(0.29, 0.37, sequence) * 0.45;
+    + motionEase(0.29, 0.37, sequence) * 0.45
+    + motionEase(0.5, 1, progress) * 0.12;
   station.group.rotation.x = 0.2 + motionEase(0.19, 0.34, sequence) * 0.14;
-  station.ring.rotation.z = -0.08 + motionEase(0.12, 0.36, sequence) * 1.15;
+  station.ring.rotation.z = -0.08 + motionEase(0.12, 0.36, sequence) * 1.15
+    + motionEase(0.37, 1, progress) * 0.55;
 
   station.pods.forEach(({group, angle, slides, collars}, index) => {
     const stagger = index * 0.0018;

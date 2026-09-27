@@ -21,11 +21,13 @@ const cameraPath: Pose[] = [
   {at: 0.34, position: [8.2, 1.1, 11.2], target: [4.3, 0, -4]},
   // The camera approaches only after the large headline leaves the frame.
   {at: 0.39, position: [6.8, 0.8, 7.8], target: [5.7, 0, -4]},
-  {at: 0.52, position: [7, 1, 8], target: [5.75, 0, -4]},
-  {at: 0.64, position: [7.2, 1.1, 8.3], target: [5.8, 0, -4]},
-  {at: 0.75, position: [7.35, 1.18, 8.6], target: [5.9, 0, -4]},
-  {at: 0.91, position: [6.8, 1, 11], target: [5.8, 0, -4]},
-  {at: 0.98, position: [0, 0.5, 19], target: [1.5, 0, -4]},
+  // One slow arc continues behind the archive; the camera never stops while
+  // the years change, then withdraws gradually for the final invitation.
+  {at: 0.52, position: [7.55, 1.35, 8.4], target: [5.7, 0, -4]},
+  {at: 0.64, position: [8.4, 1.7, 9.4], target: [5.55, 0, -4]},
+  {at: 0.75, position: [7.7, 1.55, 10.2], target: [5.2, 0, -4]},
+  {at: 0.87, position: [5.4, 1.1, 12.8], target: [4.3, 0, -4]},
+  {at: 0.95, position: [2.2, 0.7, 16.5], target: [2.5, 0, -4]},
   {at: 1, position: [0, 0.5, 19], target: [1.5, 0, -4]},
 ];
 
@@ -259,7 +261,7 @@ export default function OrbitalScene({progressRef, ascentRef, className}: Props)
       camera.lookAt(lookTarget);
       ascentWorld.update(ascent, progress, camera, isMobile);
 
-      const stationSequence = Math.min(progress, 0.5);
+      const stationSequence = progress;
       if (Math.abs(stationSequence - lastStationSequence) > 0.00001) {
         poseStation(station, progress);
         lastStationSequence = stationSequence;
